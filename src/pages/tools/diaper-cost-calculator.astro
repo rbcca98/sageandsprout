@@ -1,0 +1,221 @@
+---
+import ToolPage from '../../layouts/ToolPage.astro';
+
+const toolSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Diaper & Wipe Cost Calculator',
+  url: 'https://sageandsprout.com/tools/diaper-cost-calculator/',
+  applicationCategory: 'HealthApplication',
+  description: 'Estimate how many diapers and wipes your baby needs per day, month, and year — and the total cost at your preferred price per unit.',
+  operatingSystem: 'All',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+};
+
+const faqs = [
+  {
+    question: 'How many diapers does a newborn use per day?',
+    answer: 'Newborns typically use 10–12 diapers per day in the first month. This is because newborns eat every 2–3 hours and often stool immediately after feeding. Usage decreases as babies grow — by 6 months, most babies use 6–7 diapers per day.',
+  },
+  {
+    question: 'What is the cheapest way to buy diapers?',
+    answer: 'Buying in bulk from warehouse clubs (Costco, Sam\'s Club) or subscribing to auto-delivery (Amazon Subscribe & Save) typically saves 15–30% over per-pack retail. Store-brand diapers from Target (Up & Up) and Costco (Kirkland) are consistently rated near equivalently to name brands at 30–50% lower cost. Stock up during sales but avoid buying more than a 3-week supply in one size — babies can outgrow a size quickly.',
+  },
+  {
+    question: 'How long does each diaper size last?',
+    answer: 'Duration varies by baby\'s growth rate. Newborn size typically lasts 1–3 weeks (or not at all if baby is large). Size 1 (8–14 lb) usually lasts 1–2 months. Size 2 (12–18 lb) lasts 2–3 months. Sizes 3 and above can last several months each. Weight ranges from different brands overlap, so sizing up when the diaper leaks at the sides or back is the best guide.',
+  },
+  {
+    question: 'Are expensive diapers worth it?',
+    answer: 'Not necessarily. Studies and parent communities consistently report that mid-range diapers (Costco Kirkland, Target Up & Up, Huggies) perform comparably to premium brands for most babies. Some babies with sensitive skin may do better with fragrance-free or natural-fiber options. The best approach is to try a small package before buying in bulk.',
+  },
+  {
+    question: 'How many wipes do I need per diaper change?',
+    answer: 'The average is 2 wipes per diaper change, though wet diapers may only need 1 and blowouts may need 5+. Wipes are also used for hand cleaning, face, and spills — so real-world consumption is often higher than diaper-change count alone suggests.',
+  },
+  {
+    question: 'When do babies typically potty train?',
+    answer: 'Most children are ready for potty training between 18 and 36 months, with the average around 27 months. Signs of readiness include staying dry for 2+ hours, showing interest in the toilet, being able to follow simple instructions, and having words for bodily functions. Early training before readiness often backfires and prolongs the total process.',
+  },
+];
+
+const relatedTools = [
+  { href: '/tools/baby-sleep-schedule/', label: 'Baby Sleep Schedule', description: 'Wake windows and nap times by age', emoji: '😴' },
+  { href: '/tools/feeding-formula-amount/', label: 'Feeding & Formula Amount', description: 'How much formula or breast milk by age and weight', emoji: '🍼' },
+];
+
+const sources = [
+  { label: 'Procter & Gamble / Pampers diaper sizing guides.', url: 'https://www.pampers.com/en-us/diapers-and-wipes/article/all-about-diaper-sizes' },
+  { label: 'AAP (2022). Potty Training. HealthyChildren.org.', url: 'https://www.healthychildren.org/English/ages-stages/toddler/toilet-training/Pages/default.aspx' },
+];
+---
+
+<ToolPage
+  title="Diaper & Wipe Cost Calculator — Monthly & Yearly Estimate | Sage & Sprout"
+  headline="Diaper & Wipe Cost Calculator"
+  hook="Enter your baby's age and the price you pay per diaper and wipe to see exactly how many you need and how much you'll spend per month and per year. Includes the right diaper size to buy at every stage."
+  description="Calculate monthly and yearly diaper and wipe costs by baby age. See the right diaper size, daily usage, and total spending at your price per unit."
+  breadcrumbs={[{ label: 'Diaper & Wipe Cost Calculator', href: '/tools/diaper-cost-calculator/' }]}
+  faqs={faqs}
+  relatedTools={relatedTools}
+  sources={sources}
+  schema={[toolSchema]}
+  reviewedDate="2025-01-15"
+>
+  <div slot="tool">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem;">
+      <div>
+        <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="dc-age">Baby's age (months)</label>
+        <input id="dc-age" type="number" min="0" max="36" value="3"
+          style="width:100%;padding:0.7rem 0.9rem;border:2px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+      </div>
+      <div>
+        <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="dc-diaper-price">Price per diaper ($)</label>
+        <input id="dc-diaper-price" type="number" min="0.10" max="1.00" step="0.01" value="0.25"
+          style="width:100%;padding:0.7rem 0.9rem;border:2px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+      </div>
+      <div>
+        <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="dc-wipe-price">Price per wipe ($)</label>
+        <input id="dc-wipe-price" type="number" min="0.01" max="0.30" step="0.01" value="0.03"
+          style="width:100%;padding:0.7rem 0.9rem;border:2px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+      </div>
+      <div>
+        <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="dc-wipes-per">Wipes per change</label>
+        <input id="dc-wipes-per" type="number" min="1" max="8" value="2"
+          style="width:100%;padding:0.7rem 0.9rem;border:2px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+      </div>
+    </div>
+
+    <button id="dc-calculate"
+      style="width:100%;padding:0.85rem;background:var(--color-primary);color:#fff;border:none;border-radius:var(--radius-sm);font-size:1rem;font-weight:700;cursor:pointer;">
+      Calculate diaper costs
+    </button>
+
+    <!-- Result panel -->
+    <div id="dc-result" style="min-height:240px;margin-top:1.5rem;display:none;">
+
+      <!-- Size/stage banner -->
+      <div style="padding:0.85rem 1rem;background:var(--color-surface-2);border-radius:var(--radius-sm);margin-bottom:1.25rem;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <p style="margin:0;font-size:0.75rem;color:var(--color-muted);font-weight:600;">STAGE</p>
+          <p id="dc-stage" style="margin:0.1rem 0 0;font-size:0.95rem;font-weight:700;color:var(--color-ink);"></p>
+        </div>
+        <div style="text-align:right;">
+          <p style="margin:0;font-size:0.75rem;color:var(--color-muted);font-weight:600;">DIAPER SIZE</p>
+          <p id="dc-size" style="margin:0.1rem 0 0;font-size:0.95rem;font-weight:700;color:var(--color-primary);"></p>
+        </div>
+      </div>
+
+      <!-- Usage grid -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;margin-bottom:1.25rem;">
+        <div style="padding:0.85rem 0.5rem;background:var(--color-surface-2);border-radius:var(--radius-sm);text-align:center;">
+          <p style="margin:0;font-size:0.7rem;color:var(--color-muted);font-weight:600;">DIAPERS/DAY</p>
+          <p id="dc-dpd" style="margin:0.15rem 0 0;font-size:1.5rem;font-weight:700;color:var(--color-ink);"></p>
+        </div>
+        <div style="padding:0.85rem 0.5rem;background:var(--color-surface-2);border-radius:var(--radius-sm);text-align:center;">
+          <p style="margin:0;font-size:0.7rem;color:var(--color-muted);font-weight:600;">DIAPERS/MONTH</p>
+          <p id="dc-dpm" style="margin:0.15rem 0 0;font-size:1.5rem;font-weight:700;color:var(--color-ink);"></p>
+        </div>
+        <div style="padding:0.85rem 0.5rem;background:var(--color-surface-2);border-radius:var(--radius-sm);text-align:center;">
+          <p style="margin:0;font-size:0.7rem;color:var(--color-muted);font-weight:600;">WIPES/MONTH</p>
+          <p id="dc-wpm" style="margin:0.15rem 0 0;font-size:1.5rem;font-weight:700;color:var(--color-ink);"></p>
+        </div>
+      </div>
+
+      <!-- Cost summary -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
+        <div style="padding:1.1rem;background:var(--color-surface-2);border-radius:var(--radius-sm);text-align:center;">
+          <p style="margin:0;font-size:0.75rem;color:var(--color-muted);font-weight:600;">MONTHLY TOTAL</p>
+          <p id="dc-monthly" style="margin:0.2rem 0 0;font-size:2rem;font-family:var(--font-family-display);font-weight:700;color:var(--color-accent);"></p>
+          <p id="dc-monthly-break" style="margin:0.2rem 0 0;font-size:0.75rem;color:var(--color-muted);"></p>
+        </div>
+        <div style="padding:1.1rem;background:var(--color-primary);border-radius:var(--radius-sm);text-align:center;">
+          <p style="margin:0;font-size:0.75rem;color:rgba(255,255,255,.8);font-weight:600;">YEARLY TOTAL</p>
+          <p id="dc-yearly" style="margin:0.2rem 0 0;font-size:2rem;font-family:var(--font-family-display);font-weight:700;color:#fff;"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div slot="content">
+    <h2>How many diapers will your baby use?</h2>
+    <p>
+      Diapers are one of the biggest recurring expenses for new parents — and also one of the easiest to plan for with a little arithmetic. Total diaper usage over the first 2.5 years (before most children potty train) runs between 5,000 and 8,000 diapers, depending on the age at toilet training and how frequently you change. At $0.25 per diaper, that's $1,250–$2,000 on diapers alone — before wipes.
+    </p>
+
+    <h2>Diaper usage by age</h2>
+    <p>
+      Usage is highest in the newborn phase (when babies eat and stool frequently) and gradually decreases:
+    </p>
+    <ul>
+      <li><strong>Newborn (0–1 month):</strong> 10–12 changes per day</li>
+      <li><strong>1–3 months:</strong> 8 changes per day</li>
+      <li><strong>3–6 months:</strong> 7 changes per day</li>
+      <li><strong>6–12 months:</strong> 6 changes per day</li>
+      <li><strong>12–24 months:</strong> 5 changes per day</li>
+      <li><strong>24+ months:</strong> 4 changes per day as potty training approaches</li>
+    </ul>
+
+    <h2>Choosing the right diaper size</h2>
+    <p>
+      Diaper sizes are primarily weight-based, not age-based. When diapers consistently leak at the legs or waist, or when the tabs struggle to close, it is time to size up — regardless of the age on the package. Going up a size early is almost always better than waiting until leaks are happening at night.
+    </p>
+    <p>
+      Avoid stockpiling more than 3 weeks of supply in a single size, especially in Newborn and Size 1. Babies can outgrow a size in as little as 2–3 weeks. Many parents skip newborn size entirely if the baby is born over 8 lb.
+    </p>
+
+    <h2>How to reduce diaper costs</h2>
+    <p><strong>Buy in bulk:</strong> Warehouse clubs (Costco, Sam's Club) and subscription delivery (Amazon Subscribe & Save with coupons) consistently offer the lowest per-unit cost — often under $0.20/diaper for premium brands and under $0.14 for store brands.</p>
+    <p><strong>Try store brands:</strong> Target Up & Up, Costco Kirkland Signature, and Aldi Mamia are consistently rated near equivalently to Pampers and Huggies in parent comparisons and consumer reports — at 30–50% lower cost.</p>
+    <p><strong>Use wipes strategically:</strong> A wet diaper only needs 1 wipe. Save 2–3 for messy changes. Baby washcloths with warm water work fine for newborn wet diapers and cost almost nothing per use.</p>
+    <p><strong>Stock sale price, not convenience store price:</strong> The difference between $0.17/diaper (bulk sale) and $0.42/diaper (convenience drugstore) on a 250 diaper/month baby is $62/month — $744/year. Always buy ahead when you find a sale price below your normal cost.</p>
+
+    <h2>Cloth diapers: the tradeoff</h2>
+    <p>
+      Modern cloth diapers (pocket diapers, all-in-ones) have a high upfront cost ($200–$500 for a full stash) but effectively eliminate ongoing diaper costs. Over 2.5 years, cloth diapering typically saves $800–$1,500 compared to disposables — more if reused for a second child. The tradeoffs are laundry frequency (every 2–3 days), absorbency challenges at night, and steeper learning curve. Many families use hybrid approaches: cloth at home, disposables for travel and childcare.
+    </p>
+  </div>
+</ToolPage>
+
+<script>
+  import { calculateDiaperCost } from '../../islands/diaper-cost.js';
+
+  document.getElementById('dc-calculate')!.addEventListener('click', () => {
+    const age        = parseFloat((document.getElementById('dc-age') as HTMLInputElement).value) || 0;
+    const diaperP    = parseFloat((document.getElementById('dc-diaper-price') as HTMLInputElement).value) || 0;
+    const wipeP      = parseFloat((document.getElementById('dc-wipe-price') as HTMLInputElement).value) || 0;
+    const wipesPerC  = parseFloat((document.getElementById('dc-wipes-per') as HTMLInputElement).value) || 2;
+
+    const result = calculateDiaperCost({ babyAgeMonths: age, diaperPricePerUnit: diaperP, wipesPerDiaper: wipesPerC, wipesPricePerUnit: wipeP });
+    if (!result) return;
+
+    const panel = document.getElementById('dc-result')!;
+    panel.style.display = 'block';
+
+    document.getElementById('dc-stage')!.textContent = result.stageLabel;
+    document.getElementById('dc-size')!.textContent  = result.diaperSize;
+    document.getElementById('dc-dpd')!.textContent   = result.diapersPerDay.toString();
+    document.getElementById('dc-dpm')!.textContent   = result.diapersPerMonth.toString();
+    document.getElementById('dc-wpm')!.textContent   = result.wipesPerMonth.toString();
+
+    const monthly = '$' + result.monthlyCost.toFixed(2);
+    document.getElementById('dc-monthly')!.textContent = monthly;
+    document.getElementById('dc-monthly-break')!.textContent =
+      `Diapers $${result.diaperMonthlyCost.toFixed(2)} + Wipes $${result.wipesMonthlyCost.toFixed(2)}`;
+    document.getElementById('dc-yearly')!.textContent = '$' + result.yearlyCost.toFixed(2);
+
+    // URL state
+    const url = new URL(window.location.href);
+    url.searchParams.set('age', age.toString());
+    url.searchParams.set('dp', diaperP.toString());
+    url.searchParams.set('wp', wipeP.toString());
+    history.replaceState(null, '', url);
+  });
+
+  // Restore from URL
+  const p = new URLSearchParams(window.location.search);
+  if (p.get('age')) (document.getElementById('dc-age') as HTMLInputElement).value = p.get('age')!;
+  if (p.get('dp'))  (document.getElementById('dc-diaper-price') as HTMLInputElement).value = p.get('dp')!;
+  if (p.get('wp'))  (document.getElementById('dc-wipe-price') as HTMLInputElement).value = p.get('wp')!;
+  if (p.get('age') && p.get('dp')) document.getElementById('dc-calculate')!.click();
+</script>

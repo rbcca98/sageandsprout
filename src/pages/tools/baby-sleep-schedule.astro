@@ -1,0 +1,258 @@
+---
+import ToolPage from '../../layouts/ToolPage.astro';
+
+const toolSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Baby Sleep Schedule Calculator',
+  url: 'https://sageandsprout.com/tools/baby-sleep-schedule/',
+  applicationCategory: 'HealthApplication',
+  description: 'Generate a suggested baby sleep and nap schedule based on age, wake-up time, and AAP/AASM sleep guidelines.',
+  operatingSystem: 'All',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+};
+
+const medSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  name: 'Baby Sleep Schedule Calculator',
+  medicalAudience: { '@type': 'MedicalAudience', audienceType: 'Patient' },
+  reviewedBy: {
+    '@type': 'Person',
+    jobTitle: 'Senior Medical Student',
+    affiliation: { '@type': 'Organization', name: 'Ivy League Medical School' },
+  },
+  lastReviewed: '2025-01-15',
+};
+
+const faqs = [
+  {
+    question: 'What is a wake window?',
+    answer: 'A wake window is the amount of time a baby can comfortably stay awake between sleep periods before becoming overtired. Wake windows lengthen as babies get older — a newborn may only tolerate 45–60 minutes of wakefulness, while a 12-month-old can handle 3–4 hours. Respecting wake windows helps prevent overtiredness, which paradoxically makes it harder for babies to fall and stay asleep.',
+  },
+  {
+    question: 'How many naps does my baby need?',
+    answer: 'Newborns take 4–5 short naps. This consolidates to 3 naps around 3–4 months, drops to 2 naps between 6–8 months, and transitions to 1 nap between 12–18 months. Most toddlers keep one midday nap until age 3–4. Each transition can cause temporary sleep disruption as the schedule adjusts.',
+  },
+  {
+    question: 'What is a safe sleep environment for my baby?',
+    answer: 'The AAP recommends placing babies on their back on a firm, flat surface (crib, bassinet, or play yard) with a fitted sheet. No loose bedding, pillows, bumpers, or soft objects in the sleep space. Room-sharing (but not bed-sharing) for the first 6 months significantly reduces SIDS risk. A sleep sack or swaddle can replace blankets.',
+  },
+  {
+    question: 'My baby won\'t sleep according to the schedule. What should I do?',
+    answer: 'Schedules are guidelines, not rules. Babies cannot read clocks and have variable days. If your baby seems tired before the suggested time, put them down. Watch for tired cues — eye rubbing, yawning, pulling ears, staring blankly — rather than watching the clock. Consistency in routine (diaper change, feeding, lullaby) matters more than hitting exact times.',
+  },
+  {
+    question: 'When do babies start sleeping through the night?',
+    answer: '"Sleeping through the night" typically means 5–6 continuous hours, not 8–10. Many babies reach this milestone around 3–4 months, though there is wide variation. Some babies sleep long stretches early; others continue waking until 12–18 months. Night waking is developmentally normal well into toddlerhood, particularly during growth spurts, illness, or developmental leaps.',
+  },
+  {
+    question: 'What is the 4-month sleep regression?',
+    answer: 'Around 3–4 months, babies undergo a permanent change in their sleep architecture — they shift from two sleep stages (light and deep) to four, similar to adult sleep cycles. This transition often causes increased night waking after a period of longer stretches. It is not a regression to earlier behavior — it is a permanent neurological maturation. Most families see improvement within 2–6 weeks.',
+  },
+];
+
+const relatedTools = [
+  { href: '/tools/feeding-formula-amount/', label: 'Feeding & Formula Amount', description: 'How much formula or breast milk by age and weight', emoji: '🍼' },
+  { href: '/tools/baby-growth-percentile/', label: 'Baby Growth Percentile', description: 'WHO growth percentile for weight, length, head circumference', emoji: '📈' },
+];
+
+const sources = [
+  { label: 'AAP (2022). Safe Sleep. HealthyChildren.org.', url: 'https://www.healthychildren.org/english/ages-stages/baby/sleep/pages/safe-sleep.aspx' },
+  { label: 'AASM (2016). Recommended Amount of Sleep for Pediatric Populations. Journal of Clinical Sleep Medicine.', url: 'https://aasm.org/resources/pdf/pediatricsleepdurationconsensus.pdf' },
+  { label: 'Moon RY, Task Force on SIDS (2022). Sleep-Related Infant Deaths. Pediatrics.', url: 'https://publications.aap.org/pediatrics/article/150/1/e2022057990/188304' },
+];
+---
+
+<ToolPage
+  title="Baby Sleep Schedule Calculator — Wake Windows & Nap Times by Age | Sage & Sprout"
+  headline="Baby Sleep Schedule Calculator"
+  hook="Enter your baby's age and morning wake time to get a suggested nap schedule, estimated bedtime, and total sleep targets — based on AAP safe sleep guidelines and AASM pediatric sleep duration recommendations."
+  description="Generate a baby sleep and nap schedule by age. Get suggested nap times, wake windows, bedtime, and total sleep targets based on AAP and AASM recommendations."
+  breadcrumbs={[{ label: 'Baby Sleep Schedule Calculator', href: '/tools/baby-sleep-schedule/' }]}
+  faqs={faqs}
+  relatedTools={relatedTools}
+  sources={sources}
+  schema={[toolSchema, medSchema]}
+  reviewedDate="2025-01-15"
+>
+  <div slot="tool">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.5rem;">
+      <div>
+        <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="sl-age">Baby's age (months)</label>
+        <input id="sl-age" type="number" min="0" max="24" value="4"
+          style="width:100%;padding:0.7rem 0.9rem;border:2px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+      </div>
+      <div>
+        <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="sl-wake">Morning wake time</label>
+        <input id="sl-wake" type="time" value="07:00"
+          style="width:100%;padding:0.7rem 0.9rem;border:2px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+      </div>
+    </div>
+
+    <button id="sl-calculate"
+      style="width:100%;padding:0.85rem;background:var(--color-primary);color:#fff;border:none;border-radius:var(--radius-sm);font-size:1rem;font-weight:700;cursor:pointer;">
+      Generate sleep schedule
+    </button>
+
+    <!-- Result panel -->
+    <div id="sl-result" style="min-height:280px;margin-top:1.5rem;display:none;">
+      <p id="sl-age-group" style="margin:0 0 1rem;font-size:0.82rem;font-weight:700;color:var(--color-primary);text-transform:uppercase;letter-spacing:.06em;"></p>
+
+      <!-- Total sleep targets -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;margin-bottom:1.25rem;">
+        <div style="padding:0.85rem 0.75rem;background:var(--color-surface-2);border-radius:var(--radius-sm);text-align:center;">
+          <p style="margin:0;font-size:0.7rem;color:var(--color-muted);font-weight:600;">TOTAL SLEEP</p>
+          <p id="sl-total" style="margin:0.15rem 0 0;font-size:1.15rem;font-weight:700;color:var(--color-ink);"></p>
+        </div>
+        <div style="padding:0.85rem 0.75rem;background:var(--color-surface-2);border-radius:var(--radius-sm);text-align:center;">
+          <p style="margin:0;font-size:0.7rem;color:var(--color-muted);font-weight:600;">NIGHT SLEEP</p>
+          <p id="sl-night" style="margin:0.15rem 0 0;font-size:1.15rem;font-weight:700;color:var(--color-ink);"></p>
+        </div>
+        <div style="padding:0.85rem 0.75rem;background:var(--color-surface-2);border-radius:var(--radius-sm);text-align:center;">
+          <p style="margin:0;font-size:0.7rem;color:var(--color-muted);font-weight:600;">WAKE WINDOW</p>
+          <p id="sl-window" style="margin:0.15rem 0 0;font-size:1.15rem;font-weight:700;color:var(--color-ink);"></p>
+        </div>
+      </div>
+
+      <!-- Nap schedule -->
+      <div id="sl-naps" style="display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1rem;"></div>
+
+      <!-- Bedtime -->
+      <div style="padding:1rem 1.25rem;background:var(--color-primary);border-radius:var(--radius-sm);display:flex;align-items:center;gap:0.75rem;">
+        <span style="font-size:1.5rem;">🌙</span>
+        <div>
+          <p style="margin:0;font-size:0.78rem;color:rgba(255,255,255,.8);font-weight:600;">SUGGESTED BEDTIME</p>
+          <p id="sl-bedtime" style="margin:0.1rem 0 0;font-size:1.4rem;font-family:var(--font-family-display);font-weight:700;color:#fff;"></p>
+        </div>
+      </div>
+
+      <p id="sl-notes" style="margin:1rem 0 0;font-size:0.84rem;color:var(--color-muted);line-height:1.65;"></p>
+    </div>
+  </div>
+
+  <div slot="content">
+    <h2>Why wake windows matter</h2>
+    <p>
+      A wake window is the span of time a baby can comfortably remain awake before sleep pressure builds to the point of overtiredness. Overtired babies often <em>fight</em> sleep — the stress hormones (cortisol, adrenaline) released by prolonged wakefulness make it harder, not easier, to fall asleep. This is the counterintuitive loop parents encounter when they think "if I keep baby awake longer, they'll sleep better."
+    </p>
+    <p>
+      Wake windows lengthen significantly with age. A 6-week-old may only manage 45–60 minutes before needing to sleep again, while a 10-month-old can comfortably stay awake for 3–4 hours. Tracking wake windows — rather than trying to impose a fixed clock-based schedule — is the core skill of newborn and infant sleep.
+    </p>
+
+    <h2>How much sleep does my baby need?</h2>
+    <p>
+      The American Academy of Sleep Medicine (AASM), in collaboration with the AAP, publishes pediatric sleep duration recommendations. These are total sleep in 24 hours (daytime naps + nighttime):
+    </p>
+    <ul>
+      <li><strong>Newborns (0–3 months):</strong> 14–17 hours</li>
+      <li><strong>Infants (4–12 months):</strong> 12–16 hours</li>
+      <li><strong>Toddlers (1–2 years):</strong> 11–14 hours</li>
+    </ul>
+    <p>
+      These ranges account for individual variation. A baby consistently sleeping at the lower end of the normal range who is happy, alert, and growing well is not sleep-deprived — they may simply need less sleep than average.
+    </p>
+
+    <h2>Nap transitions and what to expect</h2>
+    <p>
+      <strong>4 to 3 naps</strong> (around 3–4 months): As wake windows lengthen, the late-afternoon cat nap becomes harder to achieve. Look for signs: baby fighting the fourth nap, or taking it too late and then resisting bedtime.
+    </p>
+    <p>
+      <strong>3 to 2 naps</strong> (around 6–8 months): One of the most significant transitions. Often triggered by longer wake windows and the 4-month sleep maturation. Baby may start resisting the third nap or skipping it, causing early bedtime.
+    </p>
+    <p>
+      <strong>2 to 1 nap</strong> (around 12–18 months): Signs include taking a long time to fall asleep for the first nap, skipping it entirely some days, or one nap running so long it disrupts bedtime. The transition usually takes 4–8 weeks and can be bumpy.
+    </p>
+
+    <h2>Safe sleep — the AAP guidelines</h2>
+    <p>
+      Where and how your baby sleeps is as important as how much they sleep. The AAP 2022 safe sleep guidelines recommend:
+    </p>
+    <ul>
+      <li><strong>Back to sleep</strong> for every nap and night sleep, every time, until age 1</li>
+      <li><strong>Firm, flat surface</strong> — a crib, bassinet, or play yard with a fitted sheet designed for that product</li>
+      <li><strong>No loose bedding</strong> — no pillows, bumper pads, positioners, or soft toys in the sleep space</li>
+      <li><strong>Room-sharing without bed-sharing</strong> for at least the first 6 months, ideally 1 year</li>
+      <li><strong>Avoid overheating</strong> — dress baby in one more layer than you find comfortable; use a sleep sack instead of blankets</li>
+    </ul>
+    <p>
+      Swaddling is safe and beneficial in the first 2–3 months for calming and sleep. Stop swaddling when the baby shows signs of rolling over (typically around 3–4 months), as a swaddled rolling baby cannot push up from a face-down position.
+    </p>
+
+    <h2>Creating a consistent sleep routine</h2>
+    <p>
+      A bedtime routine trains the brain to associate specific actions with sleep onset. Even a short, consistent sequence — diaper, pajamas, feeding, song, dark room — can significantly shorten the time it takes for babies to fall asleep. The routine does not need to be long (10–20 minutes is fine) but should be predictable. The same steps in the same order, every time.
+    </p>
+    <p>
+      White noise can help mask household sounds that cause brief arousals. Research supports volumes around 65 dB — roughly the sound of a shower — positioned at least 6 feet from the baby's sleep space.
+    </p>
+  </div>
+</ToolPage>
+
+<script>
+  import { calculateSleepSchedule, formatTime } from '../../islands/sleep-schedule.js';
+
+  document.getElementById('sl-calculate')!.addEventListener('click', () => {
+    const ageMonths = parseFloat((document.getElementById('sl-age') as HTMLInputElement).value) || 0;
+    const wakeTime  = (document.getElementById('sl-wake') as HTMLInputElement).value || '07:00';
+
+    const [h, m] = wakeTime.split(':').map(Number);
+    const wakeTimeMins = h * 60 + (m || 0);
+
+    const result = calculateSleepSchedule({ ageMonths, wakeTimeMins });
+    if (!result) return;
+
+    const panel = document.getElementById('sl-result')!;
+    panel.style.display = 'block';
+
+    document.getElementById('sl-age-group')!.textContent = result.ageGroup;
+    document.getElementById('sl-total')!.textContent = `${result.totalSleepLow}–${result.totalSleepHigh} hrs`;
+    document.getElementById('sl-night')!.textContent = `${result.nightSleepLow}–${result.nightSleepHigh} hrs`;
+
+    const wLow  = Math.floor(result.wakeWindowMinsLow / 60) + 'h' + (result.wakeWindowMinsLow % 60 ? ` ${result.wakeWindowMinsLow % 60}m` : '');
+    const wHigh = Math.floor(result.wakeWindowMinsHigh / 60) + 'h' + (result.wakeWindowMinsHigh % 60 ? ` ${result.wakeWindowMinsHigh % 60}m` : '');
+    document.getElementById('sl-window')!.textContent = `${wLow}–${wHigh}`;
+
+    // Build nap rows
+    const napsContainer = document.getElementById('sl-naps')!;
+    napsContainer.innerHTML = '';
+
+    const napColors = ['var(--color-surface-2)', '#f0f4ff', '#fff3e0'];
+    result.naps.forEach((nap, i) => {
+      const dh = Math.floor(nap.durationMins / 60);
+      const dm = nap.durationMins % 60;
+      const durStr = dh > 0 ? `${dh}h ${dm > 0 ? dm + 'm' : ''}`.trim() : `${dm}m`;
+      const row = document.createElement('div');
+      row.style.cssText = `padding:0.85rem 1rem;background:${napColors[i % napColors.length]};border-radius:var(--radius-sm);display:flex;justify-content:space-between;align-items:center;`;
+      row.innerHTML = `
+        <div>
+          <span style="font-weight:700;font-size:0.9rem;color:var(--color-ink);">😴 ${nap.label}</span>
+          <span style="margin-left:0.5rem;font-size:0.8rem;color:var(--color-muted);">(~${durStr})</span>
+        </div>
+        <div style="text-align:right;">
+          <span style="font-size:0.95rem;font-weight:600;color:var(--color-primary);">${formatTime(nap.startMins)}</span>
+          <span style="font-size:0.82rem;color:var(--color-muted);"> – ${formatTime(nap.endMins)}</span>
+        </div>`;
+      napsContainer.appendChild(row);
+    });
+
+    if (result.naps.length === 0) {
+      napsContainer.innerHTML = '<p style="color:var(--color-muted);font-size:0.9rem;">No naps — night sleep covers most needs at this age. Consult your provider if needed.</p>';
+    }
+
+    document.getElementById('sl-bedtime')!.textContent = result.bedtimeLabel;
+    document.getElementById('sl-notes')!.textContent = result.notes;
+
+    // URL state
+    const url = new URL(window.location.href);
+    url.searchParams.set('age', ageMonths.toString());
+    url.searchParams.set('wake', wakeTime);
+    history.replaceState(null, '', url);
+  });
+
+  // Restore from URL
+  const p = new URLSearchParams(window.location.search);
+  if (p.get('age')) (document.getElementById('sl-age') as HTMLInputElement).value = p.get('age')!;
+  if (p.get('wake')) (document.getElementById('sl-wake') as HTMLInputElement).value = p.get('wake')!;
+  if (p.get('age') && p.get('wake')) document.getElementById('sl-calculate')!.click();
+</script>
