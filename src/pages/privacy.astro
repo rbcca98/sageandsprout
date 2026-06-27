@@ -1,0 +1,77 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Privacy Policy | Sage & Sprout"
+  description="Sage & Sprout's privacy policy: what data we collect, how ads work, and your rights."
+  breadcrumbs={[{ label: 'Privacy Policy', href: '/privacy/' }]}
+>
+  <div style="max-width:680px;margin:0 auto;padding:3rem 1.25rem 5rem;">
+    <h1 style="font-family:var(--font-family-display);font-size:clamp(1.8rem,4vw,2.4rem);font-weight:700;color:var(--color-ink);margin:0 0 2rem;">Privacy Policy</h1>
+    <div class="prose">
+      <p><strong>Effective date: June 27, 2026</strong></p>
+
+      <h2>Overview</h2>
+      <p>
+        Sage &amp; Sprout ("we," "us," "our") is committed to your privacy.
+        This policy explains what information we collect, how we use it, and your choices.
+      </p>
+
+      <h2>Data you enter into calculators</h2>
+      <p>
+        <strong>We do not collect, transmit, or store any data you enter into our calculators.</strong>
+        Dates, cycle lengths, weights, and all other inputs are processed entirely in your browser.
+        They are never sent to our servers.
+        Calculator state may be encoded in your page URL (as query parameters) for shareability —
+        that URL is only shared if you explicitly click "Share link."
+      </p>
+
+      <h2>Analytics</h2>
+      <p>
+        We use privacy-conscious web analytics to understand which tools are being used and how we
+        can improve. Analytics data is aggregated and anonymized and does not include personally
+        identifiable information. We do not share raw analytics data with third parties.
+      </p>
+
+      <h2>Advertising</h2>
+      <p>
+        We currently display advertising via Google AdSense and/or premium ad network partners.
+        These services may use cookies and similar tracking technologies to serve relevant ads.
+        You can opt out of personalized advertising by visiting:
+      </p>
+      <ul>
+        <li><a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer">Google Ad Settings</a></li>
+        <li><a href="https://optout.aboutads.info" target="_blank" rel="noopener noreferrer">Digital Advertising Alliance opt-out</a></li>
+      </ul>
+      <p>
+        Advertising cookies are distinct from the health information you enter into our calculators,
+        which (as noted above) never leaves your browser.
+      </p>
+
+      <h2>Cookies</h2>
+      <p>
+        Our own site does not set first-party cookies. Advertising and analytics partners
+        may set third-party cookies as described above. You can control cookies through your
+        browser settings. Note that disabling cookies may affect ad functionality.
+      </p>
+
+      <h2>Third-party links</h2>
+      <p>
+        Our content links to external websites (medical society guidelines, government health pages).
+        We are not responsible for the privacy practices of those sites.
+      </p>
+
+      <h2>Children</h2>
+      <p>
+        This site is not directed at children under 13. We do not knowingly collect any information
+        from users under 13.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about this policy? <a href="/contact/">Contact us.</a>
+      </p>
+    </div>
+  </div>
+</Base>

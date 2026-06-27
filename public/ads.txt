@@ -1,0 +1,3 @@
+# ads.txt — authorize your ad network(s) here before applying to AdSense.
+# Example (Google AdSense — replace pub-XXXXXXXXXXXXXXXX with your publisher ID):
+# google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0

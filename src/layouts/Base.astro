@@ -1,0 +1,183 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  noindex?: boolean;
+  schema?: object | object[];
+  breadcrumbs?: { label: string; href: string }[];
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage = '/og-default.png',
+  noindex = false,
+  schema,
+  breadcrumbs,
+} = Astro.props;
+
+const canonicalURL = canonical
+  ? new URL(canonical, Astro.site)
+  : new URL(Astro.url.pathname, Astro.site);
+
+const schemaArray = schema
+  ? (Array.isArray(schema) ? schema : [schema])
+  : [];
+
+const navLinks = [
+  { href: '/tools/due-date-calculator/', label: 'Due Date' },
+  { href: '/tools/how-many-weeks-pregnant/', label: 'Weeks Pregnant' },
+  { href: '/tools/ovulation-fertility-window/', label: 'Ovulation' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalURL} />
+  {noindex && <meta name="robots" content="noindex,nofollow" />}
+
+  <!-- OG -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+  <meta property="og:site_name" content="Sage & Sprout" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Fonts: preconnect + stylesheet -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+  />
+
+  <!-- Favicon placeholder -->
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+  <!-- JSON-LD: Organisation (sitewide) + page-specific schema -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Sage & Sprout',
+    url: 'https://sageandsprout.com',
+    description: 'Free, science-backed pregnancy and baby calculators.',
+  })} />
+  {schemaArray.map((s) => (
+    <script type="application/ld+json" set:html={JSON.stringify(s)} />
+  ))}
+</head>
+
+<body>
+  <!-- ── Header ──────────────────────────────────────── -->
+  <header style="background: var(--color-surface); border-bottom: 1px solid var(--color-line);">
+    <div style="max-width: 1100px; margin: 0 auto; padding: 0 1.25rem; display: flex; align-items: center; justify-content: space-between; height: 60px;">
+      <a href="/" style="text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <circle cx="14" cy="14" r="14" fill="#3E6B5B"/>
+          <path d="M14 7c0 0-5 3.5-5 7.5S11.5 21 14 21s5-2.5 5-6.5S14 7 14 7z" fill="#FFFFFF" opacity=".9"/>
+          <circle cx="14" cy="14" r="2.5" fill="#F0683C"/>
+        </svg>
+        <span style="font-family: var(--font-family-display); font-weight: 600; font-size: 1.05rem; color: var(--color-ink);">
+          Sage & Sprout
+        </span>
+      </a>
+      <nav aria-label="Main navigation">
+        <ul style="list-style: none; margin: 0; padding: 0; display: flex; gap: 0.25rem;">
+          {navLinks.map(({ href, label }) => (
+            <li>
+              <a
+                href={href}
+                style={`
+                  font-size: 0.85rem; font-weight: 500; padding: 0.35rem 0.75rem;
+                  border-radius: 999px; text-decoration: none; color: var(--color-muted);
+                  transition: background .15s, color .15s;
+                `}
+                onmouseover="this.style.background='var(--color-surface-2)';this.style.color='var(--color-ink)'"
+                onmouseout="this.style.background='transparent';this.style.color='var(--color-muted)'"
+              >
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ── Breadcrumb ─────────────────────────────────── -->
+  {breadcrumbs && breadcrumbs.length > 0 && (
+    <div style="max-width: 1100px; margin: 0 auto; padding: 0.75rem 1.25rem;">
+      <nav aria-label="Breadcrumb">
+        <ol style="list-style:none;margin:0;padding:0;display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;font-size:0.82rem;color:var(--color-muted);">
+          <li><a href="/" style="color:var(--color-muted);text-decoration:none;">Home</a></li>
+          {breadcrumbs.map(({ href, label }, i) => (
+            <>
+              <li aria-hidden="true" style="opacity:.5">›</li>
+              <li>
+                {i === breadcrumbs.length - 1
+                  ? <span style="color:var(--color-ink)">{label}</span>
+                  : <a href={href} style="color:var(--color-muted);text-decoration:none;">{label}</a>}
+              </li>
+            </>
+          ))}
+        </ol>
+      </nav>
+    </div>
+  )}
+
+  <!-- ── Page content ───────────────────────────────── -->
+  <main>
+    <slot />
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────────── -->
+  <footer style="margin-top: 5rem; border-top: 1px solid var(--color-line); background: var(--color-surface);">
+    <div style="max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.25rem;">
+      <div style="display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+        <div>
+          <p style="font-family:var(--font-family-display);font-size:1rem;font-weight:600;margin:0 0 0.5rem;">Sage & Sprout</p>
+          <p style="font-size:0.82rem;color:var(--color-muted);margin:0;max-width:28ch;">Free, science-backed pregnancy and baby calculators for expecting and new parents.</p>
+        </div>
+        <div>
+          <p style="font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--color-muted);margin:0 0 0.75rem;">Tools</p>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0.4rem;">
+            {navLinks.map(({ href, label }) => (
+              <li><a href={href} style="font-size:0.85rem;color:var(--color-muted);text-decoration:none;">{label}</a></li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p style="font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--color-muted);margin:0 0 0.75rem;">Info</p>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0.4rem;">
+            {[
+              ['/about/', 'About'],
+              ['/medical-disclaimer/', 'Medical Disclaimer'],
+              ['/privacy/', 'Privacy Policy'],
+              ['/terms/', 'Terms of Use'],
+              ['/contact/', 'Contact'],
+            ].map(([href, label]) => (
+              <li><a href={href} style="font-size:0.85rem;color:var(--color-muted);text-decoration:none;">{label}</a></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--color-line);font-size:0.78rem;color:var(--color-muted);">
+        <p style="margin:0 0 0.35rem;"><strong>Medical Disclaimer:</strong> All content on Sage &amp; Sprout is for general educational purposes only. It is not medical advice and does not replace care from a licensed healthcare provider.</p>
+        <p style="margin:0;">© {new Date().getFullYear()} Sage &amp; Sprout · <a href="/privacy/" style="color:var(--color-muted);">Privacy</a> · <a href="/terms/" style="color:var(--color-muted);">Terms</a></p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

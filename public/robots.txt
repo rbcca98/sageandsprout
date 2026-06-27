@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sageandsprout.com/sitemap-index.xml

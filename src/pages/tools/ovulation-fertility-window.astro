@@ -1,0 +1,376 @@
+---
+import ToolPage from '../../layouts/ToolPage.astro';
+
+const toolSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Ovulation & Fertility Window Calculator',
+  applicationCategory: 'HealthApplication',
+  operatingSystem: 'Web',
+  url: 'https://sageandsprout.com/tools/ovulation-fertility-window/',
+  description: 'Calculate your ovulation date and fertile window based on your last period and cycle length.',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  publisher: { '@type': 'Organization', name: 'Sage & Sprout' },
+};
+
+const medSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  lastReviewed: '2026-06-27',
+  reviewedBy: {
+    '@type': 'Person',
+    description: 'Senior medical student at an Ivy League institution',
+  },
+};
+
+const faqs = [
+  {
+    question: 'How accurate is this ovulation calculator?',
+    answer: 'This calculator provides an estimate based on the average 14-day luteal phase — the time between ovulation and the next period. For people with regular cycles, it\'s a reliable starting point. However, ovulation can vary cycle to cycle, especially with stress, illness, travel, or hormonal changes. For the most accurate tracking, combine this calculator with ovulation predictor kits (OPKs) or basal body temperature charting.',
+  },
+  {
+    question: 'What is the fertile window?',
+    answer: 'The fertile window is the span of days in each cycle when pregnancy is possible. It spans roughly 6 days: the 5 days before ovulation and the day of ovulation itself. Sperm can survive in the female reproductive tract for up to 5 days, while a released egg survives only 12–24 hours. The highest probability of conception comes from intercourse 1–2 days before ovulation or on the day of ovulation.',
+  },
+  {
+    question: 'When is the best time to try to get pregnant?',
+    answer: 'The highest pregnancy rates per cycle come from intercourse on the day before ovulation and the day of ovulation. Having intercourse every 1–2 days throughout the fertile window maximizes the chance of sperm being present when the egg is released. ASRM guidelines suggest couples trying to conceive don\'t need to restrict intercourse to specific days; regular intercourse (2–3 times per week) throughout the cycle is also effective.',
+  },
+  {
+    question: 'What are signs that I am ovulating?',
+    answer: 'Physical signs of ovulation include a change in cervical mucus (becoming clear, slippery, and stretchy — often described as "egg white" consistency), mild one-sided pelvic pain (Mittelschmerz), a slight rise in basal body temperature (0.2–0.5°F) after ovulation, and a positive result on an ovulation predictor kit (OPK), which detects the LH surge that occurs 24–36 hours before ovulation.',
+  },
+  {
+    question: 'My cycle is irregular — can I still use this calculator?',
+    answer: 'If your cycles vary significantly from month to month, the calculator\'s prediction will be less precise. In that case, tracking basal body temperature, cervical mucus changes, or using OPKs throughout the cycle will give you more accurate real-time information. If you have very irregular cycles (periods more than 35 days apart or fewer than 21 days), it may be worth talking to your provider, as this can indicate hormonal imbalances like PCOS that affect fertility.',
+  },
+  {
+    question: 'When should I see a fertility specialist?',
+    answer: 'ASRM recommends evaluation by a reproductive specialist if you\'ve been trying to conceive for 12 months with regular unprotected intercourse (or 6 months if you\'re over 35). Seek evaluation sooner if you have a history of irregular periods, previous pelvic surgeries, known reproductive conditions, or have had multiple miscarriages. A specialist can assess both partners and discuss options such as fertility monitoring, medications to induce ovulation, IUI, or IVF.',
+  },
+];
+
+const relatedTools = [
+  {
+    href: '/tools/due-date-calculator/',
+    label: 'Due Date Calculator',
+    description: 'Got a positive test? Calculate your due date.',
+    emoji: '🗓️',
+  },
+  {
+    href: '/tools/how-many-weeks-pregnant/',
+    label: 'How Many Weeks Pregnant',
+    description: 'See your current week and trimester.',
+    emoji: '📅',
+  },
+];
+
+const sources = [
+  {
+    label: 'ASRM — Optimizing Natural Fertility (2017)',
+    url: 'https://www.asrm.org/news-and-publications/practice-guidelines/practice-guidelines-and-technical-bulletins/optimizing-natural-fertility/',
+  },
+  {
+    label: 'ACOG FAQ — Fertility Awareness–Based Methods of Family Planning',
+    url: 'https://www.acog.org/womens-health/faqs/fertility-awareness-based-methods-of-family-planning',
+  },
+  {
+    label: 'Wilcox AJ et al. — Timing of Sexual Intercourse in Relation to Ovulation (NEJM, 1995)',
+    url: 'https://www.nejm.org/doi/full/10.1056/nejm199512073332301',
+  },
+  {
+    label: 'MedlinePlus — Fertility',
+    url: 'https://medlineplus.gov/fertility.html',
+  },
+];
+---
+
+<ToolPage
+  title="Ovulation Calculator — Find Your Fertile Window | Sage & Sprout"
+  headline="Ovulation & Fertility Window Calculator"
+  hook="Enter the first day of your last period and your average cycle length to calculate your estimated ovulation date, six-day fertile window, and when to start using an ovulation predictor kit (OPK) — all based on the 14-day luteal phase used in clinical reproductive medicine."
+  description="Free ovulation calculator. Find your fertile window, ovulation date, and best days to try to conceive based on your last period and cycle length."
+  breadcrumbs={[{ label: 'Ovulation Calculator', href: '/tools/ovulation-fertility-window/' }]}
+  faqs={faqs}
+  relatedTools={relatedTools}
+  sources={sources}
+  schema={[toolSchema, medSchema]}
+  reviewedDate="2026-06-27"
+>
+
+  <!-- ── TOOL SLOT ────────────────────────────────── -->
+  <div slot="tool" id="ovul-calc">
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-end;margin-bottom:1.5rem;">
+      <!-- LMP input -->
+      <div style="flex:1;min-width:200px;">
+        <label for="o-lmp" style="display:block;font-size:.85rem;font-weight:600;margin-bottom:.4rem;color:var(--color-ink);">
+          First day of last period
+        </label>
+        <input
+          type="date"
+          id="o-lmp"
+          autocomplete="off"
+          style="
+            width:100%;padding:.65rem .9rem;border-radius:var(--radius-sm);
+            border:1.5px solid var(--color-line);background:var(--color-surface-2);
+            font-size:1rem;color:var(--color-ink);font-family:var(--font-family-body);
+          "
+        />
+      </div>
+      <!-- Cycle length -->
+      <div style="min-width:150px;">
+        <label for="o-cycle" style="display:block;font-size:.85rem;font-weight:600;margin-bottom:.4rem;color:var(--color-ink);">
+          Average cycle length
+        </label>
+        <div style="display:flex;align-items:center;gap:.5rem;">
+          <button id="o-minus" aria-label="Decrease" style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--color-line);background:var(--color-surface-2);cursor:pointer;font-size:1.1rem;display:grid;place-items:center;">−</button>
+          <input
+            type="number"
+            id="o-cycle"
+            min="21" max="35" value="28"
+            style="width:60px;text-align:center;padding:.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--color-line);background:var(--color-surface-2);font-size:1rem;color:var(--color-ink);font-family:var(--font-family-mono);"
+          />
+          <button id="o-plus" aria-label="Increase" style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--color-line);background:var(--color-surface-2);cursor:pointer;font-size:1.1rem;display:grid;place-items:center;">+</button>
+          <span style="font-size:.85rem;color:var(--color-muted);">days</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result panel -->
+    <div id="o-result" aria-live="polite" style="min-height:300px;border-radius:var(--radius-sm);border:1.5px solid var(--color-line);overflow:hidden;">
+      <div id="o-empty" style="height:300px;display:grid;place-items:center;text-align:center;padding:2rem;">
+        <div>
+          <p style="font-size:2.5rem;margin:0 0 .5rem;">🌸</p>
+          <p style="color:var(--color-muted);font-size:.95rem;margin:0;">Enter your period date above to see your fertile window</p>
+        </div>
+      </div>
+
+      <div id="o-content" style="display:none;padding:1.75rem;">
+        <!-- Phase badge -->
+        <p id="o-phase" style="font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--color-primary);margin:0 0 .75rem;"></p>
+
+        <!-- Key dates grid -->
+        <div id="o-dates" style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.5rem;"></div>
+
+        <!-- Fertile window timeline bar -->
+        <div style="margin-bottom:1.5rem;">
+          <p style="font-size:.8rem;font-weight:600;color:var(--color-muted);margin:0 0 .5rem;text-transform:uppercase;letter-spacing:.06em;">This cycle</p>
+          <div id="o-timeline" style="display:flex;align-items:center;gap:2px;height:28px;"></div>
+          <div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--color-muted);margin-top:.3rem;">
+            <span id="o-period-start-label"></span>
+            <span>Ovulation</span>
+            <span id="o-next-period-label"></span>
+          </div>
+        </div>
+
+        <!-- Alert if in fertile window -->
+        <div id="o-window-alert" style="display:none;padding:.85rem 1rem;background:var(--color-accent-light);border-radius:var(--radius-sm);border-left:3px solid var(--color-accent);margin-bottom:1rem;">
+          <p style="margin:0;font-size:.9rem;font-weight:600;color:var(--color-accent);">You may be in your fertile window today.</p>
+          <p style="margin:.25rem 0 0;font-size:.82rem;color:var(--color-ink);">This is a calculated estimate. Confirm with an OPK for more accuracy.</p>
+        </div>
+
+        <!-- Share -->
+        <div style="padding-top:1rem;border-top:1px solid var(--color-line);">
+          <button id="o-share" style="padding:.4rem .9rem;border-radius:999px;border:1.5px solid var(--color-primary);background:transparent;cursor:pointer;font-size:.82rem;font-weight:500;color:var(--color-primary);">Share link</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CONTENT SLOT ─────────────────────────────── -->
+  <div slot="content">
+    <h2>Understanding your menstrual cycle</h2>
+    <p>
+      A typical menstrual cycle lasts between 21 and 35 days, with 28 days being the average. Each cycle
+      begins on the first day of your period and ends the day before your next period starts.
+      The cycle has two main phases:
+    </p>
+    <ul>
+      <li>
+        <strong>Follicular phase (days 1–13 in a 28-day cycle):</strong> Begins with menstruation.
+        Follicle-stimulating hormone (FSH) prompts multiple follicles in the ovaries to develop,
+        though usually only one becomes dominant. Rising estrogen causes the uterine lining to thicken.
+        This phase is variable in length — it's the main reason cycle length varies between people.
+      </li>
+      <li>
+        <strong>Luteal phase (days 15–28):</strong> Begins after ovulation. The ruptured follicle becomes
+        the corpus luteum, which produces progesterone to maintain the uterine lining. This phase is
+        remarkably consistent at approximately 14 days in most people. If fertilization does not occur,
+        the corpus luteum regresses, progesterone drops, and menstruation begins.
+      </li>
+    </ul>
+
+    <h2>When does ovulation occur?</h2>
+    <p>
+      Ovulation — the release of a mature egg from the dominant follicle — is triggered by a surge
+      in luteinizing hormone (LH). This LH surge typically occurs 24–36 hours before ovulation.
+      Because the luteal phase is consistently ~14 days, ovulation occurs approximately
+      <strong>14 days before the start of your next period</strong>, not necessarily on day 14
+      of your cycle.
+    </p>
+    <p>
+      For a 28-day cycle: ovulation ≈ day 14. For a 32-day cycle: ovulation ≈ day 18.
+      For a 24-day cycle: ovulation ≈ day 10. This calculator uses your cycle length to
+      estimate your individual ovulation day.
+    </p>
+
+    <h2>The fertile window: what it is and how to use it</h2>
+    <p>
+      The fertile window is approximately <strong>six days long</strong>: the five days leading
+      up to ovulation and the day of ovulation itself. This window exists because sperm can survive
+      in the female reproductive tract for up to five days under favorable conditions, while the
+      egg remains viable for only 12–24 hours after release.
+    </p>
+    <p>
+      Research published in the <em>New England Journal of Medicine</em> (Wilcox et al., 1995)
+      found that the highest probability of conception came from intercourse <strong>one or two days
+      before ovulation</strong>. Intercourse on the day of ovulation also carries a high probability.
+      The probability of conception drops sharply after ovulation day.
+    </p>
+
+    <h2>How to detect ovulation at home</h2>
+    <p>
+      <strong>Ovulation predictor kits (OPKs)</strong> detect the LH surge in urine 24–36 hours before
+      ovulation. Start testing a few days before your estimated ovulation date (we show this as your
+      "test start" date). A positive OPK means ovulation is likely within the next 24–36 hours.
+    </p>
+    <p>
+      <strong>Basal body temperature (BBT)</strong> tracking involves taking your temperature each morning
+      before getting out of bed. After ovulation, progesterone causes a sustained temperature rise of
+      0.2–0.5°F (0.1–0.3°C). This confirms ovulation has already occurred and, over several cycles,
+      can help predict your pattern.
+    </p>
+    <p>
+      <strong>Cervical mucus monitoring:</strong> In the days approaching ovulation, cervical mucus
+      becomes increasingly clear, slippery, and stretchy — resembling raw egg whites. This is called
+      "spinnbarkeit." Its presence is a sign of peak fertility. After ovulation, mucus typically
+      becomes thicker and less abundant.
+    </p>
+
+    <h2>When to seek help</h2>
+    <p>
+      ASRM recommends evaluation if you've been trying to conceive for <strong>12 months</strong>
+      (or <strong>6 months</strong> if you are 35 or older) with regular, unprotected intercourse.
+      Seek evaluation sooner if you have irregular cycles, a history of pelvic inflammatory disease,
+      prior surgeries, or other risk factors. Both partners should be evaluated — male factor
+      contributes to infertility in approximately 40–50% of cases.
+    </p>
+  </div>
+</ToolPage>
+
+<!-- ── Client-side calculator ─────────────────────────────────── -->
+<script>
+  import { calculateOvulation, formatDate, formatDateShort } from '../../islands/ovulation.ts';
+
+  const lmpInput   = document.getElementById('o-lmp')   as HTMLInputElement;
+  const cycleInput = document.getElementById('o-cycle') as HTMLInputElement;
+  const oMinus = document.getElementById('o-minus') as HTMLButtonElement;
+  const oPlus  = document.getElementById('o-plus')  as HTMLButtonElement;
+  const oEmpty   = document.getElementById('o-empty')!;
+  const oContent = document.getElementById('o-content')!;
+  const oShare   = document.getElementById('o-share') as HTMLButtonElement;
+
+  // Restore URL state
+  const params = new URLSearchParams(location.search);
+  if (params.get('lmp'))   { lmpInput.value = params.get('lmp')!; }
+  if (params.get('cycle')) { cycleInput.value = params.get('cycle')!; }
+  update();
+
+  lmpInput.addEventListener('input', update);
+  cycleInput.addEventListener('input', update);
+  oMinus.addEventListener('click', () => { cycleInput.value = String(Math.max(21, +cycleInput.value - 1)); update(); });
+  oPlus.addEventListener('click',  () => { cycleInput.value = String(Math.min(35, +cycleInput.value + 1)); update(); });
+
+  oShare.addEventListener('click', () => {
+    const url = new URL(location.href);
+    url.searchParams.set('lmp', lmpInput.value);
+    url.searchParams.set('cycle', cycleInput.value);
+    navigator.clipboard?.writeText(url.toString()).then(() => {
+      oShare.textContent = 'Copied!';
+      setTimeout(() => { oShare.textContent = 'Share link'; }, 1800);
+    });
+  });
+
+  function update() {
+    const lmp   = lmpInput.value;
+    const cycle = Number(cycleInput.value);
+    if (!lmp || cycle < 21 || cycle > 35) { showEmpty(); return; }
+
+    const r = calculateOvulation({ lmp, cycleLength: cycle });
+    if (!r) { showEmpty(); return; }
+
+    // URL state
+    const url = new URL(location.href);
+    url.searchParams.set('lmp', lmp);
+    url.searchParams.set('cycle', String(cycle));
+    history.replaceState(null, '', url);
+
+    // Phase badge
+    (document.getElementById('o-phase') as HTMLElement).textContent = r.phaseLabel +
+      (r.daysUntilFertileWindow !== null
+        ? ` — fertile window in ${r.daysUntilFertileWindow} day${r.daysUntilFertileWindow !== 1 ? 's' : ''}`
+        : r.daysUntilOvulation !== null
+          ? ` — ovulation in ${r.daysUntilOvulation} day${r.daysUntilOvulation !== 1 ? 's' : ''}`
+          : '');
+
+    // Key dates grid
+    const dates = [
+      { label: 'Fertile window opens', date: r.fertileStart, accent: true },
+      { label: 'Estimated ovulation', date: r.ovulationDate, accent: true },
+      { label: 'Fertile window closes', date: r.fertileEnd, accent: false },
+      { label: 'Start OPK testing', date: r.testDate, accent: false },
+      { label: 'Next expected period', date: r.nextPeriod, accent: false },
+      { label: 'Earliest pregnancy test', date: r.pregnancyTestDate, accent: false },
+    ];
+
+    (document.getElementById('o-dates') as HTMLElement).innerHTML = dates.map(d => `
+      <div style="padding:.7rem .9rem;border-radius:var(--radius-sm);background:var(--color-surface-2);border:1.5px solid ${d.accent ? 'var(--color-accent)' : 'var(--color-line)'};">
+        <p style="margin:0;font-size:.75rem;color:var(--color-muted);">${d.label}</p>
+        <p style="margin:.2rem 0 0;font-size:.9rem;font-weight:600;font-family:var(--font-family-mono);color:${d.accent ? 'var(--color-accent)' : 'var(--color-ink)'};">${formatDateShort(d.date)}</p>
+      </div>
+    `).join('');
+
+    // Simple timeline bar
+    const lmpMs = new Date(lmp).getTime();
+    const cycleMs = cycle * 86_400_000;
+    const timelineEl = document.getElementById('o-timeline')!;
+    const segments = cycle;
+    const ovulDay = cycle - 14; // day within cycle
+    let html = '';
+    for (let i = 0; i < segments; i++) {
+      const dayMs = lmpMs + i * 86_400_000;
+      const d = new Date(dayMs);
+      const today = new Date(); today.setHours(0,0,0,0);
+      const isToday = d.getTime() === today.getTime();
+      const isFertile = d >= r.fertileStart && d <= r.fertileEnd;
+      const isOvul = d.toDateString() === r.ovulationDate.toDateString();
+      const isPeriod = i < 5;
+      const bg = isOvul
+        ? 'var(--color-accent)'
+        : isFertile
+          ? '#FEA98C'
+          : isPeriod
+            ? '#CBD9D6'
+            : 'var(--color-line)';
+      html += `<div title="${formatDateShort(d)}" style="flex:1;height:100%;border-radius:2px;background:${bg};outline:${isToday ? '2px solid var(--color-ink)' : 'none'};outline-offset:1px;"></div>`;
+    }
+    timelineEl.innerHTML = html;
+    (document.getElementById('o-period-start-label') as HTMLElement).textContent = formatDateShort(new Date(lmp));
+    (document.getElementById('o-next-period-label') as HTMLElement).textContent = formatDateShort(r.nextPeriod);
+
+    // Fertile window alert
+    const alertEl = document.getElementById('o-window-alert')!;
+    alertEl.style.display = r.isInFertileWindow ? 'block' : 'none';
+
+    showResult();
+  }
+
+  function showEmpty() { oEmpty.style.display = 'grid'; oContent.style.display = 'none'; }
+  function showResult() {
+    oEmpty.style.display = 'none';
+    oContent.style.display = 'block';
+    oContent.classList.remove('result-animate');
+    void oContent.offsetWidth;
+    oContent.classList.add('result-animate');
+  }
+</script>

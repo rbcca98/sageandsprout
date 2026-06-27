@@ -1,0 +1,343 @@
+---
+import ToolPage from '../../layouts/ToolPage.astro';
+
+const toolSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'How Many Weeks Pregnant Am I',
+  applicationCategory: 'HealthApplication',
+  operatingSystem: 'Web',
+  url: 'https://sageandsprout.com/tools/how-many-weeks-pregnant/',
+  description: 'Instantly find out how many weeks pregnant you are, your trimester, and what\'s happening this week.',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  publisher: { '@type': 'Organization', name: 'Sage & Sprout' },
+};
+
+const medSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  lastReviewed: '2026-06-27',
+  reviewedBy: {
+    '@type': 'Person',
+    description: 'Senior medical student at an Ivy League institution',
+  },
+};
+
+const faqs = [
+  {
+    question: 'When does each trimester start and end?',
+    answer: 'The first trimester runs from week 1 through week 13 (days 1–91 from LMP). The second trimester spans weeks 14–27 (days 92–189). The third trimester begins at week 28 and ends at birth, typically around weeks 39–40. These boundaries reflect standard clinical definitions used in the United States.',
+  },
+  {
+    question: 'How do doctors count pregnancy weeks?',
+    answer: 'Doctors count from the first day of your last menstrual period (LMP), even though conception occurs about 2 weeks later. This is called gestational age. It may seem counterintuitive — at 4 weeks pregnant by this count, the embryo is actually only about 2 weeks old. But counting from LMP provides a consistent reference point your provider uses across your care.',
+  },
+  {
+    question: 'What\'s the difference between gestational age and fetal age?',
+    answer: 'Gestational age counts from the LMP and is the standard used in prenatal care. At 10 weeks gestational age, your baby is approximately 8 weeks old (fetal age). For clinical purposes — scheduling tests, interpreting ultrasound measurements, understanding guidelines — always use gestational age, since that\'s what your provider and medical references use.',
+  },
+  {
+    question: 'I don\'t know my LMP — can I still use this tool?',
+    answer: 'Yes! Enter your estimated due date (EDD) instead, and the tool will calculate backwards to find your gestational age. If you\'re unsure of your EDD, your provider can give you one after an ultrasound. A first-trimester ultrasound measurement is more accurate than LMP for dating if you have irregular cycles.',
+  },
+  {
+    question: 'What is "quickening," and when will I feel it?',
+    answer: 'Quickening is the first time you feel your baby move. For first-time parents, it typically occurs between weeks 18–22. For those who have been pregnant before, it can be felt as early as weeks 16–18. Early movements are often described as flutters, bubbles, or gentle taps. Movement generally becomes more consistent and obvious as the second trimester progresses.',
+  },
+  {
+    question: 'When should I schedule my first prenatal appointment?',
+    answer: 'Most providers recommend your first prenatal visit at 8–10 weeks. This allows time for initial blood work, urine testing, and a dating ultrasound if needed. Some practices do an earlier "viability scan" around 6–8 weeks. If you have a history of pregnancy complications or fertility treatment, your provider may see you earlier.',
+  },
+];
+
+const relatedTools = [
+  {
+    href: '/tools/due-date-calculator/',
+    label: 'Due Date Calculator',
+    description: 'Calculate your estimated due date from LMP or IVF.',
+    emoji: '🗓️',
+  },
+  {
+    href: '/tools/ovulation-fertility-window/',
+    label: 'Ovulation Calculator',
+    description: 'Find your fertile window if you\'re trying to conceive.',
+    emoji: '🌸',
+  },
+];
+
+const sources = [
+  {
+    label: 'ACOG Committee Opinion 700 — Methods for Estimating the Due Date',
+    url: 'https://www.acog.org/clinical/clinical-guidance/committee-opinion/articles/2017/05/methods-for-estimating-the-due-date',
+  },
+  {
+    label: 'ACOG FAQ — How Your Baby Grows During Pregnancy',
+    url: 'https://www.acog.org/womens-health/faqs/how-your-baby-grows-during-pregnancy',
+  },
+  {
+    label: 'MedlinePlus — Fetal Development',
+    url: 'https://medlineplus.gov/ency/article/002398.htm',
+  },
+  {
+    label: 'ACOG FAQ — Prenatal Genetic Screening Tests',
+    url: 'https://www.acog.org/womens-health/faqs/prenatal-genetic-screening-tests',
+  },
+];
+---
+
+<ToolPage
+  title="How Many Weeks Pregnant Am I? | Sage & Sprout"
+  headline="How Many Weeks Pregnant Am I?"
+  hook="Enter the first day of your last menstrual period (LMP) or your estimated due date to instantly see how far along you are, which trimester you're in, your pregnancy progress, and what's happening at this stage — all calculated by the same gestational-age method your provider uses."
+  description="Find out exactly how many weeks and days pregnant you are, which trimester you're in, and what to expect this week. Free calculator based on your LMP or due date."
+  breadcrumbs={[{ label: 'How Many Weeks Pregnant', href: '/tools/how-many-weeks-pregnant/' }]}
+  faqs={faqs}
+  relatedTools={relatedTools}
+  sources={sources}
+  schema={[toolSchema, medSchema]}
+  reviewedDate="2026-06-27"
+>
+
+  <!-- ── TOOL SLOT ────────────────────────────────── -->
+  <div slot="tool" id="weeks-calc">
+
+    <!-- Mode toggle -->
+    <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem;" role="tablist" aria-label="Input method">
+      {(['lmp','edd'] as const).map((m, i) => (
+        <button
+          role="tab"
+          data-wmode={m}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          style={`
+            padding:.45rem 1rem;border-radius:999px;border:1.5px solid;
+            font-size:.82rem;font-weight:600;cursor:pointer;transition:background .15s,color .15s,border-color .15s;
+            ${i === 0
+              ? 'background:var(--color-primary);color:#fff;border-color:var(--color-primary);'
+              : 'background:transparent;color:var(--color-muted);border-color:var(--color-line);'}
+          `}
+        >
+          {m === 'lmp' ? 'I know my LMP' : 'I know my due date'}
+        </button>
+      ))}
+    </div>
+
+    <!-- Input -->
+    <div style="margin-bottom:1.5rem;">
+      <label for="w-date" id="w-label" style="display:block;font-size:.85rem;font-weight:600;margin-bottom:.4rem;color:var(--color-ink);">
+        First day of last period
+      </label>
+      <input
+        type="date"
+        id="w-date"
+        autocomplete="off"
+        style="
+          width:100%;max-width:320px;padding:.65rem .9rem;border-radius:var(--radius-sm);
+          border:1.5px solid var(--color-line);background:var(--color-surface-2);
+          font-size:1rem;color:var(--color-ink);font-family:var(--font-family-body);
+        "
+      />
+    </div>
+
+    <!-- Result panel -->
+    <div id="w-result" aria-live="polite" style="min-height:270px;border-radius:var(--radius-sm);border:1.5px solid var(--color-line);overflow:hidden;">
+      <div id="w-empty" style="height:270px;display:grid;place-items:center;text-align:center;padding:2rem;">
+        <div>
+          <p style="font-size:2.5rem;margin:0 0 .5rem;">🌿</p>
+          <p style="color:var(--color-muted);font-size:.95rem;margin:0;">Enter a date above to see your pregnancy week</p>
+        </div>
+      </div>
+
+      <div id="w-content" style="display:none;padding:1.75rem;">
+        <!-- Primary result -->
+        <p id="w-trimester" style="font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--color-primary);margin:0 0 .2rem;"></p>
+        <p style="font-family:var(--font-family-display);font-size:clamp(1.8rem,5vw,2.6rem);font-weight:700;color:var(--color-accent);margin:0 0 .35rem;" id="w-weeks"></p>
+        <p id="w-edd" style="font-size:.88rem;color:var(--color-muted);margin:0 0 1.25rem;"></p>
+
+        <!-- Progress bar -->
+        <div style="margin-bottom:1.5rem;">
+          <div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--color-muted);margin-bottom:.35rem;">
+            <span>Week 1</span><span id="w-pct"></span><span>Week 40</span>
+          </div>
+          <div style="height:8px;border-radius:4px;background:var(--color-surface-2);overflow:hidden;position:relative;">
+            <div id="w-bar" style="height:100%;background:linear-gradient(90deg,var(--color-primary),var(--color-accent));border-radius:4px;transition:width .4s ease;width:0%;"></div>
+          </div>
+        </div>
+
+        <!-- Next milestone -->
+        <div id="w-milestone" style="padding:.8rem 1rem;background:var(--color-surface-2);border-radius:var(--radius-sm);margin-bottom:1rem;"></div>
+
+        <!-- Trimester blurb -->
+        <p id="w-blurb" style="font-size:.87rem;color:var(--color-muted);margin:0;line-height:1.65;"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CONTENT SLOT ─────────────────────────────── -->
+  <div slot="content">
+    <h2>How pregnancy weeks are counted</h2>
+    <p>
+      In prenatal medicine, pregnancy is measured in <strong>gestational age</strong>, counted from the
+      first day of your last menstrual period (LMP) — even though conception happens about two weeks later.
+      This convention exists because the LMP is a concrete, observable date, while the exact day of ovulation
+      and fertilization is rarely known precisely. Your provider, ultrasound technician, and all prenatal
+      screening guidelines use gestational age by default.
+    </p>
+    <p>
+      For example, at "4 weeks pregnant" (gestational age), the embryo itself is approximately 2 weeks old
+      — but your provider will always refer to you as 4 weeks along. This is consistent with how prenatal
+      care guidelines, screening windows, and fetal development charts are written.
+    </p>
+
+    <h2>Gestational age vs. fetal age</h2>
+    <p>
+      <strong>Gestational age</strong> counts from the LMP and is the universal clinical standard.
+      <strong>Fetal age</strong> (or embryonic age) counts from fertilization and is approximately
+      two weeks less. When you see development descriptions in books or online — "at 8 weeks, the
+      heart has four chambers" — these may use fetal age; always clarify which reference is being used
+      to avoid confusion.
+    </p>
+    <p>
+      For all discussions with your healthcare provider, use gestational age. When reading fetal
+      development content, check whether weeks are counted from LMP or from conception.
+    </p>
+
+    <h2>First trimester: weeks 1–13</h2>
+    <p>
+      The first trimester is a period of rapid, foundational development. By the end of the first
+      trimester, the embryo has become a fetus with all major organ systems established, a beating heart,
+      and the beginnings of all limbs and facial features. The placenta has fully formed and taken over
+      hormone production from the corpus luteum.
+    </p>
+    <p>
+      Common first-trimester experiences include nausea and vomiting (affecting 70–80% of pregnancies),
+      fatigue, breast tenderness, frequent urination, and heightened sensitivity to smells. Most of these
+      symptoms begin to improve by weeks 12–14.
+    </p>
+    <p>
+      <strong>Key first-trimester appointments:</strong> First prenatal visit (weeks 8–10); first-trimester
+      screening including nuchal translucency ultrasound and blood draw (weeks 11–13); possible cell-free
+      DNA (cfDNA) testing starting at week 10.
+    </p>
+
+    <h2>Second trimester: weeks 14–27</h2>
+    <p>
+      The second trimester is often the most comfortable phase. As the placenta fully takes over and
+      hormones stabilize, nausea typically fades, energy returns, and the visible pregnancy bump appears.
+      The fetus grows from about 3 inches and 1 ounce at week 14 to roughly 14 inches and 2 pounds by
+      week 27.
+    </p>
+    <p>
+      Around weeks 18–22, most parents feel fetal movement for the first time. The anatomy scan —
+      a detailed ultrasound checking fetal growth, organ development, and placental position —
+      is scheduled in this window. If you're having genetic testing, second-trimester quad screen
+      results are typically reported in this period.
+    </p>
+    <p>
+      <strong>Key second-trimester appointments:</strong> Anatomy scan (weeks 18–22); quad screen
+      if elected (weeks 15–20); glucose challenge test (weeks 24–28).
+    </p>
+
+    <h2>Third trimester: weeks 28–40+</h2>
+    <p>
+      In the third trimester, your baby gains most of their body weight and the lungs begin producing
+      surfactant — the substance essential for breathing after birth. By week 37, a baby is considered
+      "early term." By week 39, the brain, lungs, and liver are more fully mature — this is "full term."
+    </p>
+    <p>
+      Prenatal visits become more frequent (every two weeks from weeks 28–36, then weekly from week 36).
+      Your provider will discuss your birth preferences, check for signs of preeclampsia, and monitor
+      the baby's position.
+    </p>
+    <p>
+      <strong>Key third-trimester appointments:</strong> Biweekly visits (weeks 28–36);
+      Group B Strep test (weeks 35–37); weekly visits (week 36 onward); non-stress tests
+      if indicated; discussion of induction if approaching 41–42 weeks.
+    </p>
+  </div>
+</ToolPage>
+
+<!-- ── Client-side calculator ─────────────────────────────────── -->
+<script>
+  import { calculateWeeksPregnant, formatDate } from '../../islands/weeks-pregnant.ts';
+
+  let mode: 'lmp' | 'edd' = 'lmp';
+
+  const tabs = document.querySelectorAll<HTMLButtonElement>('[data-wmode]');
+  const dateInput = document.getElementById('w-date') as HTMLInputElement;
+  const wLabel    = document.getElementById('w-label') as HTMLLabelElement;
+  const wEmpty   = document.getElementById('w-empty')!;
+  const wContent = document.getElementById('w-content')!;
+
+  // Restore URL state
+  const params = new URLSearchParams(location.search);
+  if (params.get('mode') === 'edd') applyMode('edd', false);
+  if (params.get('date')) { dateInput.value = params.get('date')!; update(); }
+
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      applyMode(btn.dataset.wmode as 'lmp' | 'edd', true);
+      update();
+    });
+  });
+  dateInput.addEventListener('input', update);
+
+  function applyMode(m: 'lmp' | 'edd', reset: boolean) {
+    mode = m;
+    wLabel.textContent = m === 'lmp' ? 'First day of last period' : 'Your estimated due date (EDD)';
+    tabs.forEach(btn => {
+      const active = btn.dataset.wmode === m;
+      btn.style.background = active ? 'var(--color-primary)' : 'transparent';
+      btn.style.color = active ? '#fff' : 'var(--color-muted)';
+      btn.style.borderColor = active ? 'var(--color-primary)' : 'var(--color-line)';
+      btn.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    if (reset) dateInput.value = '';
+  }
+
+  function update() {
+    const date = dateInput.value;
+    if (!date) { showEmpty(); return; }
+
+    const r = calculateWeeksPregnant(mode === 'lmp' ? { lmp: date } : { edd: date });
+    if (!r || r.trimester === 0) { showEmpty(); return; }
+
+    // Persist URL
+    const url = new URL(location.href);
+    url.searchParams.set('mode', mode);
+    url.searchParams.set('date', date);
+    history.replaceState(null, '', url);
+
+    // Render
+    (document.getElementById('w-trimester') as HTMLElement).textContent = r.trimesterLabel;
+    (document.getElementById('w-weeks') as HTMLElement).textContent = `${r.weeksComplete} weeks, ${r.daysRemainder} day${r.daysRemainder !== 1 ? 's' : ''}`;
+    (document.getElementById('w-edd') as HTMLElement).textContent = `Due date: ${formatDate(r.edd)}`;
+    (document.getElementById('w-pct') as HTMLElement).textContent = `${r.percentComplete}%`;
+    (document.getElementById('w-bar') as HTMLElement).style.width = `${r.percentComplete}%`;
+
+    // Milestone
+    const ms = r.nextMilestone;
+    const milestoneEl = document.getElementById('w-milestone')!;
+    if (ms) {
+      milestoneEl.innerHTML = `
+        <p style="margin:0;font-size:.8rem;color:var(--color-muted);">Next milestone</p>
+        <p style="margin:.2rem 0 0;font-size:.9rem;font-weight:600;color:var(--color-ink);">${ms.label} — ${ms.daysLeft} day${ms.daysLeft !== 1 ? 's' : ''} away (week ${ms.weeksGA})</p>
+      `;
+      milestoneEl.style.display = 'block';
+    } else {
+      milestoneEl.style.display = 'none';
+    }
+
+    (document.getElementById('w-blurb') as HTMLElement).textContent = r.trimesterBlurb;
+
+    showResult();
+  }
+
+  function showEmpty() { wEmpty.style.display = 'grid'; wContent.style.display = 'none'; }
+  function showResult() {
+    wEmpty.style.display = 'none';
+    wContent.style.display = 'block';
+    wContent.classList.remove('result-animate');
+    void wContent.offsetWidth;
+    wContent.classList.add('result-animate');
+  }
+</script>

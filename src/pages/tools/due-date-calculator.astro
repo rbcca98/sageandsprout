@@ -1,0 +1,432 @@
+---
+import ToolPage from '../../layouts/ToolPage.astro';
+
+const toolSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Due Date Calculator',
+  applicationCategory: 'HealthApplication',
+  operatingSystem: 'Web',
+  url: 'https://sageandsprout.com/tools/due-date-calculator/',
+  description: 'Calculate your estimated due date from your last menstrual period, conception date, or IVF transfer date.',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  publisher: { '@type': 'Organization', name: 'Sage & Sprout' },
+};
+
+const medSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  lastReviewed: '2026-06-27',
+  reviewedBy: {
+    '@type': 'Person',
+    description: 'Senior medical student at an Ivy League institution',
+  },
+  medicalAudience: { '@type': 'MedicalAudience', audienceType: 'Patient' },
+};
+
+const faqs = [
+  {
+    question: 'How is my due date calculated?',
+    answer: 'We use Naegele\'s rule: your estimated due date (EDD) is 280 days from the first day of your last menstrual period (LMP). This assumes a 28-day cycle. If your cycle is longer or shorter, we adjust proportionally. The formula is based on an average 14-day follicular phase plus 266 days of fetal development. Source: ACOG Committee Opinion 700.',
+  },
+  {
+    question: 'How accurate is an estimated due date?',
+    answer: 'Only about 4–5% of babies are born exactly on their EDD. Research shows approximately 80% of births occur within 10 days of the calculated date. First-trimester ultrasound (before 14 weeks) is the most accurate method for confirming gestational age, typically within 5–7 days.',
+  },
+  {
+    question: 'My period is irregular — can I still use the LMP method?',
+    answer: 'The LMP method assumes you know your last period and have a regular cycle. If your cycles are irregular, the LMP-based date may be less accurate. Your provider will typically rely on a first-trimester ultrasound to establish gestational age, since crown-rump length measurements are more reliable than menstrual history when cycles vary.',
+  },
+  {
+    question: 'My ultrasound date is different from my LMP date — which one is correct?',
+    answer: 'If the discrepancy is greater than 5–7 days in the first trimester (or 10–14 days in the second trimester), your provider will usually update your due date based on the ultrasound measurement. Ultrasound dating is considered more accurate than LMP dating, especially if your cycle length is uncertain.',
+  },
+  {
+    question: 'How do I calculate my due date after IVF?',
+    answer: 'For IVF, the embryo\'s developmental age is known precisely. For a Day-5 (blastocyst) transfer, add 261 days to the transfer date. For a Day-3 transfer, add 263 days. This accounts for the fact that the embryo was already 5 or 3 days old at the time of transfer. Our calculator handles both.',
+  },
+  {
+    question: 'What if I go past my due date?',
+    answer: 'Going 1–2 weeks past your EDD is common — spontaneous labor can occur naturally up to 42 weeks. Most providers discuss induction of labor at 41–42 weeks, as the risk of placental insufficiency and other complications increases after 42 weeks. Always follow your provider\'s guidance.',
+  },
+];
+
+const relatedTools = [
+  {
+    href: '/tools/how-many-weeks-pregnant/',
+    label: 'How Many Weeks Pregnant',
+    description: 'See your current week, trimester, and progress.',
+    emoji: '📅',
+  },
+  {
+    href: '/tools/ovulation-fertility-window/',
+    label: 'Ovulation Calculator',
+    description: 'Find your fertile window and ovulation day.',
+    emoji: '🌸',
+  },
+];
+
+const sources = [
+  {
+    label: 'ACOG Committee Opinion 700 — Methods for Estimating the Due Date (2017)',
+    url: 'https://www.acog.org/clinical/clinical-guidance/committee-opinion/articles/2017/05/methods-for-estimating-the-due-date',
+  },
+  {
+    label: 'Naegele\'s Rule — Wikipedia (historical context)',
+    url: 'https://en.wikipedia.org/wiki/Naegele%27s_rule',
+  },
+  {
+    label: 'ACOG FAQ — Preterm (Early) Labor and Birth',
+    url: 'https://www.acog.org/womens-health/faqs/preterm-labor-and-birth',
+  },
+  {
+    label: 'American Pregnancy Association — Calculating Due Date',
+    url: 'https://americanpregnancy.org/healthy-pregnancy/due-date-calculator/',
+  },
+];
+---
+
+<ToolPage
+  title="Due Date Calculator — Estimate Your Baby's Arrival | Sage & Sprout"
+  headline="Due Date Calculator"
+  hook="Enter the first day of your last menstrual period (LMP) to instantly calculate your estimated due date (EDD), current pregnancy week, trimester, and key milestones — all based on Naegele's rule and ACOG guidelines. You can also calculate from a conception date or IVF transfer."
+  description="Free due date calculator using your last menstrual period, conception date, or IVF transfer. Instantly see your estimated due date, trimester, and key pregnancy milestones."
+  breadcrumbs={[{ label: 'Due Date Calculator', href: '/tools/due-date-calculator/' }]}
+  faqs={faqs}
+  relatedTools={relatedTools}
+  sources={sources}
+  schema={[toolSchema, medSchema]}
+  reviewedDate="2026-06-27"
+>
+
+  <!-- ── TOOL SLOT ────────────────────────────────── -->
+  <div slot="tool" id="due-date-calc">
+
+    <!-- Method tabs -->
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;" role="tablist" aria-label="Calculation method">
+      {(['lmp','conception','ivf5','ivf3'] as const).map((m, i) => {
+        const labels: Record<string, string> = { lmp: 'Last Period (LMP)', conception: 'Conception Date', ivf5: 'IVF Day-5', ivf3: 'IVF Day-3' };
+        return (
+          <button
+            role="tab"
+            data-method={m}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            style={`
+              padding: .45rem 1rem; border-radius: 999px; border: 1.5px solid;
+              font-size: .82rem; font-weight: 600; cursor: pointer;
+              transition: background .15s, color .15s, border-color .15s;
+              ${i === 0
+                ? 'background:var(--color-primary);color:#fff;border-color:var(--color-primary);'
+                : 'background:transparent;color:var(--color-muted);border-color:var(--color-line);'}
+            `}
+          >
+            {labels[m]}
+          </button>
+        );
+      })}
+    </div>
+
+    <!-- Input row -->
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-end;margin-bottom:1.5rem;">
+      <div style="flex:1;min-width:200px;">
+        <label for="calc-date" id="date-label" style="display:block;font-size:.85rem;font-weight:600;margin-bottom:.4rem;color:var(--color-ink);">
+          First day of last period
+        </label>
+        <input
+          type="date"
+          id="calc-date"
+          name="date"
+          autocomplete="off"
+          style="
+            width:100%;padding:.65rem .9rem;border-radius:var(--radius-sm);
+            border:1.5px solid var(--color-line);background:var(--color-surface-2);
+            font-size:1rem;color:var(--color-ink);font-family:var(--font-family-body);
+            transition:border-color .15s;outline:none;
+          "
+        />
+      </div>
+
+      <!-- Cycle length (shown only for LMP method) -->
+      <div id="cycle-field" style="min-width:150px;">
+        <label for="cycle-length" style="display:block;font-size:.85rem;font-weight:600;margin-bottom:.4rem;color:var(--color-ink);">
+          Cycle length (days)
+        </label>
+        <div style="display:flex;align-items:center;gap:.5rem;">
+          <button id="cycle-minus" aria-label="Decrease cycle length" style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--color-line);background:var(--color-surface-2);cursor:pointer;font-size:1.1rem;display:grid;place-items:center;">−</button>
+          <input
+            type="number"
+            id="cycle-length"
+            name="cycleLength"
+            min="21" max="45" value="28"
+            style="
+              width:60px;text-align:center;padding:.5rem;border-radius:var(--radius-sm);
+              border:1.5px solid var(--color-line);background:var(--color-surface-2);
+              font-size:1rem;color:var(--color-ink);font-family:var(--font-family-mono);
+            "
+          />
+          <button id="cycle-plus" aria-label="Increase cycle length" style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--color-line);background:var(--color-surface-2);cursor:pointer;font-size:1.1rem;display:grid;place-items:center;">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result panel — pre-sized to prevent CLS -->
+    <div
+      id="result-panel"
+      aria-live="polite"
+      style="min-height:280px;border-radius:var(--radius-sm);border:1.5px solid var(--color-line);overflow:hidden;transition:border-color .2s;"
+    >
+      <!-- Empty state (shown before calculation) -->
+      <div id="result-empty" style="height:280px;display:grid;place-items:center;text-align:center;padding:2rem;">
+        <div>
+          <p style="font-size:2.5rem;margin:0 0 .5rem;">🌱</p>
+          <p style="color:var(--color-muted);font-size:.95rem;margin:0;">Enter a date above to see your results</p>
+        </div>
+      </div>
+
+      <!-- Populated state (hidden until calculated) -->
+      <div id="result-content" style="display:none;padding:1.75rem;">
+        <p style="font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--color-primary);margin:0 0 .35rem;" id="res-trimester"></p>
+        <p style="margin:0 0 .2rem;color:var(--color-muted);font-size:.9rem;" id="res-gest-label"></p>
+        <p style="font-family:var(--font-family-display);font-size:clamp(1.6rem,5vw,2.4rem);font-weight:700;color:var(--color-accent);margin:0 0 1.25rem;" id="res-edd"></p>
+
+        <!-- Progress bar -->
+        <div style="margin-bottom:1.5rem;">
+          <div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--color-muted);margin-bottom:.35rem;">
+            <span>Progress</span>
+            <span id="res-pct"></span>
+          </div>
+          <div style="height:6px;border-radius:3px;background:var(--color-surface-2);overflow:hidden;">
+            <div id="res-bar" style="height:100%;background:var(--color-primary);border-radius:3px;transition:width .4s ease;width:0%;"></div>
+          </div>
+        </div>
+
+        <!-- Milestone list -->
+        <div id="res-milestones" style="display:grid;gap:.5rem;margin-bottom:1.25rem;"></div>
+
+        <!-- Actions -->
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;padding-top:1rem;border-top:1px solid var(--color-line);">
+          <button onclick="navigator.clipboard?.writeText(document.getElementById('res-edd').textContent||'')" style="padding:.4rem .9rem;border-radius:999px;border:1.5px solid var(--color-line);background:transparent;cursor:pointer;font-size:.82rem;font-weight:500;color:var(--color-ink);">Copy date</button>
+          <button onclick="window.print()" style="padding:.4rem .9rem;border-radius:999px;border:1.5px solid var(--color-line);background:transparent;cursor:pointer;font-size:.82rem;font-weight:500;color:var(--color-ink);">Print</button>
+          <button id="share-btn" style="padding:.4rem .9rem;border-radius:999px;border:1.5px solid var(--color-primary);background:transparent;cursor:pointer;font-size:.82rem;font-weight:500;color:var(--color-primary);">Share link</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CONTENT SLOT ─────────────────────────────── -->
+  <div slot="content">
+    <h2>How this calculator works</h2>
+    <p>
+      Your <strong>estimated due date (EDD)</strong> is calculated using <strong>Naegele's rule</strong>,
+      the method endorsed by the American College of Obstetricians and Gynecologists (ACOG).<sup>1</sup>
+      The formula adds 280 days — exactly 40 weeks — to the first day of your last menstrual period (LMP).
+      This estimate assumes a 28-day cycle with ovulation on day 14.
+    </p>
+    <p>
+      If your average cycle is longer or shorter than 28 days, our calculator adjusts proportionally.
+      For example, a 32-day cycle shifts the EDD four days later; a 24-day cycle shifts it four days earlier.
+    </p>
+    <p>
+      You can also calculate from a <strong>known conception or ovulation date</strong> (we add 266 days)
+      or an <strong>IVF embryo transfer date</strong> (Day-5 adds 261 days; Day-3 adds 263 days),
+      since the embryo's developmental age is precisely known in these cases.
+    </p>
+
+    <h2>How accurate is a due date?</h2>
+    <p>
+      Only about <strong>4–5% of babies are born on their exact EDD</strong>. Research consistently shows
+      that roughly 80% of births occur within 10 days of the calculated date, and approximately 95% within
+      20 days. The EDD is best understood as the midpoint of a distribution, not a precise prediction.
+    </p>
+    <p>
+      <strong>First-trimester ultrasound</strong> (performed before 14 weeks) is the most accurate method
+      for confirming gestational age. Measurement of the crown-rump length (CRL) can date a pregnancy
+      within ±5–7 days. If your ultrasound-derived date differs from your LMP-based date by more than
+      7 days in the first trimester, your provider will typically update your EDD to match the ultrasound.
+    </p>
+
+    <h2>After you get your due date: what to do next</h2>
+    <p>
+      Once you know your EDD, your next step is scheduling <strong>first prenatal care</strong>, ideally by
+      8–10 weeks of pregnancy. Early care establishes a baseline, screens for risk factors, and gives you
+      access to first-trimester genetic screening (available weeks 10–13).
+    </p>
+    <p>
+      Key prenatal appointments to anticipate:
+    </p>
+    <ul>
+      <li><strong>First visit:</strong> ideally by weeks 8–10</li>
+      <li><strong>First-trimester screening:</strong> weeks 11–13 (nuchal translucency ultrasound + blood draw)</li>
+      <li><strong>Anatomy scan:</strong> weeks 18–22 (detailed fetal survey ultrasound)</li>
+      <li><strong>Glucose challenge test:</strong> weeks 24–28</li>
+      <li><strong>Group B Strep test:</strong> weeks 35–37</li>
+      <li><strong>Weekly visits:</strong> beginning at 36 weeks</li>
+    </ul>
+
+    <h2>Understanding pregnancy trimesters</h2>
+    <p>
+      Pregnancy is divided into three trimesters, each roughly 13 weeks long:
+    </p>
+    <ul>
+      <li>
+        <strong>First trimester (weeks 1–13):</strong> The embryo's major organ systems, neural tube,
+        heart, and facial features form. Most miscarriages occur during this period.
+        Nausea, fatigue, and breast tenderness are common early symptoms.
+      </li>
+      <li>
+        <strong>Second trimester (weeks 14–27):</strong> Often called the "honeymoon trimester" — energy
+        typically returns, morning sickness eases, and the baby grows rapidly.
+        Fetal movement (quickening) is usually first felt around weeks 18–22.
+      </li>
+      <li>
+        <strong>Third trimester (weeks 28–40+):</strong> Your baby gains most of their birth weight and
+        the lungs mature in preparation for breathing. Prenatal visits become more frequent, and you'll
+        discuss your birth plan with your provider.
+      </li>
+    </ul>
+
+    <h2>A note about "full term"</h2>
+    <p>
+      The term "full term" specifically refers to <strong>weeks 39–40</strong>. ACOG defines:
+    </p>
+    <ul>
+      <li><strong>Early term:</strong> 37 weeks 0 days – 38 weeks 6 days</li>
+      <li><strong>Full term:</strong> 39 weeks 0 days – 40 weeks 6 days</li>
+      <li><strong>Late term:</strong> 41 weeks 0 days – 41 weeks 6 days</li>
+      <li><strong>Post-term:</strong> 42 weeks 0 days and beyond</li>
+    </ul>
+    <p>
+      Babies born at 39–40 weeks tend to have the best outcomes for lung maturity, feeding, and
+      neurodevelopment. If your provider recommends a delivery date before 39 weeks without a medical
+      indication, it is appropriate to ask why.
+    </p>
+  </div>
+</ToolPage>
+
+<!-- ── Client-side calculator script ─────────────────────────── -->
+<script>
+  import type { DueDateInputs, DueDateMethod } from '../../islands/due-date.ts';
+  import { calculateDueDate, formatDate, formatDateShort } from '../../islands/due-date.ts';
+
+  const METHODS: DueDateMethod[] = ['lmp', 'conception', 'ivf5', 'ivf3'];
+  const DATE_LABELS: Record<DueDateMethod, string> = {
+    lmp: 'First day of last period',
+    conception: 'Conception or ovulation date',
+    ivf5: 'Day-5 embryo transfer date',
+    ivf3: 'Day-3 embryo transfer date',
+  };
+
+  let activeMethod: DueDateMethod = 'lmp';
+
+  // DOM refs
+  const tabs = document.querySelectorAll<HTMLButtonElement>('[data-method]');
+  const dateInput = document.getElementById('calc-date') as HTMLInputElement;
+  const dateLabel = document.getElementById('date-label') as HTMLLabelElement;
+  const cycleField = document.getElementById('cycle-field') as HTMLElement;
+  const cycleInput = document.getElementById('cycle-length') as HTMLInputElement;
+  const cycleMinus = document.getElementById('cycle-minus') as HTMLButtonElement;
+  const cyclePlus  = document.getElementById('cycle-plus')  as HTMLButtonElement;
+  const resultEmpty   = document.getElementById('result-empty')!;
+  const resultContent = document.getElementById('result-content')!;
+  const shareBtn = document.getElementById('share-btn') as HTMLButtonElement;
+
+  // URL state: restore on load
+  const params = new URLSearchParams(location.search);
+  if (params.get('method')) activeMethod = (params.get('method') as DueDateMethod) || 'lmp';
+  if (params.get('date')) dateInput.value = params.get('date')!;
+  if (params.get('cycle')) cycleInput.value = params.get('cycle')!;
+  applyMethod(activeMethod, false);
+  update();
+
+  // Tab clicks
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeMethod = btn.dataset.method as DueDateMethod;
+      applyMethod(activeMethod, true);
+      update();
+    });
+  });
+
+  // Inputs
+  dateInput.addEventListener('input', update);
+  cycleInput.addEventListener('input', update);
+  cycleMinus.addEventListener('click', () => { cycleInput.value = String(Math.max(21, +cycleInput.value - 1)); update(); });
+  cyclePlus.addEventListener('click', () => { cycleInput.value = String(Math.min(45, +cycleInput.value + 1)); update(); });
+
+  // Share
+  shareBtn.addEventListener('click', () => {
+    const url = new URL(location.href);
+    url.searchParams.set('method', activeMethod);
+    url.searchParams.set('date', dateInput.value);
+    if (activeMethod === 'lmp') url.searchParams.set('cycle', cycleInput.value);
+    navigator.clipboard?.writeText(url.toString()).then(() => {
+      shareBtn.textContent = 'Copied!';
+      setTimeout(() => { shareBtn.textContent = 'Share link'; }, 1800);
+    });
+  });
+
+  function applyMethod(m: DueDateMethod, resetDate: boolean) {
+    tabs.forEach(btn => {
+      const isActive = btn.dataset.method === m;
+      btn.style.background = isActive ? 'var(--color-primary)' : 'transparent';
+      btn.style.color = isActive ? '#fff' : 'var(--color-muted)';
+      btn.style.borderColor = isActive ? 'var(--color-primary)' : 'var(--color-line)';
+      btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+    dateLabel.textContent = DATE_LABELS[m];
+    cycleField.style.display = m === 'lmp' ? 'block' : 'none';
+    if (resetDate) dateInput.value = '';
+  }
+
+  function update() {
+    const date = dateInput.value;
+    if (!date) { showEmpty(); return; }
+
+    const inputs: DueDateInputs = {
+      method: activeMethod,
+      date,
+      cycleLength: activeMethod === 'lmp' ? Number(cycleInput.value) : undefined,
+    };
+
+    const r = calculateDueDate(inputs);
+    if (!r) { showEmpty(); return; }
+
+    // Persist URL state (no reload)
+    const url = new URL(location.href);
+    url.searchParams.set('method', activeMethod);
+    url.searchParams.set('date', date);
+    if (activeMethod === 'lmp') url.searchParams.set('cycle', cycleInput.value);
+    history.replaceState(null, '', url);
+
+    // Render
+    (document.getElementById('res-trimester') as HTMLElement).textContent = r.trimesterLabel;
+    (document.getElementById('res-gest-label') as HTMLElement).textContent = r.gestAgeLabel;
+    (document.getElementById('res-edd') as HTMLElement).textContent = formatDate(r.edd);
+    (document.getElementById('res-pct') as HTMLElement).textContent = `${r.percentComplete}% complete`;
+    (document.getElementById('res-bar') as HTMLElement).style.width = `${r.percentComplete}%`;
+
+    // Milestones
+    const milestoneEl = document.getElementById('res-milestones')!;
+    const upcoming = r.milestones.filter(m => m.date >= r.today);
+    milestoneEl.innerHTML = upcoming.slice(0, 4).map(m => `
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:.83rem;padding:.4rem 0;border-bottom:1px solid var(--color-line);">
+        <span style="color:var(--color-muted);">${m.label}</span>
+        <span style="font-family:var(--font-family-mono);font-weight:500;">${formatDateShort(m.date)}</span>
+      </div>
+    `).join('');
+
+    showResult();
+  }
+
+  function showEmpty() {
+    resultEmpty.style.display = 'grid';
+    resultContent.style.display = 'none';
+  }
+  function showResult() {
+    resultEmpty.style.display = 'none';
+    resultContent.style.display = 'block';
+    resultContent.classList.remove('result-animate');
+    void resultContent.offsetWidth; // force reflow
+    resultContent.classList.add('result-animate');
+  }
+</script>

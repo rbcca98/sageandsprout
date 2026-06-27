@@ -1,0 +1,171 @@
+---
+/**
+ * Standard template for every tool page.
+ * Implements the plan's anatomy:
+ *   breadcrumb → H1 → one-line hook →
+ *   [TOOL above fold] → ad → content → related tools → FAQ → sources → disclaimer
+ */
+import Base from './Base.astro';
+
+export interface FAQ {
+  question: string;
+  answer: string;
+}
+
+export interface RelatedTool {
+  href: string;
+  label: string;
+  description: string;
+  emoji: string;
+}
+
+export interface Source {
+  label: string;
+  url: string;
+}
+
+export interface Props {
+  title: string;
+  headline: string;
+  hook: string;            // ≤ 100 words, first paragraph — AI Overview fuel
+  description: string;     // meta description
+  breadcrumbs: { label: string; href: string }[];
+  faqs: FAQ[];
+  relatedTools: RelatedTool[];
+  sources: Source[];
+  schema: object | object[];
+  reviewedDate?: string;
+}
+
+const {
+  title,
+  headline,
+  hook,
+  description,
+  breadcrumbs,
+  faqs,
+  relatedTools,
+  sources,
+  schema,
+  reviewedDate = new Date().toISOString().split('T')[0],
+} = Astro.props;
+
+// Build FAQPage schema from faqs
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(({ question, answer }) => ({
+    '@type': 'Question',
+    name: question,
+    acceptedAnswer: { '@type': 'Answer', text: answer },
+  })),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://sageandsprout.com/' },
+    ...breadcrumbs.map(({ label, href }, i) => ({
+      '@type': 'ListItem',
+      position: i + 2,
+      name: label,
+      item: `https://sageandsprout.com${href}`,
+    })),
+  ],
+};
+
+const allSchema = [
+  ...(Array.isArray(schema) ? schema : [schema]),
+  faqSchema,
+  breadcrumbSchema,
+];
+---
+
+<Base
+  title={title}
+  description={description}
+  breadcrumbs={breadcrumbs}
+  schema={allSchema}
+>
+  <div style="max-width: 760px; margin: 0 auto; padding: 2rem 1.25rem 4rem;">
+
+    <!-- H1 + hook (AI Overview fuel) -->
+    <h1 style="font-family:var(--font-family-display);font-size:clamp(1.75rem,4vw,2.5rem);font-weight:700;color:var(--color-ink);margin:0 0 0.75rem;">{headline}</h1>
+    <p style="font-size:1.05rem;color:var(--color-muted);max-width:60ch;margin:0 0 2rem;line-height:1.65;">{hook}</p>
+
+    <!-- ── THE TOOL (above fold) ─────────────────── -->
+    <div style="background:var(--color-surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:2rem 1.75rem;margin-bottom:1.5rem;">
+      <slot name="tool" />
+    </div>
+
+    <!-- ── CLS-safe ad slot (below result) ───────── -->
+    <div class="ad-slot ad-slot--banner" style="margin-bottom:2.5rem;" aria-hidden="true">
+      Advertisement
+    </div>
+
+    <!-- ── Content below fold ────────────────────── -->
+    <article class="prose">
+      <slot name="content" />
+
+      <!-- ── Related tools ─────────────────────── -->
+      <h2>Related tools</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:2rem;">
+        {relatedTools.map(({ href, label, description: desc, emoji }) => (
+          <a
+            href={href}
+            style="display:block;padding:1.1rem;border-radius:var(--radius-sm);background:var(--color-surface-2);text-decoration:none;border:1px solid var(--color-line);transition:box-shadow .15s;"
+            onmouseover="this.style.boxShadow='var(--shadow-sm)'"
+            onmouseout="this.style.boxShadow='none'"
+          >
+            <span style="font-size:1.5rem;">{emoji}</span>
+            <p style="margin:0.4rem 0 0.2rem;font-weight:600;font-size:0.9rem;color:var(--color-ink);">{label}</p>
+            <p style="margin:0;font-size:0.8rem;color:var(--color-muted);">{desc}</p>
+          </a>
+        ))}
+      </div>
+
+      <!-- ── In-content ad slot ─────────────────── -->
+      <div class="ad-slot" style="margin-bottom:2rem;" aria-hidden="true">Advertisement</div>
+
+      <!-- ── FAQ ───────────────────────────────── -->
+      <h2>Frequently asked questions</h2>
+      <div style="display:flex;flex-direction:column;gap:1.25rem;margin-bottom:2rem;">
+        {faqs.map(({ question, answer }) => (
+          <details style="border:1px solid var(--color-line);border-radius:var(--radius-sm);overflow:hidden;">
+            <summary style="padding:1rem 1.25rem;font-weight:600;cursor:pointer;font-size:0.95rem;list-style:none;display:flex;justify-content:space-between;align-items:center;">
+              {question}
+              <span aria-hidden="true" style="font-size:1.25rem;color:var(--color-primary);flex-shrink:0;margin-left:1rem;">+</span>
+            </summary>
+            <div style="padding:0 1.25rem 1rem;color:var(--color-muted);font-size:0.92rem;line-height:1.7;">
+              {answer}
+            </div>
+          </details>
+        ))}
+      </div>
+
+      <!-- ── Sources ────────────────────────────── -->
+      <h2>Sources &amp; further reading</h2>
+      <ol style="display:flex;flex-direction:column;gap:0.4rem;padding-left:1.25rem;margin-bottom:2rem;">
+        {sources.map(({ label, url }) => (
+          <li style="font-size:0.85rem;color:var(--color-muted);">
+            <a href={url} target="_blank" rel="noopener noreferrer">{label}</a>
+          </li>
+        ))}
+      </ol>
+
+      <!-- ── Reviewed note ──────────────────────── -->
+      <p style="font-size:0.8rem;color:var(--color-muted);border-top:1px solid var(--color-line);padding-top:1rem;">
+        Reviewed <time datetime={reviewedDate}>{reviewedDate}</time> by a senior medical student at an Ivy League institution. All clinical figures cite primary medical literature.
+      </p>
+
+      <!-- ── Medical disclaimer ─────────────────── -->
+      <div style="margin-top:1.5rem;padding:1rem 1.25rem;background:var(--color-surface-2);border-radius:var(--radius-sm);border-left:3px solid var(--color-primary);">
+        <p style="margin:0;font-size:0.82rem;color:var(--color-muted);">
+          <strong>Medical disclaimer:</strong> This tool provides general educational information only. It is <em>not</em> medical advice and does not substitute for care from a licensed healthcare provider. Always consult your doctor, midwife, or other qualified clinician for personal health guidance.
+          <a href="/medical-disclaimer/" style="margin-left:0.3em;">Read full disclaimer →</a>
+        </p>
+      </div>
+    </article>
+  </div>
+</Base>

@@ -1,0 +1,285 @@
+---
+import Base from '../layouts/Base.astro';
+
+const tools = [
+  {
+    href: '/tools/due-date-calculator/',
+    name: 'Due Date Calculator',
+    tagline: 'Find your estimated due date from LMP, conception, or IVF.',
+    emoji: '🗓️',
+    large: true,
+    badge: 'Most used',
+    soon: false,
+  },
+  {
+    href: '/tools/how-many-weeks-pregnant/',
+    name: 'How Many Weeks Pregnant',
+    tagline: 'See your current week, trimester, and what to expect.',
+    emoji: '📅',
+    large: false,
+    soon: false,
+  },
+  {
+    href: '/tools/ovulation-fertility-window/',
+    name: 'Ovulation Calculator',
+    tagline: 'Find your fertile window and best days to conceive.',
+    emoji: '🌸',
+    large: false,
+    soon: false,
+  },
+  {
+    href: '#coming-soon',
+    name: 'Pregnancy Weight Gain',
+    tagline: 'Get a personalized gain target by pre-pregnancy BMI.',
+    emoji: '⚖️',
+    large: false,
+    soon: true,
+  },
+  {
+    href: '#coming-soon',
+    name: 'Baby Growth Percentile',
+    tagline: 'Check weight, length, and head circumference percentiles.',
+    emoji: '📈',
+    large: false,
+    soon: true,
+  },
+  {
+    href: '#coming-soon',
+    name: 'Feeding & Formula Amount',
+    tagline: 'Daily feeding guide by baby weight and age.',
+    emoji: '🍼',
+    large: false,
+    soon: true,
+  },
+  {
+    href: '#coming-soon',
+    name: 'Baby Sleep Schedule',
+    tagline: 'Wake-window and nap schedules by age.',
+    emoji: '😴',
+    large: false,
+    soon: true,
+  },
+  {
+    href: '#coming-soon',
+    name: 'Maternity Leave Planner',
+    tagline: 'FMLA timeline, pay estimates, and return-to-work date.',
+    emoji: '📋',
+    large: false,
+    soon: true,
+  },
+];
+
+const homeSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Sage & Sprout',
+  url: 'https://sageandsprout.com',
+  description: 'Free, science-backed pregnancy and baby calculators for expecting and new parents.',
+};
+
+const collSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Pregnancy & Baby Calculators',
+  url: 'https://sageandsprout.com',
+  description: 'A collection of free, evidence-based tools for pregnancy tracking, fertility, and newborn care.',
+};
+---
+
+<Base
+  title="Pregnancy & Baby Calculators — Free, Science-Backed Tools | Sage & Sprout"
+  description="Free pregnancy and baby calculators: due date, weeks pregnant, ovulation, weight gain, baby growth, feeding, and more. Evidence-based and reviewed by a medical student."
+  schema={[homeSchema, collSchema]}
+>
+
+  <!-- ── Hero ──────────────────────────────────────── -->
+  <section style="max-width:1100px;margin:0 auto;padding:3.5rem 1.25rem 0;">
+    <div style="max-width:54ch;">
+      <p style="font-size:.82rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--color-primary);margin:0 0 .75rem;">Pregnancy &amp; Baby Tools</p>
+      <h1 style="font-family:var(--font-family-display);font-size:clamp(2rem,5vw,3.2rem);font-weight:700;color:var(--color-ink);margin:0 0 1rem;line-height:1.15;">
+        Calm, accurate tools<br/>for every week of your journey.
+      </h1>
+      <p style="font-size:1.05rem;color:var(--color-muted);margin:0 0 2rem;max-width:50ch;line-height:1.65;">
+        Free, evidence-based calculators for pregnancy, fertility, and newborn care.
+        Reviewed by a senior medical student. No sign-up. No ads above the tools.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Bento grid ─────────────────────────────────── -->
+  <section style="max-width:1100px;margin:0 auto;padding:2rem 1.25rem 4rem;" aria-label="All tools">
+    <div class="bento-grid">
+
+      <!-- Large hero card: Due Date -->
+      <a
+        href="/tools/due-date-calculator/"
+        class="tool-card-large"
+        style="
+          text-decoration:none;
+          background:var(--color-primary);
+          color:#fff;
+          border-radius:var(--radius);
+          padding:2.5rem;
+          display:flex;
+          flex-direction:column;
+          justify-content:space-between;
+          min-height:220px;
+          position:relative;
+          overflow:hidden;
+          transition:box-shadow .2s;
+          box-shadow:var(--shadow);
+        "
+      >
+        <div>
+          <span style="display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;background:rgba(255,255,255,.18);border-radius:999px;padding:.2rem .7rem;margin-bottom:1rem;">Most used</span>
+          <p style="font-size:3rem;margin:0 0 .75rem;line-height:1;">🗓️</p>
+          <h2 style="font-family:var(--font-family-display);font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:700;margin:0 0 .5rem;color:#fff;">Due Date Calculator</h2>
+          <p style="font-size:1rem;opacity:.85;margin:0;max-width:42ch;">Find your estimated due date from LMP, conception date, or IVF embryo transfer.</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:.4rem;margin-top:1.75rem;font-size:.9rem;font-weight:600;opacity:.9;">
+          Calculate now <span>→</span>
+        </div>
+        <div aria-hidden="true" style="position:absolute;right:-3rem;top:-3rem;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.07);"></div>
+      </a>
+
+      <!-- Small live tool cards -->
+      {tools.filter(t => !t.large && !t.soon).map(t => (
+        <a
+          href={t.href}
+          class="tool-card-small"
+          style="
+            text-decoration:none;
+            background:var(--color-surface);
+            border-radius:var(--radius);
+            padding:1.5rem;
+            border:1.5px solid var(--color-line);
+            display:flex;flex-direction:column;gap:.5rem;
+            transition:border-color .15s,box-shadow .15s;
+          "
+        >
+          <span style="font-size:1.75rem;">{t.emoji}</span>
+          <p style="font-size:.95rem;font-weight:600;color:var(--color-ink);margin:0;">{t.name}</p>
+          <p style="font-size:.82rem;color:var(--color-muted);margin:0;line-height:1.5;">{t.tagline}</p>
+        </a>
+      ))}
+
+      <!-- Coming-soon cards -->
+      {tools.filter(t => t.soon).map(t => (
+        <div
+          class="tool-card-small"
+          style="
+            background:var(--color-surface);
+            border-radius:var(--radius);
+            padding:1.5rem;
+            border:1.5px solid var(--color-line);
+            display:flex;flex-direction:column;gap:.5rem;
+            opacity:.5;
+          "
+          aria-label={t.name + ' — coming soon'}
+        >
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:1.75rem;">{t.emoji}</span>
+            <span style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--color-muted);border:1px solid var(--color-line);border-radius:999px;padding:.15rem .6rem;">Soon</span>
+          </div>
+          <p style="font-size:.95rem;font-weight:600;color:var(--color-ink);margin:0;">{t.name}</p>
+          <p style="font-size:.82rem;color:var(--color-muted);margin:0;line-height:1.5;">{t.tagline}</p>
+        </div>
+      ))}
+    </div>
+
+    <!-- Trust bar -->
+    <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;margin-top:2.5rem;padding:1.25rem 1.5rem;background:var(--color-surface);border-radius:var(--radius-sm);border:1px solid var(--color-line);">
+      {[
+        ['🔬', 'Evidence-based: ACOG, AAP, CDC sources'],
+        ['🔒', 'All calculations happen in your browser'],
+        ['🆓', 'Free, no sign-up required'],
+        ['⚕️', 'Reviewed by a senior medical student'],
+      ].map(([icon, label]) => (
+        <div style="display:flex;align-items:center;gap:.5rem;font-size:.83rem;color:var(--color-muted);">
+          <span>{icon}</span><span>{label}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ── Pillar content ─────────────────────────────── -->
+  <section id="coming-soon" style="max-width:760px;margin:0 auto;padding:0 1.25rem 5rem;" aria-label="Pregnancy calculators guide">
+    <h2 style="font-family:var(--font-family-display);font-size:clamp(1.4rem,3.5vw,1.9rem);font-weight:700;color:var(--color-ink);margin:0 0 1rem;">Pregnancy calculators: a guide for expecting parents</h2>
+    <div class="prose">
+      <p>
+        When you're pregnant — or trying to become pregnant — accurate numbers matter.
+        When is your baby due? How far along are you? When is your fertile window?
+        These questions have clear, evidence-based answers, and our tools calculate
+        them using the same formulas your healthcare provider uses.
+      </p>
+
+      <h3>Starting with your due date</h3>
+      <p>
+        The <a href="/tools/due-date-calculator/">due date calculator</a> is almost always the first
+        tool parents reach for. It uses <strong>Naegele's rule</strong> — endorsed by the American
+        College of Obstetricians and Gynecologists (ACOG) — to add 280 days to the first day of
+        your last menstrual period. You can also calculate from a known conception date or an
+        IVF embryo transfer date.
+      </p>
+      <p>
+        Keep in mind: only about 4–5% of babies are born exactly on their estimated due date.
+        The EDD is the midpoint of a window — full term is 39–40 weeks, and most births occur
+        between 37 and 42 weeks. Your provider may revise your date after a first-trimester ultrasound.
+      </p>
+
+      <h3>Knowing how far along you are</h3>
+      <p>
+        Once you have a due date, the <a href="/tools/how-many-weeks-pregnant/">how many weeks pregnant
+        calculator</a> shows your current gestational age in weeks and days, which trimester you're in,
+        and what's happening in your pregnancy this week. Gestational age is counted from the first day
+        of your last period — the same convention your provider uses for scheduling tests.
+      </p>
+
+      <h3>Trying to conceive: your fertile window</h3>
+      <p>
+        If you're trying to get pregnant, the <a href="/tools/ovulation-fertility-window/">ovulation
+        calculator</a> estimates your fertile window based on your cycle length and last period.
+        The fertile window spans six days: the five days before ovulation and the day of ovulation.
+        Research shows the highest chance of conception comes from intercourse one to two days
+        before ovulation.
+      </p>
+
+      <h3>More tools coming soon</h3>
+      <p>
+        We're building the complete pregnancy and baby toolkit. Coming next:
+        pregnancy weight-gain target (by pre-pregnancy BMI, per IOM/NASEM guidelines),
+        baby growth percentile checker (WHO and CDC standards), feeding and formula amount guide,
+        baby sleep schedule by age, and maternity leave planner with FMLA and state PFL support.
+      </p>
+      <p style="padding:1rem 1.25rem;background:var(--color-surface-2);border-radius:var(--radius-sm);font-size:.9rem;">
+        <strong>About Sage &amp; Sprout:</strong> Our tools are built on primary medical literature —
+        ACOG, AAP, NIH, CDC — and reviewed by a senior medical student at an Ivy League institution.
+        All calculations happen in your browser. We never store your dates or personal information.
+        Content is general educational information — always consult your healthcare provider for personal guidance.
+        <a href="/about/">Learn more →</a>
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1rem;
+  }
+  .tool-card-large  { grid-column: span 12; }
+  .tool-card-small  { grid-column: span 12; }
+
+  @media (min-width: 480px) {
+    .tool-card-small { grid-column: span 6; }
+  }
+  @media (min-width: 768px) {
+    .tool-card-large  { grid-column: span 12; }
+    .tool-card-small  { grid-column: span 4; }
+  }
+  .tool-card-small:hover {
+    border-color: var(--color-primary) !important;
+    box-shadow: var(--shadow-sm);
+  }
+</style>

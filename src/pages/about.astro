@@ -1,0 +1,104 @@
+---
+import Base from '../layouts/Base.astro';
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  description: 'Senior medical student at an Ivy League institution and author of Sage & Sprout.',
+};
+
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Sage & Sprout',
+  url: 'https://sageandsprout.com',
+  description: 'Free, evidence-based pregnancy and baby calculators reviewed by a medical student.',
+};
+---
+
+<Base
+  title="About Sage & Sprout — Our Mission and Medical Review Process"
+  description="Sage & Sprout is built by a senior medical student at an Ivy League institution to provide free, accurate, evidence-based tools for pregnancy and newborn care."
+  breadcrumbs={[{ label: 'About', href: '/about/' }]}
+  schema={[personSchema, orgSchema]}
+>
+  <div style="max-width:680px;margin:0 auto;padding:3rem 1.25rem 5rem;">
+    <h1 style="font-family:var(--font-family-display);font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;color:var(--color-ink);margin:0 0 .5rem;">About Sage &amp; Sprout</h1>
+    <p style="font-size:1.05rem;color:var(--color-muted);margin:0 0 2.5rem;">Free, evidence-based tools for pregnancy, fertility, and newborn care.</p>
+
+    <div class="prose">
+      <h2>Why we built these tools</h2>
+      <p>
+        Pregnancy comes with an overwhelming number of questions: When is the baby due? How far along am I?
+        When is the best time to try to conceive? How much weight gain is healthy? Most tools that exist
+        either bury the answer under ads and distractions, or give you a number without any explanation
+        of where it came from.
+      </p>
+      <p>
+        Sage &amp; Sprout was built to do one thing well: give expecting and new parents <strong>accurate,
+        clearly sourced answers</strong> in a calm, uncluttered environment. Every calculator uses the same
+        formula your obstetrician or midwife uses, cited to its primary source.
+      </p>
+
+      <h2>Who we are</h2>
+      <p>
+        Sage &amp; Sprout is authored and reviewed by a <strong>senior medical student at an Ivy League
+        institution</strong>. The site was built specifically because medical training gives a unique
+        vantage point: access to primary clinical literature, an understanding of how guidelines are
+        derived and how to apply them, and a responsibility to communicate health information accurately.
+      </p>
+      <p>
+        <strong>Important context:</strong> the reviewer is a medical student — not yet a licensed
+        physician. These tools do not constitute medical advice, and the content on this site does not
+        establish a doctor-patient relationship. All clinical figures are cited to authoritative primary
+        sources (ACOG, AAP, NIH, CDC, IOM/NASEM, ASRM, US DOL). Please always discuss your individual
+        situation with your own healthcare provider.
+      </p>
+
+      <h2>How we source and review content</h2>
+      <p>
+        Every calculator on Sage &amp; Sprout is built from <strong>primary medical literature and
+        professional society guidelines</strong>:
+      </p>
+      <ul>
+        <li><strong>Due date and gestational age:</strong> ACOG Committee Opinion 700</li>
+        <li><strong>Ovulation and fertility:</strong> ASRM guidelines; Wilcox et al., NEJM 1995</li>
+        <li><strong>Pregnancy weight gain:</strong> IOM/NASEM 2009 guidelines (coming soon)</li>
+        <li><strong>Baby growth:</strong> WHO Child Growth Standards; CDC Growth Charts (coming soon)</li>
+        <li><strong>Feeding:</strong> AAP and HealthyChildren.org recommendations (coming soon)</li>
+        <li><strong>Maternity leave:</strong> US Department of Labor FMLA guidelines (coming soon)</li>
+      </ul>
+      <p>
+        Content is reviewed before publication and updated when guidelines change. Each tool page shows
+        the date it was last reviewed and links directly to the primary sources we used.
+      </p>
+
+      <h2>Our commitment to accuracy</h2>
+      <p>
+        We take accuracy seriously — particularly because this is a YMYL ("Your Money or Your Life")
+        site where inaccurate information could genuinely affect someone's pregnancy decisions.
+        Our approach:
+      </p>
+      <ul>
+        <li>Every clinical formula is derived from the cited primary source, not a secondary reference.</li>
+        <li>Calculator logic is written in testable TypeScript with unit tests against worked clinical examples.</li>
+        <li>All content carries a clear medical disclaimer and a "talk to your provider" call to action.</li>
+        <li>If you believe anything on this site is inaccurate, please <a href="/contact/">contact us</a> — we will review and update promptly.</li>
+      </ul>
+
+      <h2>Privacy</h2>
+      <p>
+        All calculations happen <strong>in your browser</strong>. We never transmit your dates, cycle
+        information, or any personal health data to a server. The only data practices to be aware of are
+        those described in our <a href="/privacy/">Privacy Policy</a> (standard analytics and, in future,
+        advertising cookies from our ad network).
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Have a question, a correction, or a suggestion for a new tool? We'd love to hear from you.
+        <a href="/contact/">Get in touch →</a>
+      </p>
+    </div>
+  </div>
+</Base>
