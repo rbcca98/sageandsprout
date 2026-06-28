@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://sageandsprout.com',
+  site: 'https://sage-and-sprout.com',
   vite: {
     plugins: [tailwindcss()],
   },
