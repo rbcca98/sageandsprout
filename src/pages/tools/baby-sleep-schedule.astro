@@ -125,7 +125,7 @@ import { toolSchema } from '../../data/tools/_schema';
     });
 
     if (result.naps.length === 0) {
-      napsContainer.innerHTML = '<p style="color:var(--color-muted);font-size:0.9rem;">No naps — night sleep covers most needs at this age. Consult your provider if needed.</p>';
+      napsContainer.innerHTML = '<p style="color:var(--color-muted);font-size:0.9rem;">No naps. Night sleep covers most needs at this age. Consult your provider if needed.</p>';
     }
 
     document.getElementById('sl-bedtime')!.textContent = result.bedtimeLabel;

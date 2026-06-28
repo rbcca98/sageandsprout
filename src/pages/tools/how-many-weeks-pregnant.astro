@@ -167,7 +167,7 @@ import { toolSchema } from '../../data/tools/_schema';
     if (ms) {
       milestoneEl.innerHTML = `
         <p style="margin:0;font-size:.8rem;color:var(--color-muted);">Next milestone</p>
-        <p style="margin:.2rem 0 0;font-size:.9rem;font-weight:600;color:var(--color-ink);">${ms.label} — ${ms.daysLeft} day${ms.daysLeft !== 1 ? 's' : ''} away (week ${ms.weeksGA})</p>
+        <p style="margin:.2rem 0 0;font-size:.9rem;font-weight:600;color:var(--color-ink);">${ms.label}: ${ms.daysLeft} day${ms.daysLeft !== 1 ? 's' : ''} away (week ${ms.weeksGA})</p>
       `;
       milestoneEl.style.display = 'block';
     } else {

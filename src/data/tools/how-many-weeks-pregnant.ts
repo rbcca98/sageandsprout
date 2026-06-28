@@ -8,7 +8,7 @@ const copy: ToolCopy = {
   breadcrumb: 'How Many Weeks Pregnant',
   headline: 'How Many Weeks Pregnant Am I?',
   hook:
-    "Enter the first day of your last menstrual period (LMP) or your estimated due date to instantly see how far along you are, which trimester you're in, your pregnancy progress, and what's happening at this stage — all calculated by the same gestational-age method your provider uses.",
+    "Enter the first day of your last menstrual period (LMP) or your estimated due date to see how far along you are, which trimester you're in, your progress, and what's happening at this stage. It uses the same gestational-age method your provider uses.",
   reviewedDate: '2026-06-27',
 
   faqs: [
@@ -20,17 +20,17 @@ const copy: ToolCopy = {
     {
       question: 'How do doctors count pregnancy weeks?',
       answer:
-        'Doctors count from the first day of your last menstrual period (LMP), even though conception occurs about 2 weeks later. This is called gestational age. It may seem counterintuitive — at 4 weeks pregnant by this count, the embryo is actually only about 2 weeks old. But counting from LMP provides a consistent reference point your provider uses across your care.',
+        'Doctors count from the first day of your last menstrual period (LMP), even though conception occurs about 2 weeks later. This is called gestational age. It can seem counterintuitive: at 4 weeks pregnant by this count, the embryo is only about 2 weeks old. But counting from LMP gives a consistent reference point your provider uses across your care.',
     },
     {
       question: "What's the difference between gestational age and fetal age?",
       answer:
-        "Gestational age counts from the LMP and is the standard used in prenatal care. At 10 weeks gestational age, your baby is approximately 8 weeks old (fetal age). For clinical purposes — scheduling tests, interpreting ultrasound measurements, understanding guidelines — always use gestational age, since that's what your provider and medical references use.",
+        "Gestational age counts from the LMP and is the standard used in prenatal care. At 10 weeks gestational age, your baby is about 8 weeks old (fetal age). For scheduling tests, reading ultrasound measurements, and following guidelines, always use gestational age. That's what your provider and medical references use.",
     },
     {
-      question: "I don't know my LMP — can I still use this tool?",
+      question: "I don't know my LMP. Can I still use this tool?",
       answer:
-        "Yes! Enter your estimated due date (EDD) instead, and the tool will calculate backwards to find your gestational age. If you're unsure of your EDD, your provider can give you one after an ultrasound. A first-trimester ultrasound measurement is more accurate than LMP for dating if you have irregular cycles.",
+        "Yes. Enter your estimated due date (EDD) instead and the tool calculates backwards to find your gestational age. If you're unsure of your EDD, your provider can give you one after an ultrasound. A first-trimester ultrasound is more accurate than LMP for dating if you have irregular cycles.",
     },
     {
       question: 'What is "quickening," and when will I feel it?',
@@ -50,46 +50,45 @@ const copy: ToolCopy = {
   ],
 
   sources: [
-    { label: 'ACOG Committee Opinion 700 — Methods for Estimating the Due Date', url: 'https://www.acog.org/clinical/clinical-guidance/committee-opinion/articles/2017/05/methods-for-estimating-the-due-date' },
-    { label: 'ACOG FAQ — How Your Baby Grows During Pregnancy', url: 'https://www.acog.org/womens-health/faqs/how-your-baby-grows-during-pregnancy' },
-    { label: 'MedlinePlus — Fetal Development', url: 'https://medlineplus.gov/ency/article/002398.htm' },
-    { label: 'ACOG FAQ — Prenatal Genetic Screening Tests', url: 'https://www.acog.org/womens-health/faqs/prenatal-genetic-screening-tests' },
+    { label: 'ACOG Committee Opinion 700: Methods for Estimating the Due Date', url: 'https://www.acog.org/clinical/clinical-guidance/committee-opinion/articles/2017/05/methods-for-estimating-the-due-date' },
+    { label: 'ACOG FAQ: How Your Baby Grows During Pregnancy', url: 'https://www.acog.org/womens-health/faqs/how-your-baby-grows-during-pregnancy' },
+    { label: 'MedlinePlus: Fetal Development', url: 'https://medlineplus.gov/ency/article/002398.htm' },
+    { label: 'ACOG FAQ: Prenatal Genetic Screening Tests', url: 'https://www.acog.org/womens-health/faqs/prenatal-genetic-screening-tests' },
   ],
 
   contentHtml: `
     <h2>How pregnancy weeks are counted</h2>
     <p>
-      In prenatal medicine, pregnancy is measured in <strong>gestational age</strong>, counted from the
-      first day of your last menstrual period (LMP) — even though conception happens about two weeks later.
-      This convention exists because the LMP is a concrete, observable date, while the exact day of ovulation
-      and fertilization is rarely known precisely. Your provider, ultrasound technician, and all prenatal
-      screening guidelines use gestational age by default.
+      Pregnancy is measured in <strong>gestational age</strong>, counted from the first day of your
+      last menstrual period (LMP), even though conception happens about two weeks later. The LMP
+      works as the starting point because it's a concrete, observable date, while the exact day of
+      ovulation and fertilization is rarely known. Your provider, ultrasound technician, and every
+      prenatal screening guideline use gestational age by default.
     </p>
     <p>
-      For example, at "4 weeks pregnant" (gestational age), the embryo itself is approximately 2 weeks old
-      — but your provider will always refer to you as 4 weeks along. This is consistent with how prenatal
-      care guidelines, screening windows, and fetal development charts are written.
+      So at "4 weeks pregnant" (gestational age), the embryo itself is about 2 weeks old, but your
+      provider will always call you 4 weeks along. Prenatal care guidelines, screening windows, and
+      fetal development charts are all written this way.
     </p>
 
     <h2>Gestational age vs. fetal age</h2>
     <p>
       <strong>Gestational age</strong> counts from the LMP and is the universal clinical standard.
-      <strong>Fetal age</strong> (or embryonic age) counts from fertilization and is approximately
-      two weeks less. When you see development descriptions in books or online — "at 8 weeks, the
-      heart has four chambers" — these may use fetal age; always clarify which reference is being used
-      to avoid confusion.
+      <strong>Fetal age</strong> (or embryonic age) counts from fertilization and runs about two
+      weeks less. Development descriptions in books or online, such as "at 8 weeks, the heart has
+      four chambers," sometimes use fetal age, so check which one a source means.
     </p>
     <p>
-      For all discussions with your healthcare provider, use gestational age. When reading fetal
-      development content, check whether weeks are counted from LMP or from conception.
+      With your provider, always use gestational age. When reading fetal development content, check
+      whether weeks are counted from LMP or from conception.
     </p>
 
     <h2>First trimester: weeks 1–13</h2>
     <p>
-      The first trimester is a period of rapid, foundational development. By the end of the first
-      trimester, the embryo has become a fetus with all major organ systems established, a beating heart,
-      and the beginnings of all limbs and facial features. The placenta has fully formed and taken over
-      hormone production from the corpus luteum.
+      The first trimester is when the foundations form fast. By its end, the embryo has become a
+      fetus with all major organ systems in place, a beating heart, and the beginnings of every limb
+      and facial feature. The placenta has fully formed and taken over hormone production from the
+      corpus luteum.
     </p>
     <p>
       Common first-trimester experiences include nausea and vomiting (affecting 70–80% of pregnancies),
@@ -110,10 +109,10 @@ const copy: ToolCopy = {
       week 27.
     </p>
     <p>
-      Around weeks 18–22, most parents feel fetal movement for the first time. The anatomy scan —
-      a detailed ultrasound checking fetal growth, organ development, and placental position —
-      is scheduled in this window. If you're having genetic testing, second-trimester quad screen
-      results are typically reported in this period.
+      Around weeks 18–22, most parents feel fetal movement for the first time. The anatomy scan, a
+      detailed ultrasound checking fetal growth, organ development, and placental position, is
+      scheduled in this window. If you're having genetic testing, second-trimester quad screen
+      results usually come back in this period.
     </p>
     <p>
       <strong>Key second-trimester appointments:</strong> Anatomy scan (weeks 18–22); quad screen
@@ -123,8 +122,8 @@ const copy: ToolCopy = {
     <h2>Third trimester: weeks 28–40+</h2>
     <p>
       In the third trimester, your baby gains most of their body weight and the lungs begin producing
-      surfactant — the substance essential for breathing after birth. By week 37, a baby is considered
-      "early term." By week 39, the brain, lungs, and liver are more fully mature — this is "full term."
+      surfactant, the substance essential for breathing after birth. By week 37, a baby is "early
+      term." By week 39, the brain, lungs, and liver are more fully mature, which is "full term."
     </p>
     <p>
       Prenatal visits become more frequent (every two weeks from weeks 28–36, then weekly from week 36).

@@ -1,21 +1,21 @@
 import type { ToolCopy } from './_types';
 
 const copy: ToolCopy = {
-  title: 'Baby Sleep Schedule Calculator — Wake Windows & Nap Times by Age | Sage & Sprout',
+  title: 'Baby Sleep Schedule Calculator: Wake Windows & Nap Times by Age | Sage & Sprout',
   description:
     'Generate a baby sleep and nap schedule by age. Get suggested nap times, wake windows, bedtime, and total sleep targets based on AAP and AASM recommendations.',
   path: '/tools/baby-sleep-schedule/',
   breadcrumb: 'Baby Sleep Schedule Calculator',
   headline: 'Baby Sleep Schedule Calculator',
   hook:
-    "Enter your baby's age and morning wake time to get a suggested nap schedule, estimated bedtime, and total sleep targets — based on AAP safe sleep guidelines and AASM pediatric sleep duration recommendations.",
+    "Enter your baby's age and morning wake time to get a suggested nap schedule, estimated bedtime, and total sleep targets. It draws on AAP safe sleep guidelines and AASM pediatric sleep duration recommendations.",
   reviewedDate: '2025-01-15',
 
   faqs: [
     {
       question: 'What is a wake window?',
       answer:
-        'A wake window is the amount of time a baby can comfortably stay awake between sleep periods before becoming overtired. Wake windows lengthen as babies get older — a newborn may only tolerate 45–60 minutes of wakefulness, while a 12-month-old can handle 3–4 hours. Respecting wake windows helps prevent overtiredness, which paradoxically makes it harder for babies to fall and stay asleep.',
+        'A wake window is the amount of time a baby can comfortably stay awake between sleep periods before becoming overtired. Wake windows lengthen as babies get older. A newborn may only tolerate 45–60 minutes of wakefulness, while a 12-month-old can handle 3–4 hours. Respecting wake windows helps prevent overtiredness, which paradoxically makes it harder for babies to fall and stay asleep.',
     },
     {
       question: 'How many naps does my baby need?',
@@ -30,7 +30,7 @@ const copy: ToolCopy = {
     {
       question: "My baby won't sleep according to the schedule. What should I do?",
       answer:
-        'Schedules are guidelines, not rules. Babies cannot read clocks and have variable days. If your baby seems tired before the suggested time, put them down. Watch for tired cues — eye rubbing, yawning, pulling ears, staring blankly — rather than watching the clock. Consistency in routine (diaper change, feeding, lullaby) matters more than hitting exact times.',
+        'Schedules are guidelines, not rules. Babies cannot read clocks and have variable days. If your baby seems tired before the suggested time, put them down. Watch for tired cues like eye rubbing, yawning, pulling ears, or staring blankly, rather than watching the clock. Consistency in routine (diaper change, feeding, lullaby) matters more than hitting exact times.',
     },
     {
       question: 'When do babies start sleeping through the night?',
@@ -40,7 +40,7 @@ const copy: ToolCopy = {
     {
       question: 'What is the 4-month sleep regression?',
       answer:
-        'Around 3–4 months, babies undergo a permanent change in their sleep architecture — they shift from two sleep stages (light and deep) to four, similar to adult sleep cycles. This transition often causes increased night waking after a period of longer stretches. It is not a regression to earlier behavior — it is a permanent neurological maturation. Most families see improvement within 2–6 weeks.',
+        'Around 3–4 months, babies undergo a permanent change in their sleep architecture: they shift from two sleep stages (light and deep) to four, similar to adult sleep cycles. This transition often causes increased night waking after a period of longer stretches. It is not a regression to earlier behavior. It is a permanent neurological maturation. Most families see improvement within 2–6 weeks.',
     },
   ],
 
@@ -58,10 +58,10 @@ const copy: ToolCopy = {
   contentHtml: `
     <h2>Why wake windows matter</h2>
     <p>
-      A wake window is the span of time a baby can comfortably remain awake before sleep pressure builds to the point of overtiredness. Overtired babies often <em>fight</em> sleep — the stress hormones (cortisol, adrenaline) released by prolonged wakefulness make it harder, not easier, to fall asleep. This is the counterintuitive loop parents encounter when they think "if I keep baby awake longer, they'll sleep better."
+      A wake window is the span of time a baby can comfortably remain awake before sleep pressure builds to the point of overtiredness. Overtired babies often <em>fight</em> sleep. The stress hormones (cortisol, adrenaline) released by prolonged wakefulness make it harder, not easier, to fall asleep. This is the counterintuitive loop parents encounter when they think "if I keep baby awake longer, they'll sleep better."
     </p>
     <p>
-      Wake windows lengthen significantly with age. A 6-week-old may only manage 45–60 minutes before needing to sleep again, while a 10-month-old can comfortably stay awake for 3–4 hours. Tracking wake windows — rather than trying to impose a fixed clock-based schedule — is the core skill of newborn and infant sleep.
+      Wake windows lengthen significantly with age. A 6-week-old may only manage 45–60 minutes before needing to sleep again, while a 10-month-old can comfortably stay awake for 3–4 hours. Tracking wake windows, rather than trying to impose a fixed clock-based schedule, is the core skill of newborn and infant sleep.
     </p>
 
     <h2>How much sleep does my baby need?</h2>
@@ -74,7 +74,7 @@ const copy: ToolCopy = {
       <li><strong>Toddlers (1–2 years):</strong> 11–14 hours</li>
     </ul>
     <p>
-      These ranges account for individual variation. A baby consistently sleeping at the lower end of the normal range who is happy, alert, and growing well is not sleep-deprived — they may simply need less sleep than average.
+      These ranges account for individual variation. A baby consistently sleeping at the lower end of the normal range who is happy, alert, and growing well is not sleep-deprived. They may simply need less sleep than average.
     </p>
 
     <h2>Nap transitions and what to expect</h2>
@@ -88,16 +88,16 @@ const copy: ToolCopy = {
       <strong>2 to 1 nap</strong> (around 12–18 months): Signs include taking a long time to fall asleep for the first nap, skipping it entirely some days, or one nap running so long it disrupts bedtime. The transition usually takes 4–8 weeks and can be bumpy.
     </p>
 
-    <h2>Safe sleep — the AAP guidelines</h2>
+    <h2>Safe sleep: the AAP guidelines</h2>
     <p>
       Where and how your baby sleeps is as important as how much they sleep. The AAP 2022 safe sleep guidelines recommend:
     </p>
     <ul>
       <li><strong>Back to sleep</strong> for every nap and night sleep, every time, until age 1</li>
-      <li><strong>Firm, flat surface</strong> — a crib, bassinet, or play yard with a fitted sheet designed for that product</li>
-      <li><strong>No loose bedding</strong> — no pillows, bumper pads, positioners, or soft toys in the sleep space</li>
+      <li><strong>Firm, flat surface:</strong> a crib, bassinet, or play yard with a fitted sheet designed for that product</li>
+      <li><strong>No loose bedding:</strong> no pillows, bumper pads, positioners, or soft toys in the sleep space</li>
       <li><strong>Room-sharing without bed-sharing</strong> for at least the first 6 months, ideally 1 year</li>
-      <li><strong>Avoid overheating</strong> — dress baby in one more layer than you find comfortable; use a sleep sack instead of blankets</li>
+      <li><strong>Avoid overheating:</strong> dress baby in one more layer than you find comfortable; use a sleep sack instead of blankets</li>
     </ul>
     <p>
       Swaddling is safe and beneficial in the first 2–3 months for calming and sleep. Stop swaddling when the baby shows signs of rolling over (typically around 3–4 months), as a swaddled rolling baby cannot push up from a face-down position.
@@ -105,10 +105,10 @@ const copy: ToolCopy = {
 
     <h2>Creating a consistent sleep routine</h2>
     <p>
-      A bedtime routine trains the brain to associate specific actions with sleep onset. Even a short, consistent sequence — diaper, pajamas, feeding, song, dark room — can significantly shorten the time it takes for babies to fall asleep. The routine does not need to be long (10–20 minutes is fine) but should be predictable. The same steps in the same order, every time.
+      A bedtime routine trains the brain to associate specific actions with sleep onset. Even a short, consistent sequence (diaper, pajamas, feeding, song, dark room) can significantly shorten the time it takes for babies to fall asleep. The routine does not need to be long (10–20 minutes is fine) but should be predictable. The same steps in the same order, every time.
     </p>
     <p>
-      White noise can help mask household sounds that cause brief arousals. Research supports volumes around 65 dB — roughly the sound of a shower — positioned at least 6 feet from the baby's sleep space.
+      White noise can help mask household sounds that cause brief arousals. Research supports volumes around 65 dB (roughly the sound of a shower), positioned at least 6 feet from the baby's sleep space.
     </p>
   `,
 };

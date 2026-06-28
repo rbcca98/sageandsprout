@@ -65,12 +65,12 @@ const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://sageandsprout.com/' },
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://sage-and-sprout.com/' },
     ...breadcrumbs.map(({ label, href }, i) => ({
       '@type': 'ListItem',
       position: i + 2,
       name: label,
-      item: `https://sageandsprout.com${href}`,
+      item: `https://sage-and-sprout.com${href}`,
     })),
   ],
 };

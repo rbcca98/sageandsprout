@@ -1,7 +1,7 @@
 import type { ToolCopy } from './_types';
 
 const copy: ToolCopy = {
-  title: 'Baby Name Explorer — Top Names with Meaning & Origin (2023 SSA Data) | Sage & Sprout',
+  title: 'Baby Name Explorer: Top Names with Meaning & Origin (2023 SSA Data) | Sage & Sprout',
   description:
     'Search top baby names with meaning, origin, and 2023 SSA popularity rank. Filter by sex and popularity tier. Browse top 10 to top 100 boy and girl names.',
   path: '/tools/baby-name-explorer/',
@@ -17,12 +17,12 @@ const copy: ToolCopy = {
     {
       question: 'Where does the popularity data come from?',
       answer:
-        'Popularity ranks are based on the Social Security Administration (SSA) national name data for 2023 — the most recent year available. The SSA publishes data on every name given to at least 5 babies in the United States each year, making it the most comprehensive source for US baby name popularity.',
+        'Popularity ranks are based on the Social Security Administration (SSA) national name data for 2023, the most recent year available. The SSA publishes data on every name given to at least 5 babies in the United States each year, making it the most comprehensive source for US baby name popularity.',
     },
     {
       question: 'What does "Top 10" or "Top 50" mean?',
       answer:
-        "The popularity tier reflects the name's rank in the SSA 2023 national dataset. \"Top 10\" means the name was among the 10 most popular names for that sex. \"Top 100\" means it ranked within the 100 most popular. Keep in mind that top-100 names are used by a much higher percentage of babies than the raw rank suggests — Liam (#1) was given to roughly 20,000 boys in 2023.",
+        "The popularity tier reflects the name's rank in the SSA 2023 national dataset. \"Top 10\" means the name was among the 10 most popular names for that sex. \"Top 100\" means it ranked within the 100 most popular. Top-100 names are used by a much higher percentage of babies than the raw rank suggests: Liam (#1) was given to roughly 20,000 boys in 2023.",
     },
     {
       question: 'Are these names only for one sex?',
@@ -48,16 +48,16 @@ const copy: ToolCopy = {
 
   sources: [
     { label: 'Social Security Administration. Popular Baby Names. 2023 National Data.', url: 'https://www.ssa.gov/oact/babynames/' },
-    { label: 'Behind the Name — Etymology and History of First Names.', url: 'https://www.behindthename.com' },
+    { label: 'Behind the Name: Etymology and History of First Names.', url: 'https://www.behindthename.com' },
   ],
 
   contentHtml: `
     <h2>How baby name trends work in the US</h2>
     <p>
-      Every year, the Social Security Administration publishes a count of every name given to at least 5 babies in the United States, drawn from Social Security card applications. This dataset is the most comprehensive view of US baby name trends available. The most popular names in any given year account for a substantial fraction of all births — in 2023, the top 10 names for each sex together accounted for roughly 8% of all births.
+      Every year, the Social Security Administration publishes a count of every name given to at least 5 babies in the United States, drawn from Social Security card applications. This dataset is the most comprehensive view of US baby name trends available. The most popular names in any given year account for a substantial fraction of all births. In 2023, the top 10 names for each sex together accounted for roughly 8% of all births.
     </p>
     <p>
-      Name popularity cycles roughly 20–30 year intervals — names popular with grandparents often feel fresh for grandchildren (hence the resurgence of Henry, Eleanor, Violet, and Theodore). Names popular in the 1980s and 1990s (Jennifer, Jessica, Jason, Justin) tend to feel dated to current parents and are unlikely to return to the top 20 for another decade or more.
+      Name popularity cycles over roughly 20–30 year intervals, so names popular with grandparents often feel fresh for grandchildren (hence the resurgence of Henry, Eleanor, Violet, and Theodore). Names popular in the 1980s and 1990s (Jennifer, Jessica, Jason, Justin) tend to feel dated to current parents and are unlikely to return to the top 20 for another decade or more.
     </p>
 
     <h2>What makes a name timeless vs. trendy?</h2>
@@ -76,10 +76,10 @@ const copy: ToolCopy = {
       <strong>Say it out loud.</strong> A name that looks elegant on paper can be awkward to say with your surname, or may sound like something unintended. Say it fast, say it loudly ("Dinner's ready, [name]!"), say it with your last name.
     </p>
     <p>
-      <strong>Check the initials.</strong> The full name's initials spelled out together matter — especially on personalized items or monograms.
+      <strong>Check the initials.</strong> The full name's initials spelled out together matter, especially on personalized items or monograms.
     </p>
     <p>
-      <strong>Consider nicknames.</strong> Even if you never plan to use a nickname, others will — teachers, coaches, friends. What are the natural shortenings of the name? Are you comfortable with those?
+      <strong>Consider nicknames.</strong> Even if you never plan to use a nickname, others will: teachers, coaches, friends. What are the natural shortenings of the name? Are you comfortable with those?
     </p>
     <p>
       <strong>Think about the future adult.</strong> The name will belong to a job applicant, a future partner, a professional. Does it work in all those contexts?

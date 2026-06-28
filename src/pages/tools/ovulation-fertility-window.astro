@@ -156,9 +156,9 @@ import { toolSchema } from '../../data/tools/_schema';
     // Phase badge
     (document.getElementById('o-phase') as HTMLElement).textContent = r.phaseLabel +
       (r.daysUntilFertileWindow !== null
-        ? ` — fertile window in ${r.daysUntilFertileWindow} day${r.daysUntilFertileWindow !== 1 ? 's' : ''}`
+        ? `, fertile window in ${r.daysUntilFertileWindow} day${r.daysUntilFertileWindow !== 1 ? 's' : ''}`
         : r.daysUntilOvulation !== null
-          ? ` — ovulation in ${r.daysUntilOvulation} day${r.daysUntilOvulation !== 1 ? 's' : ''}`
+          ? `, ovulation in ${r.daysUntilOvulation} day${r.daysUntilOvulation !== 1 ? 's' : ''}`
           : '');
 
     // Key dates grid

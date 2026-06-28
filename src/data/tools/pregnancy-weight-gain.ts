@@ -1,21 +1,21 @@
 import type { ToolCopy } from './_types';
 
 const copy: ToolCopy = {
-  title: 'Pregnancy Weight Gain Calculator — IOM Guidelines by BMI | Sage & Sprout',
+  title: 'Pregnancy Weight Gain Calculator: IOM Guidelines by BMI | Sage & Sprout',
   description:
     'Calculate your recommended pregnancy weight gain based on IOM/NASEM 2009 guidelines. Personalized by BMI, current gestational week, and singleton or twin pregnancy.',
   path: '/tools/pregnancy-weight-gain/',
   breadcrumb: 'Pregnancy Weight Gain Calculator',
   headline: 'Pregnancy Weight Gain Calculator',
   hook:
-    'Enter your pre-pregnancy height and weight to get your personalized IOM-recommended weight gain range — broken down by trimester and adjusted for twins. All calculations follow the 2009 Institute of Medicine guidelines adopted by ACOG.',
+    'Enter your pre-pregnancy height and weight to get your personalized IOM-recommended weight gain range, broken down by trimester and adjusted for twins. The calculations follow the 2009 Institute of Medicine guidelines adopted by ACOG.',
   reviewedDate: '2025-01-15',
 
   faqs: [
     {
       question: 'How much weight should I gain during pregnancy?',
       answer:
-        'The IOM recommends 25–35 lb for women with a normal BMI (18.5–24.9), 28–40 lb for underweight, 15–25 lb for overweight, and 11–20 lb for obese. These are total pregnancy guidelines — your provider may adjust them based on individual factors.',
+        'The IOM recommends 25–35 lb for women with a normal BMI (18.5–24.9), 28–40 lb for underweight, 15–25 lb for overweight, and 11–20 lb for obese. These are total pregnancy guidelines, and your provider may adjust them based on individual factors.',
     },
     {
       question: 'Does the recommendation change for twins?',
@@ -25,7 +25,7 @@ const copy: ToolCopy = {
     {
       question: 'What is BMI and how is it calculated?',
       answer:
-        'BMI (Body Mass Index) is weight in kilograms divided by height in meters squared. It is used to estimate whether pre-pregnancy weight is in a healthy range. BMI is a screening tool, not a diagnostic one — your provider looks at your full health picture.',
+        'BMI (Body Mass Index) is weight in kilograms divided by height in meters squared. It is used to estimate whether pre-pregnancy weight is in a healthy range. BMI is a screening tool, not a diagnostic one, and your provider looks at your full health picture.',
     },
     {
       question: 'How quickly should I gain weight in each trimester?',
@@ -35,7 +35,7 @@ const copy: ToolCopy = {
     {
       question: 'What happens if I gain too much or too little?',
       answer:
-        'Gaining more than recommended is associated with gestational diabetes, large-for-gestational-age babies, and difficulty losing weight postpartum. Gaining too little is linked to preterm birth and low birth weight. Both ends of the spectrum call for a conversation with your provider — individual circumstances vary.',
+        'Gaining more than recommended is associated with gestational diabetes, large-for-gestational-age babies, and difficulty losing weight postpartum. Gaining too little is linked to preterm birth and low birth weight. Both ends of the spectrum call for a conversation with your provider, since individual circumstances vary.',
     },
     {
       question: 'Does the calculator use pre-pregnancy weight or current weight?',
@@ -58,7 +58,7 @@ const copy: ToolCopy = {
   contentHtml: `
     <h2>What the IOM pregnancy weight gain guidelines mean for you</h2>
     <p>
-      In 2009, the Institute of Medicine (now the National Academy of Medicine) published updated guidelines for weight gain during pregnancy — the gold standard used by ACOG and virtually every US obstetric provider. The guidelines divide women into four categories based on pre-pregnancy BMI and give a recommended total gain range plus a weekly rate for the second and third trimesters.
+      In 2009, the Institute of Medicine (now the National Academy of Medicine) published updated guidelines for weight gain during pregnancy. They are the standard used by ACOG and virtually every US obstetric provider. The guidelines divide women into four categories based on pre-pregnancy BMI and give a recommended total gain range plus a weekly rate for the second and third trimesters.
     </p>
     <p>
       These recommendations exist because both too much and too little weight gain carry real risks. Gaining too little is associated with preterm birth, low birth weight, and impaired fetal growth. Gaining too much increases the risk of gestational diabetes, preeclampsia, cesarean delivery, and postpartum weight retention. Staying within the recommended range is one of the most modifiable factors for a healthy pregnancy outcome.
@@ -80,12 +80,12 @@ const copy: ToolCopy = {
 
     <h2>First trimester: why weight gain is minimal</h2>
     <p>
-      In the first trimester, average total weight gain is only 1–4 lb for most women. This is normal. The embryo and early placenta are tiny, and your blood volume has not yet expanded substantially. Some women lose weight in the first trimester due to nausea. What matters most in the first trimester is adequate nutrition — folate, iron, and protein — rather than a specific number on the scale.
+      In the first trimester, average total weight gain is only 1–4 lb for most women. This is normal. The embryo and early placenta are tiny, and your blood volume has not yet expanded substantially. Some women lose weight in the first trimester due to nausea. What matters most in the first trimester is adequate nutrition (folate, iron, and protein) rather than a specific number on the scale.
     </p>
 
     <h2>Second and third trimesters: when gain accelerates</h2>
     <p>
-      From about week 14 onward, the fetus grows rapidly and weight gain accelerates. The weekly rate recommendations from the IOM apply to these later trimesters. Week-to-week variation is completely normal — some weeks you gain more, some less. What matters is the overall trajectory over several weeks, which is why your provider weighs you at each visit rather than tracking daily.
+      From about week 14 onward, the fetus grows rapidly and weight gain accelerates. The weekly rate recommendations from the IOM apply to these later trimesters. Week-to-week variation is completely normal: some weeks you gain more, some less. What matters is the overall trajectory over several weeks, which is why your provider weighs you at each visit rather than tracking daily.
     </p>
     <p>
       Around 60% of the total recommended weight gain goes to maternal body changes (blood volume expansion, breast tissue, amniotic fluid, placenta, fat stores for breastfeeding) and about 40% to the baby and placenta directly.
@@ -104,17 +104,17 @@ const copy: ToolCopy = {
       <li>Maternal fat stores: 7 lb</li>
     </ul>
     <p>
-      Those fat stores are not "excess" weight — they are physiologically normal and support breastfeeding. Most women lose a significant portion of pregnancy weight in the first 6–8 weeks postpartum as fluids normalize, with the rest following over months.
+      Those fat stores are not "excess" weight. They are physiologically normal and support breastfeeding. Most women lose a significant portion of pregnancy weight in the first 6–8 weeks postpartum as fluids normalize, with the rest following over months.
     </p>
 
     <h2>Twin pregnancies: higher targets</h2>
     <p>
-      Carrying twins requires more weight gain to support two babies, a larger placenta, and more amniotic fluid. The IOM 2009 report provides separate recommendations for twin gestations, which the calculator uses automatically when you select "Twins." Triplet and higher-order multiple pregnancies fall outside the IOM framework — discuss specific targets with your maternal-fetal medicine specialist.
+      Carrying twins requires more weight gain to support two babies, a larger placenta, and more amniotic fluid. The IOM 2009 report provides separate recommendations for twin gestations, which the calculator uses automatically when you select "Twins." Triplet and higher-order multiple pregnancies fall outside the IOM framework, so discuss specific targets with your maternal-fetal medicine specialist.
     </p>
 
     <h2>When to talk to your provider</h2>
     <p>
-      If you are consistently gaining above or below the weekly rate, or if you have a sudden sharp increase (which can signal fluid retention or preeclampsia), contact your provider. Pregnancy nutrition is nuanced — an obese woman with gestational diabetes may have a different target than the IOM charts suggest, and an underweight woman with hyperemesis may be counseled differently as well. Use this calculator as a tool to prepare informed questions for your prenatal visits, not as a substitute for them.
+      If you are consistently gaining above or below the weekly rate, or if you have a sudden sharp increase (which can signal fluid retention or preeclampsia), contact your provider. Pregnancy nutrition is nuanced. An obese woman with gestational diabetes may have a different target than the IOM charts suggest, and an underweight woman with hyperemesis may be counseled differently as well. Use this calculator to prepare informed questions for your prenatal visits, not as a substitute for them.
     </p>
   `,
 };

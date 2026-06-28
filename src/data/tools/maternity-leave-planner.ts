@@ -1,14 +1,14 @@
 import type { ToolCopy } from './_types';
 
 const copy: ToolCopy = {
-  title: 'Maternity Leave Planner — FMLA + State Paid Leave Calculator | Sage & Sprout',
+  title: 'Maternity Leave Planner: FMLA + State Paid Leave Calculator | Sage & Sprout',
   description:
     'US maternity leave planner using FMLA + state paid family leave rules. See your protected leave timeline, paid weeks, and return-to-work date. Covers 12 PFL states.',
   path: '/tools/maternity-leave-planner/',
   breadcrumb: 'Maternity Leave Planner',
   headline: 'Maternity Leave Planner',
   hook:
-    "Plan your maternity or parental leave by entering your due date, last workday, FMLA eligibility, and state. Get a personalized timeline showing paid weeks, FMLA-protected weeks, and your estimated return-to-work date — including your state's paid family leave program details.",
+    "Plan your maternity or parental leave by entering your due date, last workday, FMLA eligibility, and state. Get a personalized timeline showing paid weeks, FMLA-protected weeks, and your estimated return-to-work date, including your state's paid family leave program details.",
   reviewedDate: '2025-01-15',
   medical: false,
 
@@ -21,17 +21,17 @@ const copy: ToolCopy = {
     {
       question: 'What is the difference between FMLA and paid family leave?',
       answer:
-        'FMLA (federal law) provides job protection for up to 12 weeks but does not require pay. Paid family leave (PFL) programs — either from your employer or your state — provide partial income replacement during leave. Thirteen states plus DC currently have state-mandated paid family leave programs. FMLA and state PFL typically run concurrently.',
+        'FMLA (federal law) provides job protection for up to 12 weeks but does not require pay. Paid family leave (PFL) programs, either from your employer or your state, provide partial income replacement during leave. Thirteen states plus DC currently have state-mandated paid family leave programs. FMLA and state PFL typically run concurrently.',
     },
     {
       question: 'Can my employer require me to use PTO during FMLA?',
       answer:
-        'Yes. Under FMLA, your employer may require you to use available paid leave (vacation, sick, PTO) concurrently with FMLA leave. This does not extend the total protected leave period — it just means you receive pay during weeks that are already covered by FMLA.',
+        'Yes. Under FMLA, your employer may require you to use available paid leave (vacation, sick, PTO) concurrently with FMLA leave. This does not extend the total protected leave period. It just means you receive pay during weeks that are already covered by FMLA.',
     },
     {
       question: 'Does my partner also get leave?',
       answer:
-        'Under FMLA, both parents are eligible (separately) for 12 weeks of leave after birth or adoption, as long as both meet eligibility requirements. However, if both parents work for the same employer, that employer may limit combined FMLA leave to 12 weeks total. State paid leave programs vary — some cover both parents equally, others have specific rules.',
+        'Under FMLA, both parents are eligible (separately) for 12 weeks of leave after birth or adoption, as long as both meet eligibility requirements. However, if both parents work for the same employer, that employer may limit combined FMLA leave to 12 weeks total. State paid leave programs vary. Some cover both parents equally, others have specific rules.',
     },
     {
       question: 'What if I have a C-section or pregnancy complications?',
@@ -67,7 +67,7 @@ const copy: ToolCopy = {
       The Family and Medical Leave Act (FMLA), administered by the US Department of Labor, entitles eligible employees to 12 weeks of unpaid, job-protected leave per year for childbirth, adoption, or a serious health condition (including pregnancy-related conditions). "Job-protected" means your employer must return you to the same or an equivalent position when you return.
     </p>
     <p>
-      FMLA eligibility requires: (1) at least 12 months of employment with the same employer, (2) at least 1,250 hours worked in the previous 12 months, and (3) your worksite must have at least 50 employees within a 75-mile radius. If you do not meet these criteria, you have no federal FMLA protection — though your employer may have its own leave policy.
+      FMLA eligibility requires: (1) at least 12 months of employment with the same employer, (2) at least 1,250 hours worked in the previous 12 months, and (3) your worksite must have at least 50 employees within a 75-mile radius. If you do not meet these criteria, you have no federal FMLA protection, though your employer may have its own leave policy.
     </p>
 
     <h2>State paid family leave programs</h2>
@@ -77,7 +77,7 @@ const copy: ToolCopy = {
 
     <h2>Short-term disability and employer benefits</h2>
     <p>
-      Short-term disability (STD) insurance, if offered by your employer or purchased individually, can cover the physical recovery period from childbirth — typically 6 weeks for vaginal delivery and 8 weeks for cesarean section. STD runs concurrently with FMLA. Beyond the physical recovery, parental leave — bonding time with the new baby — may be covered separately by employer parental leave policy.
+      Short-term disability (STD) insurance, if offered by your employer or purchased individually, can cover the physical recovery period from childbirth, typically 6 weeks for vaginal delivery and 8 weeks for cesarean section. STD runs concurrently with FMLA. Beyond the physical recovery, parental leave (bonding time with the new baby) may be covered separately by employer parental leave policy.
     </p>
     <p>
       Review your employer's specific policies well before your due date. Many companies offer paid parental leave that exceeds FMLA, and some allow combining STD, parental leave, and PTO to extend paid time.
@@ -97,7 +97,7 @@ const copy: ToolCopy = {
 
     <h2>What "concurrently" means</h2>
     <p>
-      FMLA and paid leave (state PFL or employer-paid leave) typically run at the same time, not sequentially. For example, if you have 6 weeks of paid parental leave from your employer and are FMLA-eligible, your 6 weeks of paid leave are also counted as FMLA leave — meaning after 6 paid weeks, you have 6 more weeks of FMLA protection (unpaid). You do not get 6 paid weeks + 12 FMLA weeks = 18 weeks total. Understanding this concurrent structure is key to planning.
+      FMLA and paid leave (state PFL or employer-paid leave) typically run at the same time, not sequentially. For example, if you have 6 weeks of paid parental leave from your employer and are FMLA-eligible, your 6 weeks of paid leave are also counted as FMLA leave, so after 6 paid weeks, you have 6 more weeks of FMLA protection (unpaid). You do not get 6 paid weeks plus 12 FMLA weeks for 18 weeks total. Understanding this concurrent structure is key to planning.
     </p>
   `,
 };

@@ -1,7 +1,7 @@
 import type { ToolCopy } from './_types';
 
 const copy: ToolCopy = {
-  title: 'Diaper & Wipe Cost Calculator — Monthly & Yearly Estimate | Sage & Sprout',
+  title: 'Diaper & Wipe Cost Calculator: Monthly & Yearly Estimate | Sage & Sprout',
   description:
     'Calculate monthly and yearly diaper and wipe costs by baby age. See the right diaper size, daily usage, and total spending at your price per unit.',
   path: '/tools/diaper-cost-calculator/',
@@ -16,12 +16,12 @@ const copy: ToolCopy = {
     {
       question: 'How many diapers does a newborn use per day?',
       answer:
-        'Newborns typically use 10–12 diapers per day in the first month. This is because newborns eat every 2–3 hours and often stool immediately after feeding. Usage decreases as babies grow — by 6 months, most babies use 6–7 diapers per day.',
+        'Newborns typically use 10–12 diapers per day in the first month. This is because newborns eat every 2–3 hours and often stool immediately after feeding. Usage decreases as babies grow, and by 6 months, most babies use 6–7 diapers per day.',
     },
     {
       question: 'What is the cheapest way to buy diapers?',
       answer:
-        "Buying in bulk from warehouse clubs (Costco, Sam's Club) or subscribing to auto-delivery (Amazon Subscribe & Save) typically saves 15–30% over per-pack retail. Store-brand diapers from Target (Up & Up) and Costco (Kirkland) are consistently rated near equivalently to name brands at 30–50% lower cost. Stock up during sales but avoid buying more than a 3-week supply in one size — babies can outgrow a size quickly.",
+        "Buying in bulk from warehouse clubs (Costco, Sam's Club) or subscribing to auto-delivery (Amazon Subscribe & Save) typically saves 15–30% over per-pack retail. Store-brand diapers from Target (Up & Up) and Costco (Kirkland) are consistently rated near equivalently to name brands at 30–50% lower cost. Stock up during sales but avoid buying more than a 3-week supply in one size, since babies can outgrow a size quickly.",
     },
     {
       question: 'How long does each diaper size last?',
@@ -36,7 +36,7 @@ const copy: ToolCopy = {
     {
       question: 'How many wipes do I need per diaper change?',
       answer:
-        'The average is 2 wipes per diaper change, though wet diapers may only need 1 and blowouts may need 5+. Wipes are also used for hand cleaning, face, and spills — so real-world consumption is often higher than diaper-change count alone suggests.',
+        'The average is 2 wipes per diaper change, though wet diapers may only need 1 and blowouts may need 5+. Wipes are also used for hand cleaning, face, and spills, so real-world consumption is often higher than diaper-change count alone suggests.',
     },
     {
       question: 'When do babies typically potty train?',
@@ -58,7 +58,7 @@ const copy: ToolCopy = {
   contentHtml: `
     <h2>How many diapers will your baby use?</h2>
     <p>
-      Diapers are one of the biggest recurring expenses for new parents — and also one of the easiest to plan for with a little arithmetic. Total diaper usage over the first 2.5 years (before most children potty train) runs between 5,000 and 8,000 diapers, depending on the age at toilet training and how frequently you change. At $0.25 per diaper, that's $1,250–$2,000 on diapers alone — before wipes.
+      Diapers are one of the biggest recurring expenses for new parents, and also one of the easiest to plan for with a little arithmetic. Total diaper usage over the first 2.5 years (before most children potty train) runs between 5,000 and 8,000 diapers, depending on the age at toilet training and how frequently you change. At $0.25 per diaper, that's $1,250–$2,000 on diapers alone, before wipes.
     </p>
 
     <h2>Diaper usage by age</h2>
@@ -76,21 +76,21 @@ const copy: ToolCopy = {
 
     <h2>Choosing the right diaper size</h2>
     <p>
-      Diaper sizes are primarily weight-based, not age-based. When diapers consistently leak at the legs or waist, or when the tabs struggle to close, it is time to size up — regardless of the age on the package. Going up a size early is almost always better than waiting until leaks are happening at night.
+      Diaper sizes are primarily weight-based, not age-based. When diapers consistently leak at the legs or waist, or when the tabs struggle to close, it is time to size up, regardless of the age on the package. Going up a size early is almost always better than waiting until leaks are happening at night.
     </p>
     <p>
       Avoid stockpiling more than 3 weeks of supply in a single size, especially in Newborn and Size 1. Babies can outgrow a size in as little as 2–3 weeks. Many parents skip newborn size entirely if the baby is born over 8 lb.
     </p>
 
     <h2>How to reduce diaper costs</h2>
-    <p><strong>Buy in bulk:</strong> Warehouse clubs (Costco, Sam's Club) and subscription delivery (Amazon Subscribe & Save with coupons) consistently offer the lowest per-unit cost — often under $0.20/diaper for premium brands and under $0.14 for store brands.</p>
-    <p><strong>Try store brands:</strong> Target Up & Up, Costco Kirkland Signature, and Aldi Mamia are consistently rated near equivalently to Pampers and Huggies in parent comparisons and consumer reports — at 30–50% lower cost.</p>
+    <p><strong>Buy in bulk:</strong> Warehouse clubs (Costco, Sam's Club) and subscription delivery (Amazon Subscribe & Save with coupons) consistently offer the lowest per-unit cost, often under $0.20/diaper for premium brands and under $0.14 for store brands.</p>
+    <p><strong>Try store brands:</strong> Target Up & Up, Costco Kirkland Signature, and Aldi Mamia are consistently rated near equivalently to Pampers and Huggies in parent comparisons and consumer reports, at 30–50% lower cost.</p>
     <p><strong>Use wipes strategically:</strong> A wet diaper only needs 1 wipe. Save 2–3 for messy changes. Baby washcloths with warm water work fine for newborn wet diapers and cost almost nothing per use.</p>
-    <p><strong>Stock sale price, not convenience store price:</strong> The difference between $0.17/diaper (bulk sale) and $0.42/diaper (convenience drugstore) on a 250 diaper/month baby is $62/month — $744/year. Always buy ahead when you find a sale price below your normal cost.</p>
+    <p><strong>Stock sale price, not convenience store price:</strong> The difference between $0.17/diaper (bulk sale) and $0.42/diaper (convenience drugstore) on a 250 diaper/month baby is $62/month, or $744/year. Always buy ahead when you find a sale price below your normal cost.</p>
 
     <h2>Cloth diapers: the tradeoff</h2>
     <p>
-      Modern cloth diapers (pocket diapers, all-in-ones) have a high upfront cost ($200–$500 for a full stash) but effectively eliminate ongoing diaper costs. Over 2.5 years, cloth diapering typically saves $800–$1,500 compared to disposables — more if reused for a second child. The tradeoffs are laundry frequency (every 2–3 days), absorbency challenges at night, and steeper learning curve. Many families use hybrid approaches: cloth at home, disposables for travel and childcare.
+      Modern cloth diapers (pocket diapers, all-in-ones) have a high upfront cost ($200–$500 for a full stash) but effectively eliminate ongoing diaper costs. Over 2.5 years, cloth diapering typically saves $800–$1,500 compared to disposables, and more if reused for a second child. The tradeoffs are laundry frequency (every 2–3 days), absorbency challenges at night, and steeper learning curve. Many families use hybrid approaches: cloth at home, disposables for travel and childcare.
     </p>
   `,
 };

@@ -147,7 +147,7 @@ import { toolSchema } from '../../data/tools/_schema';
     const pflText = document.getElementById('ml-pfl-text')!;
     if (result.statePFLInfo) {
       pflBox.style.display = 'block';
-      pflText.textContent = `${result.statePFLInfo.name}: up to ${result.statePFLInfo.weeks} weeks at ~${result.statePFLInfo.payPercent}% wage replacement. ${result.statePFLInfo.waitingDays > 0 ? `Waiting period: ${result.statePFLInfo.waitingDays} days.` : 'No waiting period.'} File your claim early — many states require filing within the first week of leave.`;
+      pflText.textContent = `${result.statePFLInfo.name}: up to ${result.statePFLInfo.weeks} weeks at ~${result.statePFLInfo.payPercent}% wage replacement. ${result.statePFLInfo.waitingDays > 0 ? `Waiting period: ${result.statePFLInfo.waitingDays} days.` : 'No waiting period.'} File your claim early, since many states require filing within the first week of leave.`;
     } else {
       pflBox.style.display = 'none';
     }

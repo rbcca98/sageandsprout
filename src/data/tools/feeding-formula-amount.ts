@@ -1,31 +1,31 @@
 import type { ToolCopy } from './_types';
 
 const copy: ToolCopy = {
-  title: 'Baby Feeding & Formula Amount Calculator — AAP Guidelines | Sage & Sprout',
+  title: 'Baby Feeding & Formula Amount Calculator: AAP Guidelines | Sage & Sprout',
   description:
     'Calculate how much formula or breast milk your baby needs by age and weight. Based on AAP feeding guidelines. Shows oz/mL per feeding, feeds per day, and daily total.',
   path: '/tools/feeding-formula-amount/',
   breadcrumb: 'Feeding & Formula Amount Calculator',
   headline: 'Baby Feeding & Formula Amount Calculator',
   hook:
-    "Enter your baby's age, weight, and feeding type to get AAP-based guidelines on how much formula or breast milk they need each day — broken down by oz per feeding, number of feedings, and total daily amount in both oz and mL.",
+    "Enter your baby's age, weight, and feeding type to get AAP-based guidelines on how much formula or breast milk they need each day, broken down by oz per feeding, number of feedings, and total daily amount in both oz and mL.",
   reviewedDate: '2025-01-15',
 
   faqs: [
     {
       question: 'How much formula does a newborn need?',
       answer:
-        'In the first days of life, newborns need only about 1–2 oz (30–60 mL) per feeding every 2–3 hours, totaling around 8–12 feedings per day. Their stomachs are tiny — roughly the size of a marble at birth. By 2 weeks, most newborns take 2–3 oz per feeding.',
+        'In the first days of life, newborns need only about 1–2 oz (30–60 mL) per feeding every 2–3 hours, totaling around 8–12 feedings per day. Their stomachs are tiny, roughly the size of a marble at birth. By 2 weeks, most newborns take 2–3 oz per feeding.',
     },
     {
       question: 'What is the 2.5 oz per pound per day rule?',
       answer:
-        'A widely used guideline is that formula-fed babies need approximately 2.5 oz of formula per pound of body weight per day. So a 10 lb baby would need about 25 oz of formula spread across their daily feedings. This is a guideline only — the cap is generally 32 oz/day regardless of weight.',
+        'A widely used guideline is that formula-fed babies need approximately 2.5 oz of formula per pound of body weight per day. So a 10 lb baby would need about 25 oz of formula spread across their daily feedings. This is a guideline only, and the cap is generally 32 oz/day regardless of weight.',
     },
     {
       question: 'Can I overfeed my baby with formula?',
       answer:
-        'Yes, it is possible to overfeed a formula-fed baby, especially if feeds are offered every time the baby cries (not all crying is hunger). Signs of overfeeding include frequent spit-up, gassiness, and excessive weight gain. Paced bottle feeding — holding the bottle horizontal so milk flows slowly — helps babies self-regulate.',
+        'Yes, it is possible to overfeed a formula-fed baby, especially if feeds are offered every time the baby cries (not all crying is hunger). Signs of overfeeding include frequent spit-up, gassiness, and excessive weight gain. Paced bottle feeding, holding the bottle horizontal so milk flows slowly, helps babies self-regulate.',
     },
     {
       question: 'How do I know if my breastfed baby is getting enough?',
@@ -66,15 +66,15 @@ const copy: ToolCopy = {
 
     <h2>Newborns (0–1 month)</h2>
     <p>
-      A newborn's stomach is the size of a marble at birth — only about 5–7 mL. By day 3 it expands to roughly 22–27 mL, and by 1 week, around 45–60 mL. This is why newborns eat small amounts very frequently — 8–12 times per day is completely normal in the first weeks. Small, frequent feeds match the stomach's capacity and support milk supply for breastfeeding mothers.
+      A newborn's stomach is the size of a marble at birth, only about 5–7 mL. By day 3 it expands to roughly 22–27 mL, and by 1 week, around 45–60 mL. This is why newborns eat small amounts very frequently: 8–12 times per day is completely normal in the first weeks. Small, frequent feeds match the stomach's capacity and support milk supply for breastfeeding mothers.
     </p>
     <p>
-      It is normal for newborns to lose up to 7–10% of birth weight in the first 3–5 days, then regain it by 10–14 days. If your newborn has not regained birth weight by 2 weeks, contact your provider — supplementation may be needed.
+      It is normal for newborns to lose up to 7–10% of birth weight in the first 3–5 days, then regain it by 10–14 days. If your newborn has not regained birth weight by 2 weeks, contact your provider, as supplementation may be needed.
     </p>
 
     <h2>1–4 months: growth spurts and schedule emergence</h2>
     <p>
-      Babies in this age range grow rapidly and appetite increases accordingly. Many parents notice sudden increases in hunger around 3 and 6 weeks, and again around 3 months — these are growth spurts, not signs that formula is insufficient. The 2.5 oz/lb guideline applies well here. Feeding frequency typically drops from 8–12 times per day to 6–8 times, and some babies begin sleeping longer stretches at night.
+      Babies in this age range grow rapidly and appetite increases accordingly. Many parents notice sudden increases in hunger around 3 and 6 weeks, and again around 3 months. These are growth spurts, not signs that formula is insufficient. The 2.5 oz/lb guideline applies well here. Feeding frequency typically drops from 8–12 times per day to 6–8 times, and some babies begin sleeping longer stretches at night.
     </p>
     <p>
       Keep total daily formula intake under 32 oz (950 mL). Consistently offering more than this may suppress solid food intake when introduced and can strain immature kidneys.
@@ -87,7 +87,7 @@ const copy: ToolCopy = {
 
     <h2>6–12 months: adding solid foods</h2>
     <p>
-      Once solid foods are introduced, breast milk and formula remain the <em>primary</em> nutrition source through 12 months — solids are complementary. Aim to offer solids 1–3 times per day by 8–9 months, starting with single-ingredient purées and progressing to mashed and soft finger foods. Offer breast milk or formula before or after solids, not instead of them.
+      Once solid foods are introduced, breast milk and formula remain the <em>primary</em> nutrition source through 12 months, with solids as a complement. Aim to offer solids 1–3 times per day by 8–9 months, starting with single-ingredient purées and progressing to mashed and soft finger foods. Offer breast milk or formula before or after solids, not instead of them.
     </p>
     <p>
       Common first foods include pureed vegetables, fruits, single-grain iron-fortified cereals, and pureed meats. Introduce one new food every 3–5 days to watch for allergic reactions. Honey should not be given before 12 months due to risk of infant botulism.

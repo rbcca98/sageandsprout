@@ -6,7 +6,7 @@ export function toolSchema(copy: ToolCopy): object[] {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: copy.headline,
-    url: `https://sageandsprout.com${copy.path}`,
+    url: `https://sage-and-sprout.com${copy.path}`,
     applicationCategory: copy.category ?? 'HealthApplication',
     description: copy.description,
     operatingSystem: 'All',

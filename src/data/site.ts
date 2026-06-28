@@ -25,7 +25,7 @@ export const site = {
     headlineLine1: 'from the first test',
     headlineLine2: 'to the first',
     headlineAccent: 'birthday',
-    sub: 'Free, science-backed calculators for planning to conceive, pregnancy, and your baby’s first years. Reviewed and updated by Rebecca, a senior US medical student. No sign-up. No data stored.',
+    sub: 'Free, evidence-based calculators for planning to conceive, pregnancy, and your baby’s first years. Reviewed and updated by Rebecca, a senior US medical student. No sign-up. No data stored.',
     primaryCta: { href: '/tools/due-date-calculator/', label: 'Find your due date' },
     secondaryCta: { href: '#all-tools', label: 'All tools' },
   },
@@ -89,7 +89,7 @@ export const site = {
 
   /* Footer */
   footer: {
-    blurb: 'Science-backed tools for pregnancy, fertility, and the first years.',
+    blurb: 'Evidence-based tools for pregnancy, fertility, and the first years.',
     popularLabel: 'Popular tools',
     moreLabel: 'More',
     moreLinks: [
