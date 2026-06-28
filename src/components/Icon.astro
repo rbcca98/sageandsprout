@@ -1,0 +1,55 @@
+---
+/**
+ * Hand-drawn line icons — single stroke weight, organic, matches the sprig motif.
+ * Inherits color via currentColor; size in px.
+ */
+export interface Props {
+  name: string;
+  size?: number;
+  class?: string;
+  stroke?: number;
+}
+const { name, size = 24, class: cls = '', stroke = 1.6 } = Astro.props;
+
+const icons: Record<string, string> = {
+  // Calendar with a heart — due date
+  calendar: `<rect x="3.5" y="5" width="17" height="15.5" rx="1.5"/><path d="M3.5 9.5h17M8 3.5v3M16 3.5v3"/><path d="M12 13.3c.9-1.5 3.1-1 3.1.5 0 1.3-1.9 2.2-3.1 3.1-1.2-.9-3.1-1.8-3.1-3.1 0-1.5 2.2-2 3.1-.5Z" fill="currentColor" stroke="none"/>`,
+  // Calendar with a check — weeks pregnant
+  weeks: `<rect x="3.5" y="5" width="17" height="15.5" rx="1.5"/><path d="M3.5 9.5h17M8 3.5v3M16 3.5v3M8.6 14.6l2.2 2.2 4.1-4.4"/>`,
+  // Five-petal bloom — ovulation
+  bloom: `<ellipse cx="12" cy="8.1" rx="1.8" ry="2.8"/><ellipse cx="12" cy="8.1" rx="1.8" ry="2.8" transform="rotate(72 12 12)"/><ellipse cx="12" cy="8.1" rx="1.8" ry="2.8" transform="rotate(144 12 12)"/><ellipse cx="12" cy="8.1" rx="1.8" ry="2.8" transform="rotate(216 12 12)"/><ellipse cx="12" cy="8.1" rx="1.8" ry="2.8" transform="rotate(288 12 12)"/><circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/>`,
+  // Dial scale — pregnancy weight gain
+  scale: `<path d="M5 16a7 7 0 0 1 14 0"/><path d="M5 16h14"/><path d="M12 16l3.2-3.6"/><circle cx="12" cy="16" r="1" fill="currentColor" stroke="none"/>`,
+  // Briefcase — maternity leave
+  briefcase: `<rect x="3.5" y="8" width="17" height="11.5" rx="1.5"/><path d="M9 8V6.5A1.5 1.5 0 0 1 10.5 5h3A1.5 1.5 0 0 1 15 6.5V8M3.5 12.5h17"/>`,
+  // Rising curve — growth percentile
+  chart: `<path d="M4.5 19V5M4.5 19h15"/><path d="M6 16.5c3 0 4-6.5 7-7.5s3.8-1.8 5.5-3.5"/><circle cx="18.5" cy="5.5" r="1.3" fill="currentColor" stroke="none"/>`,
+  // Baby bottle — feeding
+  bottle: `<path d="M9.6 3.8h4.8M9 6.6h6"/><path d="M9.6 6.6c.1 1.1-1 1.6-1 3.2v8.4A2 2 0 0 0 10.6 20.4h2.8a2 2 0 0 0 2-2.2V9.8c0-1.6-1.1-2.1-1-3.2"/><path d="M11 11.2h2M11 13.6h2"/>`,
+  // Crescent + star — sleep
+  moon: `<path d="M18.5 14.6A7 7 0 1 1 9.4 5.5a5.2 5.2 0 0 0 9.1 9.1Z"/><path d="M17.8 4.4l.55 1.3 1.3.55-1.3.55-.55 1.3-.55-1.3L15.9 6.25l1.35-.55Z" fill="currentColor" stroke="none"/>`,
+  // Coin with $ — diaper cost
+  coin: `<circle cx="12" cy="12" r="7.5"/><path d="M12 7.4v9.2M14.2 9.4a2.3 2.3 0 0 0-2.2-1.2c-1.3 0-2.3.8-2.3 1.9 0 2.5 4.6 1.3 4.6 3.8 0 1.1-1 1.9-2.3 1.9a2.5 2.5 0 0 1-2.3-1.2"/>`,
+  // Name tag — baby name explorer
+  tag: `<path d="M11.6 4H6A2 2 0 0 0 4 6v5.6a2 2 0 0 0 .6 1.4l7 7a2 2 0 0 0 2.8 0l5.6-5.6a2 2 0 0 0 0-2.8l-7-7A2 2 0 0 0 11.6 4Z"/><circle cx="8" cy="8" r="1.3" fill="currentColor" stroke="none"/>`,
+  // Mini sprig — preconception / sprout states
+  sprig: `<path d="M12 21c-.4-5 -.4-9.6 1-15"/><path d="M11.5 14c2.8 0 5.2-1.3 6.8-4-2.9-.4-5.4 1.4-6.8 4Z"/><path d="M12 10c-2.8 0-5.2-1.3-6.8-4 2.9-.4 5.4 1.4 6.8 4Z"/><circle cx="13.2" cy="5.4" r="1.6" fill="var(--color-accent)" stroke="none"/>`,
+  // Spoon — solids
+  spoon: `<ellipse cx="12" cy="7" rx="2.6" ry="3.6"/><path d="M12 10.6V20.5"/>`,
+};
+
+const inner = icons[name] ?? icons.calendar;
+---
+<svg
+  class={`icon ${cls}`}
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width={stroke}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  set:html={inner}
+></svg>

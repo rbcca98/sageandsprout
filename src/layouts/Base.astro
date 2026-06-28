@@ -30,8 +30,8 @@ const schemaArray = schema
   : [];
 
 const navLinks = [
-  { href: '/tools/due-date-calculator/', label: 'Due Date' },
-  { href: '/tools/how-many-weeks-pregnant/', label: 'Weeks Pregnant' },
+  { href: '/tools/due-date-calculator/', label: 'Due date' },
+  { href: '/tools/how-many-weeks-pregnant/', label: 'Weeks pregnant' },
   { href: '/tools/ovulation-fertility-window/', label: 'Ovulation' },
 ];
 ---
@@ -54,13 +54,14 @@ const navLinks = [
   <meta property="og:image" content={new URL(ogImage, Astro.site)} />
   <meta property="og:site_name" content="Sage & Sprout" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#3E5A49" />
 
   <!-- Fonts: preconnect + stylesheet -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap"
   />
 
   <!-- Favicon placeholder -->
@@ -81,36 +82,30 @@ const navLinks = [
 
 <body>
   <!-- ── Header ──────────────────────────────────────── -->
-  <header style="background: var(--color-surface); border-bottom: 1px solid var(--color-line);">
-    <div style="max-width: 1100px; margin: 0 auto; padding: 0 1.25rem; display: flex; align-items: center; justify-content: space-between; height: 60px;">
-      <a href="/" style="text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-          <circle cx="14" cy="14" r="14" fill="#3E6B5B"/>
-          <path d="M14 7c0 0-5 3.5-5 7.5S11.5 21 14 21s5-2.5 5-6.5S14 7 14 7z" fill="#FFFFFF" opacity=".9"/>
-          <circle cx="14" cy="14" r="2.5" fill="#F0683C"/>
+  <header style="background: transparent;">
+    <div style="max-width: var(--maxw); margin: 0 auto; padding: 1.4rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+      <a href="/" style="text-decoration: none; display: flex; align-items: center; gap: 0.6rem;" aria-label="Sage & Sprout home">
+        <svg width="27" height="32" viewBox="0 0 32 38" aria-hidden="true">
+          <g class="sprig" stroke="var(--color-primary)" stroke-width="1.6">
+            <path d="M16 36 C15.4 28 15.4 20 17.4 7" />
+            <path d="M15.6 27 C20 27 24 25 26.6 20.6 C22 20 18 22 15.6 27 Z" />
+            <path d="M16 22.5 C11.6 22.5 7.6 20.6 5 16.4 C9.6 15.8 13.8 17.8 16 22.5 Z" />
+            <path d="M16.5 17 C20.4 16.4 23.8 14.4 25.8 10.6 C21.6 10 18.2 12 16.5 17 Z" />
+            <path d="M16.8 12 C13.2 11.4 10 9.4 8 6.2 C11.6 5.8 15 7.8 16.8 12 Z" />
+          </g>
+          <circle cx="17.6" cy="6.4" r="2.5" fill="var(--color-accent)" />
         </svg>
-        <span style="font-family: var(--font-family-display); font-weight: 600; font-size: 1.05rem; color: var(--color-ink);">
-          Sage & Sprout
+        <span style="font-family: var(--font-family-display); font-weight: 500; font-size: 1.2rem; color: var(--color-ink); letter-spacing: -0.01em;">
+          Sage <span style="font-style: italic; font-weight: 400;">&amp;</span> Sprout
         </span>
       </a>
       <nav aria-label="Main navigation">
-        <ul style="list-style: none; margin: 0; padding: 0; display: flex; gap: 0.25rem;">
+        <ul style="list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 0.15rem; flex-wrap: wrap;">
           {navLinks.map(({ href, label }) => (
-            <li>
-              <a
-                href={href}
-                style={`
-                  font-size: 0.85rem; font-weight: 500; padding: 0.35rem 0.75rem;
-                  border-radius: 999px; text-decoration: none; color: var(--color-muted);
-                  transition: background .15s, color .15s;
-                `}
-                onmouseover="this.style.background='var(--color-surface-2)';this.style.color='var(--color-ink)'"
-                onmouseout="this.style.background='transparent';this.style.color='var(--color-muted)'"
-              >
-                {label}
-              </a>
-            </li>
+            <li><a href={href} class="pill">{label}</a></li>
           ))}
+          <li><a href="/about/" class="pill">About</a></li>
+          <li><a href="/#all-tools" class="pill pill--accent">All tools</a></li>
         </ul>
       </nav>
     </div>
@@ -118,13 +113,13 @@ const navLinks = [
 
   <!-- ── Breadcrumb ─────────────────────────────────── -->
   {breadcrumbs && breadcrumbs.length > 0 && (
-    <div style="max-width: 1100px; margin: 0 auto; padding: 0.75rem 1.25rem;">
+    <div style="max-width: var(--maxw); margin: 0 auto; padding: 0.5rem 1.5rem 0;">
       <nav aria-label="Breadcrumb">
-        <ol style="list-style:none;margin:0;padding:0;display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;font-size:0.82rem;color:var(--color-muted);">
+        <ol style="list-style:none;margin:0;padding:0;display:flex;align-items:center;gap:0.45rem;flex-wrap:wrap;font-size:0.8rem;color:var(--color-muted);">
           <li><a href="/" style="color:var(--color-muted);text-decoration:none;">Home</a></li>
           {breadcrumbs.map(({ href, label }, i) => (
             <>
-              <li aria-hidden="true" style="opacity:.5">›</li>
+              <li aria-hidden="true" style="opacity:.5">/</li>
               <li>
                 {i === breadcrumbs.length - 1
                   ? <span style="color:var(--color-ink)">{label}</span>
@@ -143,41 +138,76 @@ const navLinks = [
   </main>
 
   <!-- ── Footer ─────────────────────────────────────── -->
-  <footer style="margin-top: 5rem; border-top: 1px solid var(--color-line); background: var(--color-surface);">
-    <div style="max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.25rem;">
-      <div style="display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+  <footer style="margin-top: 5rem; background: var(--color-surface);">
+    <hr class="rule" />
+    <div style="max-width: var(--maxw); margin: 0 auto; padding: 3rem 1.5rem 2.5rem;">
+      <div style="display: grid; gap: 2.5rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
         <div>
-          <p style="font-family:var(--font-family-display);font-size:1rem;font-weight:600;margin:0 0 0.5rem;">Sage & Sprout</p>
-          <p style="font-size:0.82rem;color:var(--color-muted);margin:0;max-width:28ch;">Free, science-backed pregnancy and baby calculators for expecting and new parents.</p>
+          <div style="display:flex;align-items:center;gap:0.5rem;margin:0 0 0.7rem;">
+            <svg width="20" height="24" viewBox="0 0 32 38" aria-hidden="true">
+              <g class="sprig" stroke="var(--color-primary)" stroke-width="1.8">
+                <path d="M16 36 C15.4 28 15.4 20 17.4 7" />
+                <path d="M15.6 27 C20 27 24 25 26.6 20.6 C22 20 18 22 15.6 27 Z" />
+                <path d="M16 22.5 C11.6 22.5 7.6 20.6 5 16.4 C9.6 15.8 13.8 17.8 16 22.5 Z" />
+                <path d="M16.5 17 C20.4 16.4 23.8 14.4 25.8 10.6 C21.6 10 18.2 12 16.5 17 Z" />
+                <path d="M16.8 12 C13.2 11.4 10 9.4 8 6.2 C11.6 5.8 15 7.8 16.8 12 Z" />
+              </g>
+              <circle cx="17.6" cy="6.4" r="2.6" fill="var(--color-accent)" />
+            </svg>
+            <p style="font-family:var(--font-family-display);font-size:1.15rem;font-weight:500;margin:0;">Sage <span style="font-style:italic;font-weight:400;">&amp;</span> Sprout</p>
+          </div>
+          <p style="font-size:0.85rem;color:var(--color-muted);margin:0;max-width:30ch;line-height:1.6;">Calm, science-backed tools for pregnancy, fertility, and the first years — made by a senior medical student.</p>
         </div>
         <div>
-          <p style="font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--color-muted);margin:0 0 0.75rem;">Tools</p>
-          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0.4rem;">
+          <p class="eyebrow" style="margin:0 0 0.9rem;">Popular tools</p>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0.5rem;">
             {navLinks.map(({ href, label }) => (
-              <li><a href={href} style="font-size:0.85rem;color:var(--color-muted);text-decoration:none;">{label}</a></li>
+              <li><a href={href} style="font-size:0.88rem;color:var(--color-ink);text-decoration:none;opacity:.85;">{label}</a></li>
             ))}
           </ul>
         </div>
         <div>
-          <p style="font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--color-muted);margin:0 0 0.75rem;">Info</p>
-          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0.4rem;">
+          <p class="eyebrow" style="margin:0 0 0.9rem;">More</p>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0.5rem;">
             {[
               ['/about/', 'About'],
-              ['/medical-disclaimer/', 'Medical Disclaimer'],
-              ['/privacy/', 'Privacy Policy'],
-              ['/terms/', 'Terms of Use'],
+              ['/medical-disclaimer/', 'Medical disclaimer'],
+              ['/privacy/', 'Privacy policy'],
+              ['/terms/', 'Terms of use'],
               ['/contact/', 'Contact'],
             ].map(([href, label]) => (
-              <li><a href={href} style="font-size:0.85rem;color:var(--color-muted);text-decoration:none;">{label}</a></li>
+              <li><a href={href} style="font-size:0.88rem;color:var(--color-ink);text-decoration:none;opacity:.85;">{label}</a></li>
             ))}
           </ul>
         </div>
       </div>
-      <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--color-line);font-size:0.78rem;color:var(--color-muted);">
-        <p style="margin:0 0 0.35rem;"><strong>Medical Disclaimer:</strong> All content on Sage &amp; Sprout is for general educational purposes only. It is not medical advice and does not replace care from a licensed healthcare provider.</p>
+      <hr class="rule" style="margin:2.5rem 0 1.5rem;" />
+      <div style="font-size:0.76rem;color:var(--color-muted);line-height:1.6;">
+        <p style="margin:0 0 0.4rem;"><strong style="color:var(--color-ink);font-weight:600;">Medical disclaimer:</strong> Everything on Sage &amp; Sprout is general educational information, not medical advice, and is no substitute for care from a licensed provider.</p>
         <p style="margin:0;">© {new Date().getFullYear()} Sage &amp; Sprout · <a href="/privacy/" style="color:var(--color-muted);">Privacy</a> · <a href="/terms/" style="color:var(--color-muted);">Terms</a></p>
       </div>
     </div>
   </footer>
+
+  <!-- Smooth scroll (Lenis) — buttery inertia, off for reduced-motion -->
+  <script is:inline type="module">
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      try {
+        const { default: Lenis } = await import('https://esm.sh/lenis@1.1.14');
+        const lenis = new Lenis({ duration: 1.15, wheelMultiplier: 0.9, smoothWheel: true });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+        document.querySelectorAll('a[href^="#"]').forEach((a) => {
+          a.addEventListener('click', (e) => {
+            const id = a.getAttribute('href');
+            if (id && id.length > 1) {
+              const el = document.querySelector(id);
+              if (el) { e.preventDefault(); lenis.scrollTo(el, { offset: -20 }); }
+            }
+          });
+        });
+      } catch (_) { /* smooth scroll is a progressive enhancement */ }
+    }
+  </script>
 </body>
 </html>

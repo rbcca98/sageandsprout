@@ -67,27 +67,27 @@ const sources = [
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="dc-age">Baby's age (months)</label>
         <input id="dc-age" type="number" min="0" max="36" value="3"
-          style="width:100%;padding:0.7rem 0.9rem;border:2px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
       </div>
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="dc-diaper-price">Price per diaper ($)</label>
         <input id="dc-diaper-price" type="number" min="0.10" max="1.00" step="0.01" value="0.25"
-          style="width:100%;padding:0.7rem 0.9rem;border:2px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
       </div>
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="dc-wipe-price">Price per wipe ($)</label>
         <input id="dc-wipe-price" type="number" min="0.01" max="0.30" step="0.01" value="0.03"
-          style="width:100%;padding:0.7rem 0.9rem;border:2px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
       </div>
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="dc-wipes-per">Wipes per change</label>
         <input id="dc-wipes-per" type="number" min="1" max="8" value="2"
-          style="width:100%;padding:0.7rem 0.9rem;border:2px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
       </div>
     </div>
 
     <button id="dc-calculate"
-      style="width:100%;padding:0.85rem;background:var(--color-primary);color:#fff;border:none;border-radius:var(--radius-sm);font-size:1rem;font-weight:700;cursor:pointer;">
+      class="btn btn--primary btn--block">
       Calculate diaper costs
     </button>
 
@@ -95,7 +95,7 @@ const sources = [
     <div id="dc-result" style="min-height:240px;margin-top:1.5rem;display:none;">
 
       <!-- Size/stage banner -->
-      <div style="padding:0.85rem 1rem;background:var(--color-surface-2);border-radius:var(--radius-sm);margin-bottom:1.25rem;display:flex;justify-content:space-between;align-items:center;">
+      <div style="padding:0.85rem 1rem;background:transparent;border:1px solid var(--color-line);border-radius:3px;margin-bottom:1.25rem;display:flex;justify-content:space-between;align-items:center;">
         <div>
           <p style="margin:0;font-size:0.75rem;color:var(--color-muted);font-weight:600;">STAGE</p>
           <p id="dc-stage" style="margin:0.1rem 0 0;font-size:0.95rem;font-weight:700;color:var(--color-ink);"></p>
@@ -108,15 +108,15 @@ const sources = [
 
       <!-- Usage grid -->
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;margin-bottom:1.25rem;">
-        <div style="padding:0.85rem 0.5rem;background:var(--color-surface-2);border-radius:var(--radius-sm);text-align:center;">
+        <div style="padding:0.85rem 0.5rem;background:transparent;border:1px solid var(--color-line);border-radius:3px;text-align:center;">
           <p style="margin:0;font-size:0.7rem;color:var(--color-muted);font-weight:600;">DIAPERS/DAY</p>
           <p id="dc-dpd" style="margin:0.15rem 0 0;font-size:1.5rem;font-weight:700;color:var(--color-ink);"></p>
         </div>
-        <div style="padding:0.85rem 0.5rem;background:var(--color-surface-2);border-radius:var(--radius-sm);text-align:center;">
+        <div style="padding:0.85rem 0.5rem;background:transparent;border:1px solid var(--color-line);border-radius:3px;text-align:center;">
           <p style="margin:0;font-size:0.7rem;color:var(--color-muted);font-weight:600;">DIAPERS/MONTH</p>
           <p id="dc-dpm" style="margin:0.15rem 0 0;font-size:1.5rem;font-weight:700;color:var(--color-ink);"></p>
         </div>
-        <div style="padding:0.85rem 0.5rem;background:var(--color-surface-2);border-radius:var(--radius-sm);text-align:center;">
+        <div style="padding:0.85rem 0.5rem;background:transparent;border:1px solid var(--color-line);border-radius:3px;text-align:center;">
           <p style="margin:0;font-size:0.7rem;color:var(--color-muted);font-weight:600;">WIPES/MONTH</p>
           <p id="dc-wpm" style="margin:0.15rem 0 0;font-size:1.5rem;font-weight:700;color:var(--color-ink);"></p>
         </div>
@@ -124,7 +124,7 @@ const sources = [
 
       <!-- Cost summary -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;">
-        <div style="padding:1.1rem;background:var(--color-surface-2);border-radius:var(--radius-sm);text-align:center;">
+        <div style="padding:1.1rem;background:transparent;border:1px solid var(--color-line);border-radius:3px;text-align:center;">
           <p style="margin:0;font-size:0.75rem;color:var(--color-muted);font-weight:600;">MONTHLY TOTAL</p>
           <p id="dc-monthly" style="margin:0.2rem 0 0;font-size:2rem;font-family:var(--font-family-display);font-weight:700;color:var(--color-accent);"></p>
           <p id="dc-monthly-break" style="margin:0.2rem 0 0;font-size:0.75rem;color:var(--color-muted);"></p>

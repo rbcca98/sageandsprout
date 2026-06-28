@@ -1,89 +1,37 @@
 ---
 import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { iconForHref } from '../data/tool-icons';
 
-const tools = [
+const stages = [
   {
-    href: '/tools/due-date-calculator/',
-    name: 'Due Date Calculator',
-    tagline: 'Find your estimated due date from LMP, conception, or IVF.',
-    emoji: '🗓️',
-    large: true,
-    badge: 'Most used',
-    soon: false,
+    label: 'Trying to conceive',
+    tools: [
+      { href: '/tools/ovulation-fertility-window/', name: 'Ovulation & fertile window', tagline: 'Your most fertile days and best time to test.' },
+    ],
   },
   {
-    href: '/tools/how-many-weeks-pregnant/',
-    name: 'How Many Weeks Pregnant',
-    tagline: 'See your current week, trimester, and what to expect.',
-    emoji: '📅',
-    large: false,
-    soon: false,
+    label: 'Expecting',
+    tools: [
+      { href: '/tools/due-date-calculator/', name: 'Due date calculator', tagline: 'From your last period, conception, or IVF transfer.', featured: true },
+      { href: '/tools/how-many-weeks-pregnant/', name: 'How many weeks pregnant', tagline: 'Your exact week, trimester, and what’s ahead.' },
+      { href: '/tools/pregnancy-weight-gain/', name: 'Pregnancy weight gain', tagline: 'A personalized target by pre-pregnancy BMI.' },
+      { href: '/tools/maternity-leave-planner/', name: 'Maternity leave planner', tagline: 'FMLA, paid weeks, and a return-to-work date.' },
+    ],
   },
   {
-    href: '/tools/ovulation-fertility-window/',
-    name: 'Ovulation Calculator',
-    tagline: 'Find your fertile window and best days to conceive.',
-    emoji: '🌸',
-    large: false,
-    soon: false,
-  },
-  {
-    href: '/tools/pregnancy-weight-gain/',
-    name: 'Pregnancy Weight Gain',
-    tagline: 'Get a personalized gain target by pre-pregnancy BMI.',
-    emoji: '⚖️',
-    large: false,
-    soon: false,
-  },
-  {
-    href: '/tools/baby-growth-percentile/',
-    name: 'Baby Growth Percentile',
-    tagline: 'Check weight, length, and head circumference percentiles.',
-    emoji: '📈',
-    large: false,
-    soon: false,
-  },
-  {
-    href: '/tools/feeding-formula-amount/',
-    name: 'Feeding & Formula Amount',
-    tagline: 'Daily feeding guide by baby weight and age.',
-    emoji: '🍼',
-    large: false,
-    soon: false,
-  },
-  {
-    href: '/tools/baby-sleep-schedule/',
-    name: 'Baby Sleep Schedule',
-    tagline: 'Wake-window and nap schedules by age.',
-    emoji: '😴',
-    large: false,
-    soon: false,
-  },
-  {
-    href: '/tools/maternity-leave-planner/',
-    name: 'Maternity Leave Planner',
-    tagline: 'FMLA timeline, pay estimates, and return-to-work date.',
-    emoji: '📋',
-    large: false,
-    soon: false,
-  },
-  {
-    href: '/tools/diaper-cost-calculator/',
-    name: 'Diaper & Wipe Cost',
-    tagline: 'Monthly and yearly cost estimate by age and price per unit.',
-    emoji: '💰',
-    large: false,
-    soon: false,
-  },
-  {
-    href: '/tools/baby-name-explorer/',
-    name: 'Baby Name Explorer',
-    tagline: 'Top names with meaning, origin, and 2023 SSA popularity.',
-    emoji: '✨',
-    large: false,
-    soon: false,
+    label: 'Baby & beyond',
+    tools: [
+      { href: '/tools/baby-growth-percentile/', name: 'Baby growth percentile', tagline: 'Weight, length, and head size on WHO curves.' },
+      { href: '/tools/feeding-formula-amount/', name: 'Feeding & formula amount', tagline: 'How much milk by age and weight.' },
+      { href: '/tools/baby-sleep-schedule/', name: 'Baby sleep schedule', tagline: 'Wake windows, naps, and a suggested bedtime.' },
+      { href: '/tools/diaper-cost-calculator/', name: 'Diaper & wipe cost', tagline: 'What you’ll really spend each month and year.' },
+      { href: '/tools/baby-name-explorer/', name: 'Baby name explorer', tagline: 'Meanings, origins, and 2023 popularity.' },
+    ],
   },
 ];
+
+let counter = 0;
 
 const homeSchema = {
   '@context': 'https://schema.org',
@@ -107,194 +55,139 @@ const collSchema = {
   description="Free pregnancy and baby calculators: due date, weeks pregnant, ovulation, weight gain, baby growth, feeding, and more. Evidence-based and reviewed by a medical student."
   schema={[homeSchema, collSchema]}
 >
+  <script is:inline>
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('motion-ready');
+    }
+  </script>
 
   <!-- ── Hero ──────────────────────────────────────── -->
-  <section style="max-width:1100px;margin:0 auto;padding:3.5rem 1.25rem 0;">
-    <div style="max-width:54ch;">
-      <p style="font-size:.82rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--color-primary);margin:0 0 .75rem;">Pregnancy &amp; Baby Tools</p>
-      <h1 style="font-family:var(--font-family-display);font-size:clamp(2rem,5vw,3.2rem);font-weight:700;color:var(--color-ink);margin:0 0 1rem;line-height:1.15;">
-        Calm, accurate tools<br/>for every week of your journey.
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow" style="margin:0 0 1.25rem;">Pregnancy &amp; baby tools</p>
+      <h1>
+        from the first test<br/>
+        to the first <span style="font-style:italic;color:var(--color-accent);">birthday</span>.
       </h1>
-      <p style="font-size:1.05rem;color:var(--color-muted);margin:0 0 2rem;max-width:50ch;line-height:1.65;">
-        Free, evidence-based calculators for pregnancy, fertility, and newborn care.
-        Reviewed by a senior medical student. No sign-up. No ads above the tools.
+      <p class="hero-sub">
+        Free, science-backed calculators for trying to conceive, pregnancy, and your
+        baby’s first years — accurate, ad-light, and reviewed by a senior medical student.
+        No sign-up. Nothing stored.
       </p>
+      <div class="hero-actions">
+        <a href="/tools/due-date-calculator/" class="btn btn--accent">Find your due date</a>
+        <a href="#all-tools" class="btn btn--ghost">All tools</a>
+      </div>
     </div>
+
+    <!-- Hand-drawn sprig (draws in on load, parallax on scroll) -->
+    <svg class="hero-sprig" data-parallax="-0.08" data-rot="0.006" viewBox="0 0 240 320" fill="none" aria-hidden="true">
+      <g class="sprig" stroke="var(--color-primary)" stroke-width="2" opacity="0.55">
+        <path pathLength="1" d="M150 312 C128 250 158 196 138 150 C122 112 150 78 168 26" />
+        <path pathLength="1" d="M138 250 C108 244 78 250 56 276 C92 286 124 280 138 250 Z" />
+        <path pathLength="1" d="M146 214 C176 204 204 206 226 230 C196 244 162 242 146 214 Z" />
+        <path pathLength="1" d="M132 178 C102 170 74 174 52 198 C86 210 118 204 132 178 Z" />
+        <path pathLength="1" d="M140 140 C170 128 198 128 220 150 C190 166 158 166 140 140 Z" />
+        <path pathLength="1" d="M138 104 C110 94 84 96 64 118 C96 130 124 126 138 104 Z" />
+        <path pathLength="1" d="M150 70 C178 56 204 54 224 74 C196 92 166 92 150 70 Z" />
+      </g>
+      <circle class="bud" cx="168" cy="25" r="6" fill="var(--color-accent)" />
+      <circle class="bud" cx="150" cy="46" r="3.5" fill="var(--color-accent)" opacity="0.8" />
+    </svg>
   </section>
 
-  <!-- ── Bento grid ─────────────────────────────────── -->
-  <section style="max-width:1100px;margin:0 auto;padding:2rem 1.25rem 4rem;" aria-label="All tools">
-    <div class="bento-grid">
+  <!-- ── Trust line ────────────────────────────────── -->
+  <section class="trust">
+    {[
+      'Sources from ACOG · AAP · CDC',
+      'Reviewed by a senior med student',
+      'Calculated in your browser',
+      'Free · no sign-up',
+    ].map((t) => (
+      <span class="trust-item">{t}</span>
+    ))}
+  </section>
 
-      <!-- Large hero card: Due Date -->
-      <a
-        href="/tools/due-date-calculator/"
-        class="tool-card-large"
-        style="
-          text-decoration:none;
-          background:var(--color-primary);
-          color:#fff;
-          border-radius:var(--radius);
-          padding:2.5rem;
-          display:flex;
-          flex-direction:column;
-          justify-content:space-between;
-          min-height:220px;
-          position:relative;
-          overflow:hidden;
-          transition:box-shadow .2s;
-          box-shadow:var(--shadow);
-        "
-      >
-        <div>
-          <span style="display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;background:rgba(255,255,255,.18);border-radius:999px;padding:.2rem .7rem;margin-bottom:1rem;">Most used</span>
-          <p style="font-size:3rem;margin:0 0 .75rem;line-height:1;">🗓️</p>
-          <h2 style="font-family:var(--font-family-display);font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:700;margin:0 0 .5rem;color:#fff;">Due Date Calculator</h2>
-          <p style="font-size:1rem;opacity:.85;margin:0;max-width:42ch;">Find your estimated due date from LMP, conception date, or IVF embryo transfer.</p>
-        </div>
-        <div style="display:flex;align-items:center;gap:.4rem;margin-top:1.75rem;font-size:.9rem;font-weight:600;opacity:.9;">
-          Calculate now <span>→</span>
-        </div>
-        <div aria-hidden="true" style="position:absolute;right:-3rem;top:-3rem;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.07);"></div>
-      </a>
-
-      <!-- Small live tool cards -->
-      {tools.filter(t => !t.large && !t.soon).map(t => (
-        <a
-          href={t.href}
-          class="tool-card-small"
-          style="
-            text-decoration:none;
-            background:var(--color-surface);
-            border-radius:var(--radius);
-            padding:1.5rem;
-            border:1.5px solid var(--color-line);
-            display:flex;flex-direction:column;gap:.5rem;
-            transition:border-color .15s,box-shadow .15s;
-          "
-        >
-          <span style="font-size:1.75rem;">{t.emoji}</span>
-          <p style="font-size:.95rem;font-weight:600;color:var(--color-ink);margin:0;">{t.name}</p>
-          <p style="font-size:.82rem;color:var(--color-muted);margin:0;line-height:1.5;">{t.tagline}</p>
-        </a>
-      ))}
-
-      <!-- Coming-soon cards -->
-      {tools.filter(t => t.soon).map(t => (
-        <div
-          class="tool-card-small"
-          style="
-            background:var(--color-surface);
-            border-radius:var(--radius);
-            padding:1.5rem;
-            border:1.5px solid var(--color-line);
-            display:flex;flex-direction:column;gap:.5rem;
-            opacity:.5;
-          "
-          aria-label={t.name + ' — coming soon'}
-        >
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <span style="font-size:1.75rem;">{t.emoji}</span>
-            <span style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--color-muted);border:1px solid var(--color-line);border-radius:999px;padding:.15rem .6rem;">Soon</span>
-          </div>
-          <p style="font-size:.95rem;font-weight:600;color:var(--color-ink);margin:0;">{t.name}</p>
-          <p style="font-size:.82rem;color:var(--color-muted);margin:0;line-height:1.5;">{t.tagline}</p>
-        </div>
-      ))}
+  <!-- ── Tools, card grid ──────────────────────────── -->
+  <section id="all-tools" class="tools" aria-label="All tools">
+    <div class="tools-head reveal">
+      <p class="eyebrow">The toolkit</p>
+      <h2>Ten calm tools, one quiet place.</h2>
+      <p class="tools-sub">Conceiving, expecting, or holding a newborn — pick where you are. Every result is personal to you and shareable with a link.</p>
     </div>
 
-    <!-- Trust bar -->
-    <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;margin-top:2.5rem;padding:1.25rem 1.5rem;background:var(--color-surface);border-radius:var(--radius-sm);border:1px solid var(--color-line);">
-      {[
-        ['🔬', 'Evidence-based: ACOG, AAP, CDC sources'],
-        ['🔒', 'All calculations happen in your browser'],
-        ['🆓', 'Free, no sign-up required'],
-        ['⚕️', 'Reviewed by a senior medical student'],
-      ].map(([icon, label]) => (
-        <div style="display:flex;align-items:center;gap:.5rem;font-size:.83rem;color:var(--color-muted);">
-          <span>{icon}</span><span>{label}</span>
-        </div>
+    <div class="tool-grid">
+      {stages.flatMap((s) => s.tools).map((tool) => (
+        <a href={tool.href} class="tool-card reveal">
+          <div class="tool-card-top">
+            <Icon name={iconForHref(tool.href)} size={30} />
+            {('featured' in tool && tool.featured) && <span class="tool-card-flag">Most used</span>}
+          </div>
+          <div class="tool-card-foot">
+            <span class="tool-card-name">{tool.name}</span>
+            <span class="tool-card-plus" aria-hidden="true">+</span>
+          </div>
+        </a>
       ))}
     </div>
   </section>
 
   <!-- ── Pillar content ─────────────────────────────── -->
-  <section id="coming-soon" style="max-width:760px;margin:0 auto;padding:0 1.25rem 5rem;" aria-label="Pregnancy calculators guide">
-    <h2 style="font-family:var(--font-family-display);font-size:clamp(1.4rem,3.5vw,1.9rem);font-weight:700;color:var(--color-ink);margin:0 0 1rem;">Pregnancy calculators: a guide for expecting parents</h2>
-    <div class="prose">
-      <p>
-        When you're pregnant — or trying to become pregnant — accurate numbers matter.
-        When is your baby due? How far along are you? When is your fertile window?
-        These questions have clear, evidence-based answers, and our tools calculate
-        them using the same formulas your healthcare provider uses.
+  <section class="pillar" aria-label="Pregnancy calculators guide">
+    <p class="eyebrow reveal" style="margin:0 0 1rem;">A quick guide</p>
+    <h2 class="reveal" style="font-size:clamp(1.6rem,3.5vw,2.1rem);font-weight:600;margin:0 0 1.25rem;">Pregnancy calculators, explained for real people</h2>
+    <div class="prose sheet" style="padding:2.25rem 2rem;">
+      <p class="reveal">
+        When you’re pregnant — or hoping to be — the numbers carry weight. When is the
+        baby due? How far along am I, really? When am I most fertile? These questions have
+        clear, evidence-based answers, and our tools work them out with the same formulas
+        your provider uses. No jargon, no account, no watching your data leave your phone.
       </p>
 
-      <h3>Starting with your due date</h3>
-      <p>
+      <h3 class="reveal">Start with your due date</h3>
+      <p class="reveal">
         The <a href="/tools/due-date-calculator/">due date calculator</a> is almost always the first
-        tool parents reach for. It uses <strong>Naegele's rule</strong> — endorsed by the American
+        tool parents reach for. It uses <strong>Naegele’s rule</strong> — endorsed by the American
         College of Obstetricians and Gynecologists (ACOG) — to add 280 days to the first day of
-        your last menstrual period. You can also calculate from a known conception date or an
-        IVF embryo transfer date.
-      </p>
-      <p>
-        Keep in mind: only about 4–5% of babies are born exactly on their estimated due date.
-        The EDD is the midpoint of a window — full term is 39–40 weeks, and most births occur
-        between 37 and 42 weeks. Your provider may revise your date after a first-trimester ultrasound.
+        your last period. You can also work from a known conception date or an IVF transfer.
+        Only about 1 in 20 babies actually arrives on the estimated date; it’s the middle of a
+        window, not a deadline.
       </p>
 
-      <h3>Knowing how far along you are</h3>
-      <p>
-        Once you have a due date, the <a href="/tools/how-many-weeks-pregnant/">how many weeks pregnant
-        calculator</a> shows your current gestational age in weeks and days, which trimester you're in,
-        and what's happening in your pregnancy this week. Gestational age is counted from the first day
-        of your last period — the same convention your provider uses for scheduling tests.
+      <h3 class="reveal">Know how far along you are</h3>
+      <p class="reveal">
+        Once you have a due date, the <a href="/tools/how-many-weeks-pregnant/">how many weeks
+        pregnant calculator</a> shows your gestational age in weeks and days, your trimester, and
+        what’s happening this week. The <a href="/tools/pregnancy-weight-gain/">pregnancy weight
+        gain calculator</a> gives a healthy range based on your pre-pregnancy BMI, per IOM/NASEM
+        guidelines, and the <a href="/tools/maternity-leave-planner/">maternity leave planner</a>
+        turns FMLA and your state’s paid-leave rules into a real timeline.
       </p>
 
-      <h3>Trying to conceive: your fertile window</h3>
-      <p>
-        If you're trying to get pregnant, the <a href="/tools/ovulation-fertility-window/">ovulation
-        calculator</a> estimates your fertile window based on your cycle length and last period.
-        The fertile window spans six days: the five days before ovulation and the day of ovulation.
-        Research shows the highest chance of conception comes from intercourse one to two days
-        before ovulation.
+      <h3 class="reveal">Trying to conceive</h3>
+      <p class="reveal">
+        If you’re trying to get pregnant, the <a href="/tools/ovulation-fertility-window/">ovulation
+        calculator</a> estimates your fertile window from your cycle length and last period. The
+        window spans six days — the five before ovulation plus the day itself — with the best odds
+        one to two days before.
       </p>
 
-      <h3>Tracking your pregnancy weight gain</h3>
-      <p>
-        The <a href="/tools/pregnancy-weight-gain/">pregnancy weight gain calculator</a> tells you
-        the IOM/NASEM 2009-recommended range based on your pre-pregnancy BMI — and how much you
-        should expect to have gained by your current gestational week. Guidelines differ for
-        underweight, normal, overweight, and obese BMI categories, and for twin pregnancies.
+      <h3 class="reveal">Once baby arrives</h3>
+      <p class="reveal">
+        After birth, the <a href="/tools/baby-growth-percentile/">growth percentile calculator</a>
+        plots weight, length, and head size on WHO curves; the
+        <a href="/tools/feeding-formula-amount/">feeding calculator</a> gives AAP-based daily
+        amounts; the <a href="/tools/baby-sleep-schedule/">sleep schedule generator</a> suggests nap
+        times and bedtime; the <a href="/tools/diaper-cost-calculator/">diaper cost calculator</a>
+        sizes up your monthly spend; and the <a href="/tools/baby-name-explorer/">baby name explorer</a>
+        helps you find a name with meaning.
       </p>
 
-      <h3>Baby tools: growth, feeding, and sleep</h3>
-      <p>
-        After birth, the tools shift from pregnancy to newborn care. The
-        <a href="/tools/baby-growth-percentile/">baby growth percentile calculator</a> uses WHO
-        Child Growth Standards (LMS method) to plot your baby's weight, length, or head circumference
-        at 0–24 months. The <a href="/tools/feeding-formula-amount/">feeding and formula amount
-        calculator</a> gives AAP-based daily intake targets by age and weight. The
-        <a href="/tools/baby-sleep-schedule/">baby sleep schedule generator</a> suggests nap times
-        and bedtime based on your baby's age and morning wake-up, using AASM pediatric sleep
-        duration guidelines.
-      </p>
-
-      <h3>Planning your leave and budget</h3>
-      <p>
-        The <a href="/tools/maternity-leave-planner/">maternity leave planner</a> maps out FMLA
-        protection, employer-paid weeks, and your state's paid family leave benefits into a
-        timeline with an estimated return-to-work date. The
-        <a href="/tools/diaper-cost-calculator/">diaper and wipe cost calculator</a> shows monthly
-        and yearly spending at your per-unit price, including the right diaper size for each stage.
-        And the <a href="/tools/baby-name-explorer/">baby name explorer</a> lets you browse
-        top 100 names by sex with meanings, origins, and 2023 SSA popularity rankings.
-      </p>
-      <p style="padding:1rem 1.25rem;background:var(--color-surface-2);border-radius:var(--radius-sm);font-size:.9rem;">
-        <strong>About Sage &amp; Sprout:</strong> Our tools are built on primary medical literature —
-        ACOG, AAP, NIH, CDC — and reviewed by a senior medical student at an Ivy League institution.
-        All calculations happen in your browser. We never store your dates or personal information.
-        Content is general educational information — always consult your healthcare provider for personal guidance.
+      <p class="about-note reveal">
+        <strong>About Sage &amp; Sprout.</strong> Our tools are built on primary medical literature
+        — ACOG, AAP, NIH, CDC — and reviewed by a senior medical student at an Ivy League
+        institution. Every calculation runs in your browser; we never store your dates or personal
+        information. This is general educational information, not a substitute for your own provider.
         <a href="/about/">Learn more →</a>
       </p>
     </div>
@@ -302,23 +195,183 @@ const collSchema = {
 </Base>
 
 <style>
-  .bento-grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 1rem;
+  /* ── Hero ── */
+  .hero {
+    position: relative;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem 1rem;
+    overflow: hidden;
   }
-  .tool-card-large  { grid-column: span 12; }
-  .tool-card-small  { grid-column: span 12; }
+  .hero-copy { position: relative; z-index: 2; max-width: 36ch; }
+  .hero h1 {
+    font-size: clamp(2.6rem, 6.5vw, 4.4rem);
+    font-weight: 600;
+    line-height: 1.0;
+    margin: 0 0 1.5rem;
+    letter-spacing: -0.035em;
+  }
+  .hero-sub {
+    font-size: 1.08rem;
+    color: var(--color-muted);
+    margin: 0 0 2rem;
+    max-width: 44ch;
+    line-height: 1.7;
+  }
+  .hero-actions { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+  .hero-sprig {
+    position: absolute;
+    right: -10px;
+    top: -30px;
+    width: 230px;
+    height: auto;
+    z-index: 1;
+    pointer-events: none;
+    will-change: transform;
+  }
 
-  @media (min-width: 480px) {
-    .tool-card-small { grid-column: span 6; }
+  /* ── Trust line ── */
+  .trust {
+    max-width: var(--maxw);
+    margin: 2.5rem auto 0;
+    padding: 1.1rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+    border-top: 1px solid var(--color-line);
+    border-bottom: 1px solid var(--color-line);
   }
-  @media (min-width: 768px) {
-    .tool-card-large  { grid-column: span 12; }
-    .tool-card-small  { grid-column: span 4; }
+  .trust-item {
+    font-size: 0.74rem;
+    letter-spacing: 0.04em;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    font-weight: 500;
   }
-  .tool-card-small:hover {
-    border-color: var(--color-primary) !important;
-    box-shadow: var(--shadow-sm);
+
+  /* ── Tools card grid ── */
+  .tools { max-width: var(--maxw); margin: 0 auto; padding: 4.5rem 1.5rem 2rem; }
+  .tools-head { margin-bottom: 2.5rem; max-width: 52ch; }
+  .tools-head h2 { font-size: clamp(1.9rem, 4vw, 2.8rem); font-weight: 600; margin: 0.6rem 0 0.75rem; }
+  .tools-sub { color: var(--color-muted); max-width: 48ch; margin: 0; line-height: 1.6; }
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    border-top: 1px solid var(--color-line);
+    border-left: 1px solid var(--color-line);
+  }
+  .tool-card {
+    display: flex; flex-direction: column; justify-content: space-between; gap: 2.5rem;
+    min-height: 200px; padding: 1.4rem;
+    border-right: 1px solid var(--color-line);
+    border-bottom: 1px solid var(--color-line);
+    text-decoration: none; color: inherit;
+    transition: background .25s ease, color .25s ease;
+  }
+  .tool-card:hover { background: var(--color-cream); color: var(--color-bg); }
+  .tool-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: .5rem; }
+  .tool-card-flag {
+    font-size: .58rem; text-transform: uppercase; letter-spacing: .1em; font-weight: 600;
+    border: 1px solid currentColor; padding: .18rem .45rem; opacity: .85; white-space: nowrap;
+  }
+  .tool-card-foot { display: flex; align-items: flex-end; justify-content: space-between; gap: .5rem; }
+  .tool-card-name { font-size: 1.05rem; font-weight: 500; line-height: 1.2; }
+  .tool-card-plus { font-size: 1.5rem; line-height: 1; font-weight: 300; }
+  @media (max-width: 980px) { .tool-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .tool-grid { grid-template-columns: 1fr; } }
+
+  /* ── Pillar ── */
+  .pillar { position: relative; max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem 5rem; overflow: hidden; }
+  .about-note {
+    margin-top: 2rem;
+    padding: 1.5rem 1.75rem;
+    background: var(--color-surface-2);
+    border-radius: var(--radius);
+    border: 1px solid var(--color-line);
+    font-size: 0.92rem;
+  }
+
+  /* ── Decorative parallax leaf accents ── */
+  .leaf-accent { position: absolute; z-index: 0; pointer-events: none; height: auto; will-change: transform; }
+  .leaf-accent--tools { width: 110px; top: 3rem; right: 1rem; }
+  .leaf-accent--pillar { width: 100px; bottom: 4rem; left: -1.5rem; }
+  .tools > *:not(.leaf-accent), .pillar > *:not(.leaf-accent) { position: relative; z-index: 1; }
+
+  /* ── Scroll motion (only when allowed) ── */
+  .motion-ready .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .7s cubic-bezier(.2,.65,.25,1), transform .7s cubic-bezier(.2,.65,.25,1);
+    transition-delay: calc(var(--i, 0) * 70ms);
+  }
+  .motion-ready .reveal.is-visible { opacity: 1; transform: none; }
+
+  .motion-ready .hero-sprig .sprig path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: sprig-draw 1.5s cubic-bezier(.45,.05,.2,1) forwards;
+  }
+  .motion-ready .hero-sprig .sprig path:nth-child(2) { animation-delay: .15s; }
+  .motion-ready .hero-sprig .sprig path:nth-child(3) { animation-delay: .3s; }
+  .motion-ready .hero-sprig .sprig path:nth-child(4) { animation-delay: .45s; }
+  .motion-ready .hero-sprig .sprig path:nth-child(5) { animation-delay: .6s; }
+  .motion-ready .hero-sprig .sprig path:nth-child(6) { animation-delay: .75s; }
+  .motion-ready .hero-sprig .sprig path:nth-child(7) { animation-delay: .9s; }
+  .motion-ready .hero-sprig .bud { opacity: 0; animation: bud-in .6s ease forwards 1.15s; }
+  .motion-ready .hero-sprig .bud:last-of-type { animation-delay: 1.35s; }
+
+  @keyframes sprig-draw { to { stroke-dashoffset: 0; } }
+  @keyframes bud-in { from { opacity: 0; transform: scale(.4); } to { opacity: .85; transform: scale(1); } }
+
+  @media (max-width: 640px) {
+    .hero-sprig { opacity: 0.5; width: 150px; right: -20px; top: 0; }
+    .hero { padding-top: 2.5rem; }
+    .leaf-accent { display: none; }
   }
 </style>
+
+<script>
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reduce) {
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -7% 0px' });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+    // Parallax layers — gentle, transform-only, rAF-throttled
+    const layers = Array.from(document.querySelectorAll('[data-parallax]')) as HTMLElement[];
+    let ticking = false;
+
+    function frame() {
+      const vh = window.innerHeight;
+      layers.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        const center = rect.top + rect.height / 2 - vh / 2;
+        const speed = parseFloat(el.dataset.parallax || '0');
+        const rot = parseFloat(el.dataset.rot || '0');
+        const ty = (center * speed).toFixed(1);
+        const rz = (center * rot).toFixed(3);
+        el.style.transform = `translate3d(0, ${ty}px, 0) rotate(${rz}deg)`;
+      });
+      ticking = false;
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(frame);
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    frame();
+  }
+</script>
