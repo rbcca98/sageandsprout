@@ -8,14 +8,14 @@ const copy: ToolCopy = {
   breadcrumb: 'Ovulation Calculator',
   headline: 'Ovulation & Fertility Window Calculator',
   hook:
-    'Enter the first day of your last period and your average cycle length to calculate your estimated ovulation date, six-day fertile window, and when to start using an ovulation predictor kit (OPK) — all based on the 14-day luteal phase used in clinical reproductive medicine.',
+    'Enter the first day of your last period and your average cycle length to calculate your estimated ovulation date, six-day fertile window, and when to start using an ovulation predictor kit (OPK). All based on the 14-day luteal phase used in clinical reproductive medicine.',
   reviewedDate: '2026-06-27',
 
   faqs: [
     {
       question: 'How accurate is this ovulation calculator?',
       answer:
-        "This calculator provides an estimate based on the average 14-day luteal phase — the time between ovulation and the next period. For people with regular cycles, it's a reliable starting point. However, ovulation can vary cycle to cycle, especially with stress, illness, travel, or hormonal changes. For the most accurate tracking, combine this calculator with ovulation predictor kits (OPKs) or basal body temperature charting.",
+        "This calculator provides an estimate based on the average 14-day luteal phase, the time between ovulation and the next period. For people with regular cycles, it's a reliable starting point. However, ovulation can vary cycle to cycle, especially with stress, illness, travel, or hormonal changes. For the most accurate tracking, combine this calculator with ovulation predictor kits (OPKs) or basal body temperature charting.",
     },
     {
       question: 'What is the fertile window?',
@@ -30,7 +30,7 @@ const copy: ToolCopy = {
     {
       question: 'What are signs that I am ovulating?',
       answer:
-        'Physical signs of ovulation include a change in cervical mucus (becoming clear, slippery, and stretchy — often described as "egg white" consistency), mild one-sided pelvic pain (Mittelschmerz), a slight rise in basal body temperature (0.2–0.5°F) after ovulation, and a positive result on an ovulation predictor kit (OPK), which detects the LH surge that occurs 24–36 hours before ovulation.',
+        'Physical signs of ovulation include a change in cervical mucus (becoming clear, slippery, and stretchy), mild one-sided pelvic pain (Mittelschmerz), a slight rise in basal body temperature (0.2–0.5°F) after ovulation, and a positive result on an ovulation predictor kit (OPK), which detects the LH surge that occurs 24–36 hours before ovulation.',
     },
     {
       question: 'My cycle is irregular — can I still use this calculator?',
