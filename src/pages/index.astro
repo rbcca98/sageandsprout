@@ -3,35 +3,7 @@ import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import { iconForHref } from '../data/tool-icons';
 
-const stages = [
-  {
-    label: 'Trying to conceive',
-    tools: [
-      { href: '/tools/ovulation-fertility-window/', name: 'Ovulation & fertile window', tagline: 'Your most fertile days and best time to test.' },
-    ],
-  },
-  {
-    label: 'Expecting',
-    tools: [
-      { href: '/tools/due-date-calculator/', name: 'Due date calculator', tagline: 'From your last period, conception, or IVF transfer.', featured: true },
-      { href: '/tools/how-many-weeks-pregnant/', name: 'How many weeks pregnant', tagline: 'Your exact week, trimester, and what’s ahead.' },
-      { href: '/tools/pregnancy-weight-gain/', name: 'Pregnancy weight gain', tagline: 'A personalized target by pre-pregnancy BMI.' },
-      { href: '/tools/maternity-leave-planner/', name: 'Maternity leave planner', tagline: 'FMLA, paid weeks, and a return-to-work date.' },
-    ],
-  },
-  {
-    label: 'Baby & beyond',
-    tools: [
-      { href: '/tools/baby-growth-percentile/', name: 'Baby growth percentile', tagline: 'Weight, length, and head size on WHO curves.' },
-      { href: '/tools/feeding-formula-amount/', name: 'Feeding & formula amount', tagline: 'How much milk by age and weight.' },
-      { href: '/tools/baby-sleep-schedule/', name: 'Baby sleep schedule', tagline: 'Wake windows, naps, and a suggested bedtime.' },
-      { href: '/tools/diaper-cost-calculator/', name: 'Diaper & wipe cost', tagline: 'What you’ll really spend each month and year.' },
-      { href: '/tools/baby-name-explorer/', name: 'Baby name explorer', tagline: 'Meanings, origins, and 2023 popularity.' },
-    ],
-  },
-];
-
-let counter = 0;
+import { site } from '../data/site';
 
 const homeSchema = {
   '@context': 'https://schema.org',
@@ -51,8 +23,8 @@ const collSchema = {
 ---
 
 <Base
-  title="Pregnancy & Baby Calculators — Free, Science-Backed Tools | Sage & Sprout"
-  description="Free pregnancy and baby calculators: due date, weeks pregnant, ovulation, weight gain, baby growth, feeding, and more. Evidence-based and reviewed by a medical student."
+  title={site.meta.title}
+  description={site.meta.description}
   schema={[homeSchema, collSchema]}
 >
   <script is:inline>
@@ -64,19 +36,15 @@ const collSchema = {
   <!-- ── Hero ──────────────────────────────────────── -->
   <section class="hero">
     <div class="hero-copy">
-      <p class="eyebrow" style="margin:0 0 1.25rem;">Pregnancy &amp; baby tools</p>
+      <p class="eyebrow" style="margin:0 0 1.25rem;">{site.hero.eyebrow}</p>
       <h1>
-        from the first test<br/>
-        to the first <span style="font-style:italic;color:var(--color-accent);">birthday</span>.
+        {site.hero.headlineLine1}<br/>
+        {site.hero.headlineLine2} <span style="font-style:italic;color:var(--color-accent);">{site.hero.headlineAccent}</span>.
       </h1>
-      <p class="hero-sub">
-        Free, science-backed calculators for trying to conceive, pregnancy, and your
-        baby’s first years — accurate, ad-light, and reviewed by a senior medical student.
-        No sign-up. Nothing stored.
-      </p>
+      <p class="hero-sub">{site.hero.sub}</p>
       <div class="hero-actions">
-        <a href="/tools/due-date-calculator/" class="btn btn--accent">Find your due date</a>
-        <a href="#all-tools" class="btn btn--ghost">All tools</a>
+        <a href={site.hero.primaryCta.href} class="btn btn--accent">{site.hero.primaryCta.label}</a>
+        <a href={site.hero.secondaryCta.href} class="btn btn--ghost">{site.hero.secondaryCta.label}</a>
       </div>
     </div>
 
@@ -98,12 +66,7 @@ const collSchema = {
 
   <!-- ── Trust line ────────────────────────────────── -->
   <section class="trust">
-    {[
-      'Sources from ACOG · AAP · CDC',
-      'Reviewed by a senior med student',
-      'Calculated in your browser',
-      'Free · no sign-up',
-    ].map((t) => (
+    {site.trust.map((t) => (
       <span class="trust-item">{t}</span>
     ))}
   </section>
@@ -111,13 +74,13 @@ const collSchema = {
   <!-- ── Tools, card grid ──────────────────────────── -->
   <section id="all-tools" class="tools" aria-label="All tools">
     <div class="tools-head reveal">
-      <p class="eyebrow">The toolkit</p>
-      <h2>Ten calm tools, one quiet place.</h2>
-      <p class="tools-sub">Conceiving, expecting, or holding a newborn — pick where you are. Every result is personal to you and shareable with a link.</p>
+      <p class="eyebrow">{site.toolkit.eyebrow}</p>
+      <h2>{site.toolkit.heading}</h2>
+      <p class="tools-sub">{site.toolkit.sub}</p>
     </div>
 
     <div class="tool-grid">
-      {stages.flatMap((s) => s.tools).map((tool) => (
+      {site.tools.map((tool) => (
         <a href={tool.href} class="tool-card reveal">
           <div class="tool-card-top">
             <Icon name={iconForHref(tool.href)} size={30} />
@@ -134,62 +97,16 @@ const collSchema = {
 
   <!-- ── Pillar content ─────────────────────────────── -->
   <section class="pillar" aria-label="Pregnancy calculators guide">
-    <p class="eyebrow reveal" style="margin:0 0 1rem;">A quick guide</p>
-    <h2 class="reveal" style="font-size:clamp(1.6rem,3.5vw,2.1rem);font-weight:600;margin:0 0 1.25rem;">Pregnancy calculators, explained for real people</h2>
+    <p class="eyebrow reveal" style="margin:0 0 1rem;">{site.guide.eyebrow}</p>
+    <h2 class="reveal" style="font-size:clamp(1.6rem,3.5vw,2.1rem);font-weight:600;margin:0 0 1.25rem;">{site.guide.heading}</h2>
     <div class="prose sheet" style="padding:2.25rem 2rem;">
-      <p class="reveal">
-        When you’re pregnant — or hoping to be — the numbers carry weight. When is the
-        baby due? How far along am I, really? When am I most fertile? These questions have
-        clear, evidence-based answers, and our tools work them out with the same formulas
-        your provider uses. No jargon, no account, no watching your data leave your phone.
-      </p>
-
-      <h3 class="reveal">Start with your due date</h3>
-      <p class="reveal">
-        The <a href="/tools/due-date-calculator/">due date calculator</a> is almost always the first
-        tool parents reach for. It uses <strong>Naegele’s rule</strong> — endorsed by the American
-        College of Obstetricians and Gynecologists (ACOG) — to add 280 days to the first day of
-        your last period. You can also work from a known conception date or an IVF transfer.
-        Only about 1 in 20 babies actually arrives on the estimated date; it’s the middle of a
-        window, not a deadline.
-      </p>
-
-      <h3 class="reveal">Know how far along you are</h3>
-      <p class="reveal">
-        Once you have a due date, the <a href="/tools/how-many-weeks-pregnant/">how many weeks
-        pregnant calculator</a> shows your gestational age in weeks and days, your trimester, and
-        what’s happening this week. The <a href="/tools/pregnancy-weight-gain/">pregnancy weight
-        gain calculator</a> gives a healthy range based on your pre-pregnancy BMI, per IOM/NASEM
-        guidelines, and the <a href="/tools/maternity-leave-planner/">maternity leave planner</a>
-        turns FMLA and your state’s paid-leave rules into a real timeline.
-      </p>
-
-      <h3 class="reveal">Trying to conceive</h3>
-      <p class="reveal">
-        If you’re trying to get pregnant, the <a href="/tools/ovulation-fertility-window/">ovulation
-        calculator</a> estimates your fertile window from your cycle length and last period. The
-        window spans six days — the five before ovulation plus the day itself — with the best odds
-        one to two days before.
-      </p>
-
-      <h3 class="reveal">Once baby arrives</h3>
-      <p class="reveal">
-        After birth, the <a href="/tools/baby-growth-percentile/">growth percentile calculator</a>
-        plots weight, length, and head size on WHO curves; the
-        <a href="/tools/feeding-formula-amount/">feeding calculator</a> gives AAP-based daily
-        amounts; the <a href="/tools/baby-sleep-schedule/">sleep schedule generator</a> suggests nap
-        times and bedtime; the <a href="/tools/diaper-cost-calculator/">diaper cost calculator</a>
-        sizes up your monthly spend; and the <a href="/tools/baby-name-explorer/">baby name explorer</a>
-        helps you find a name with meaning.
-      </p>
-
-      <p class="about-note reveal">
-        <strong>About Sage &amp; Sprout.</strong> Our tools are built on primary medical literature
-        — ACOG, AAP, NIH, CDC — and reviewed by a senior medical student at an Ivy League
-        institution. Every calculation runs in your browser; we never store your dates or personal
-        information. This is general educational information, not a substitute for your own provider.
-        <a href="/about/">Learn more →</a>
-      </p>
+      {site.guide.sections.map((s) => (
+        <Fragment>
+          {s.heading && <h3 class="reveal">{s.heading}</h3>}
+          <p class="reveal" set:html={s.body}></p>
+        </Fragment>
+      ))}
+      <p class="about-note reveal" set:html={site.guide.aboutNote}></p>
     </div>
   </section>
 </Base>

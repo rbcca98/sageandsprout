@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { site } from '../data/site';
 
 export interface Props {
   title: string;
@@ -29,11 +30,8 @@ const schemaArray = schema
   ? (Array.isArray(schema) ? schema : [schema])
   : [];
 
-const navLinks = [
-  { href: '/tools/due-date-calculator/', label: 'Due date' },
-  { href: '/tools/how-many-weeks-pregnant/', label: 'Weeks pregnant' },
-  { href: '/tools/ovulation-fertility-window/', label: 'Ovulation' },
-];
+const navLinks = site.nav;
+const footerTools = site.nav.filter((n) => n.href.startsWith('/tools/'));
 ---
 
 <!doctype html>
@@ -104,8 +102,7 @@ const navLinks = [
           {navLinks.map(({ href, label }) => (
             <li><a href={href} class="pill">{label}</a></li>
           ))}
-          <li><a href="/about/" class="pill">About</a></li>
-          <li><a href="/#all-tools" class="pill pill--accent">All tools</a></li>
+          <li><a href={site.navCta.href} class="pill pill--accent">{site.navCta.label}</a></li>
         </ul>
       </nav>
     </div>
@@ -156,26 +153,20 @@ const navLinks = [
             </svg>
             <p style="font-family:var(--font-family-display);font-size:1.15rem;font-weight:500;margin:0;">Sage <span style="font-style:italic;font-weight:400;">&amp;</span> Sprout</p>
           </div>
-          <p style="font-size:0.85rem;color:var(--color-muted);margin:0;max-width:30ch;line-height:1.6;">Calm, science-backed tools for pregnancy, fertility, and the first years — made by a senior medical student.</p>
+          <p style="font-size:0.85rem;color:var(--color-muted);margin:0;max-width:30ch;line-height:1.6;">{site.footer.blurb}</p>
         </div>
         <div>
-          <p class="eyebrow" style="margin:0 0 0.9rem;">Popular tools</p>
+          <p class="eyebrow" style="margin:0 0 0.9rem;">{site.footer.popularLabel}</p>
           <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0.5rem;">
-            {navLinks.map(({ href, label }) => (
+            {footerTools.map(({ href, label }) => (
               <li><a href={href} style="font-size:0.88rem;color:var(--color-ink);text-decoration:none;opacity:.85;">{label}</a></li>
             ))}
           </ul>
         </div>
         <div>
-          <p class="eyebrow" style="margin:0 0 0.9rem;">More</p>
+          <p class="eyebrow" style="margin:0 0 0.9rem;">{site.footer.moreLabel}</p>
           <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0.5rem;">
-            {[
-              ['/about/', 'About'],
-              ['/medical-disclaimer/', 'Medical disclaimer'],
-              ['/privacy/', 'Privacy policy'],
-              ['/terms/', 'Terms of use'],
-              ['/contact/', 'Contact'],
-            ].map(([href, label]) => (
+            {site.footer.moreLinks.map(({ href, label }) => (
               <li><a href={href} style="font-size:0.88rem;color:var(--color-ink);text-decoration:none;opacity:.85;">{label}</a></li>
             ))}
           </ul>
@@ -183,7 +174,7 @@ const navLinks = [
       </div>
       <hr class="rule" style="margin:2.5rem 0 1.5rem;" />
       <div style="font-size:0.76rem;color:var(--color-muted);line-height:1.6;">
-        <p style="margin:0 0 0.4rem;"><strong style="color:var(--color-ink);font-weight:600;">Medical disclaimer:</strong> Everything on Sage &amp; Sprout is general educational information, not medical advice, and is no substitute for care from a licensed provider.</p>
+        <p style="margin:0 0 0.4rem;"><strong style="color:var(--color-ink);font-weight:600;">Medical disclaimer:</strong> <Fragment set:html={site.footer.disclaimer} /></p>
         <p style="margin:0;">© {new Date().getFullYear()} Sage &amp; Sprout · <a href="/privacy/" style="color:var(--color-muted);">Privacy</a> · <a href="/terms/" style="color:var(--color-muted);">Terms</a></p>
       </div>
     </div>
