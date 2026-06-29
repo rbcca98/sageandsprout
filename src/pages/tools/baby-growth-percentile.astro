@@ -40,7 +40,7 @@ import { toolSchema } from '../../data/tools/_schema';
       ))}
     </div>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem;">
+    <div class="tool-grid-3" style="margin-bottom:1.5rem;">
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="gp-age">Age (months)</label>
         <input id="gp-age" type="number" min="0" max="24" value="6"
@@ -48,7 +48,7 @@ import { toolSchema } from '../../data/tools/_schema';
       </div>
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;">Sex</label>
-        <div style="display:flex;gap:0.75rem;padding-top:0.5rem;">
+        <div style="display:flex;gap:0.75rem;padding-top:0.5rem;flex-wrap:wrap;">
           <label style="display:flex;align-items:center;gap:0.35rem;cursor:pointer;font-size:0.95rem;">
             <input type="radio" name="gp-sex" value="M" checked /> Boy
           </label>

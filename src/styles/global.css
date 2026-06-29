@@ -31,7 +31,7 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; overflow-x: hidden; }
 
 /* ── Sage context (the page default) ──────────────────
    Text becomes cream, surfaces transparent, lines faint.
@@ -198,6 +198,16 @@ select option { color: #26352B; }
   border-left: 3px solid var(--color-accent); font-size: 0.95rem; line-height: 1.65;
 }
 .callout svg { flex-shrink: 0; margin-top: 2px; }
+
+/* ── Responsive 3-col grid for tool forms/results ───── */
+.tool-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 520px) {
+  .tool-grid-3 { grid-template-columns: 1fr; }
+}
 
 /* ── Result panel animation ─────────────────────────── */
 @keyframes result-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
