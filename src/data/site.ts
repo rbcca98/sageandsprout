@@ -46,16 +46,16 @@ export const site = {
   },
   /* Order shown in the grid. Set featured:true for the "Most used" flag. */
   tools: [
-    { href: '/tools/ovulation-fertility-window/', name: 'Ovulation & fertile window' },
-    { href: '/tools/due-date-calculator/', name: 'Due date calculator', featured: true },
-    { href: '/tools/how-many-weeks-pregnant/', name: 'How many weeks pregnant' },
-    { href: '/tools/pregnancy-weight-gain/', name: 'Pregnancy weight gain' },
-    { href: '/tools/maternity-leave-planner/', name: 'Maternity leave planner' },
-    { href: '/tools/baby-growth-percentile/', name: 'Baby growth percentile' },
-    { href: '/tools/feeding-formula-amount/', name: 'Feeding & formula amount' },
-    { href: '/tools/baby-sleep-schedule/', name: 'Baby sleep schedule' },
-    { href: '/tools/diaper-cost-calculator/', name: 'Diaper & wipe cost' },
-    { href: '/tools/baby-name-explorer/', name: 'Baby name explorer' },
+    { href: '/tools/ovulation-fertility-window/', name: 'Ovulation & fertile window', stage: 'conceive' },
+    { href: '/tools/due-date-calculator/', name: 'Due date calculator', featured: true, stage: 'pregnancy' },
+    { href: '/tools/how-many-weeks-pregnant/', name: 'How many weeks pregnant', stage: 'pregnancy' },
+    { href: '/tools/pregnancy-weight-gain/', name: 'Pregnancy weight gain', stage: 'pregnancy' },
+    { href: '/tools/maternity-leave-planner/', name: 'Maternity leave planner', stage: 'pregnancy' },
+    { href: '/tools/baby-growth-percentile/', name: 'Baby growth percentile', stage: 'baby' },
+    { href: '/tools/feeding-formula-amount/', name: 'Feeding & formula amount', stage: 'baby' },
+    { href: '/tools/baby-sleep-schedule/', name: 'Baby sleep schedule', stage: 'baby' },
+    { href: '/tools/diaper-cost-calculator/', name: 'Diaper & wipe cost', stage: 'baby' },
+    { href: '/tools/baby-name-explorer/', name: 'Baby name explorer', stage: 'baby' },
   ],
 
   /* Homepage guide (the cream "sheet" below the grid). Paragraphs may

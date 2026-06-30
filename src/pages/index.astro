@@ -80,17 +80,29 @@ const collSchema = {
     </div>
 
     <div class="tool-grid">
-      {site.tools.map((tool) => (
-        <a href={tool.href} class="tool-card reveal">
-          <div class="tool-card-top">
-            <Icon name={iconForHref(tool.href)} size={30} />
-            {('featured' in tool && tool.featured) && <span class="tool-card-flag">Most used</span>}
-          </div>
-          <div class="tool-card-foot">
-            <span class="tool-card-name">{tool.name}</span>
-            <span class="tool-card-plus" aria-hidden="true">+</span>
-          </div>
-        </a>
+      {([
+        { key: 'conceive', label: 'Trying to conceive' },
+        { key: 'pregnancy', label: 'Pregnancy' },
+        { key: 'baby', label: "Baby's first years" },
+      ] as const).map(({ key, label }) => (
+        <Fragment>
+          <div class="stage-divider"><p class="eyebrow">{label}</p></div>
+          {site.tools
+            .filter((t) => t.stage === key)
+            .map((tool) => (
+              <a href={tool.href} class="tool-card reveal">
+                <div class="tool-card-top">
+                  <Icon name={iconForHref(tool.href)} size={30} />
+                  {('featured' in tool && tool.featured) && <span class="tool-card-flag">Most used</span>}
+                </div>
+                <div class="tool-card-foot">
+                  <span class="tool-card-name">{tool.name}</span>
+                  <span class="tool-card-plus" aria-hidden="true">+</span>
+                </div>
+              </a>
+            ))
+          }
+        </Fragment>
       ))}
     </div>
   </section>
@@ -174,9 +186,14 @@ const collSchema = {
   .tool-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    border-top: 1px solid var(--color-line);
     border-left: 1px solid var(--color-line);
   }
+  .stage-divider {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--color-line);
+    padding: 0.85rem 0 0.45rem;
+  }
+  .stage-divider .eyebrow { margin: 0; }
   .tool-card {
     display: flex; flex-direction: column; justify-content: space-between; gap: 2.5rem;
     min-height: 200px; padding: 1.4rem;
