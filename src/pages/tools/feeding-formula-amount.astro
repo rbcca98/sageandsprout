@@ -31,20 +31,14 @@ import { toolSchema } from '../../data/tools/_schema';
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;">
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="feed-age">Baby's age (months)</label>
-        <input id="feed-age" type="number" min="0" max="12" value="2"
-          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+        <input id="feed-age" type="number" min="0" max="12" value="2" />
       </div>
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="feed-weight">Baby's weight (lb)</label>
-        <input id="feed-weight" type="number" min="4" max="40" step="0.5" value="12"
-          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+        <input id="feed-weight" type="number" min="4" max="40" step="0.5" value="12" />
       </div>
     </div>
 
-    <button id="feed-calculate"
-      class="btn btn--primary btn--block">
-      Calculate feeding amounts
-    </button>
 
     <!-- Result panel -->
     <div id="feed-result" style="min-height:220px;margin-top:1.5rem;display:none;">
@@ -90,10 +84,11 @@ import { toolSchema } from '../../data/tools/_schema';
         (b as HTMLElement).style.color = isActive ? '#fff' : 'var(--color-muted)';
         (b as HTMLElement).style.borderColor = isActive ? 'var(--color-primary)' : 'var(--color-line)';
       });
+      calc();
     });
   });
 
-  document.getElementById('feed-calculate')!.addEventListener('click', () => {
+  function calc() {
     const age    = parseFloat((document.getElementById('feed-age') as HTMLInputElement).value) || 0;
     const weight = parseFloat((document.getElementById('feed-weight') as HTMLInputElement).value) || 0;
 
@@ -121,5 +116,13 @@ import { toolSchema } from '../../data/tools/_schema';
     } else {
       solidsEl.style.display = 'none';
     }
-  });
+  }
+
+  // Live-update
+  let _t: ReturnType<typeof setTimeout>;
+  ['feed-age', 'feed-weight'].forEach(id =>
+    document.getElementById(id)!.addEventListener('input', () => { clearTimeout(_t); _t = setTimeout(calc, 150); })
+  );
+
+  calc();
 </script>

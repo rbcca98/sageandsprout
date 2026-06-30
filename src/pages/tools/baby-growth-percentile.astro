@@ -43,8 +43,7 @@ import { toolSchema } from '../../data/tools/_schema';
     <div class="tool-grid-3" style="margin-bottom:1.5rem;">
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="gp-age">Age (months)</label>
-        <input id="gp-age" type="number" min="0" max="24" value="6"
-          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+        <input id="gp-age" type="number" min="0" max="24" value="6" />
       </div>
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;">Sex</label>
@@ -59,15 +58,10 @@ import { toolSchema } from '../../data/tools/_schema';
       </div>
       <div>
         <label id="gp-value-label" style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="gp-value">Weight (lb)</label>
-        <input id="gp-value" type="number" min="0" step="0.1" value="16"
-          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+        <input id="gp-value" type="number" min="0" step="0.1" value="16" />
       </div>
     </div>
 
-    <button id="gp-calculate"
-      class="btn btn--primary btn--block">
-      Calculate percentile
-    </button>
 
     <!-- Result panel -->
     <div id="gp-result" style="min-height:200px;margin-top:1.5rem;display:none;">
@@ -112,6 +106,7 @@ import { toolSchema } from '../../data/tools/_schema';
         (b as HTMLElement).style.borderColor = isActive ? 'var(--color-primary)' : 'var(--color-line)';
       });
       updateValueLabel();
+      calc();
     });
   });
 
@@ -126,15 +121,15 @@ import { toolSchema } from '../../data/tools/_schema';
         (b as HTMLElement).style.borderColor = isActive ? 'var(--color-primary)' : 'var(--color-line)';
       });
       updateValueLabel();
+      calc();
     });
   });
 
-  document.getElementById('gp-calculate')!.addEventListener('click', () => {
+  function calc() {
     const age   = parseFloat((document.getElementById('gp-age') as HTMLInputElement).value) || 0;
     const sex   = (document.querySelector('input[name="gp-sex"]:checked') as HTMLInputElement)?.value as Sex;
     let value   = parseFloat((document.getElementById('gp-value') as HTMLInputElement).value) || 0;
 
-    // Convert to metric if US units
     if (currentUnit === 'us') {
       value = currentMeasure === 'weight' ? lbsToKg(value) : inchesToCm(value);
     }
@@ -154,5 +149,16 @@ import { toolSchema } from '../../data/tools/_schema';
     interpEl.textContent = result.interpretation;
     interpEl.style.background = result.interpretationClass === 'normal' ? '#DCE4D3' : '#F1DACB';
     interpEl.style.color = result.interpretationClass === 'normal' ? '#2C4234' : '#8A3D22';
-  });
+  }
+
+  // Live-update
+  let _t: ReturnType<typeof setTimeout>;
+  ['gp-age', 'gp-value'].forEach(id =>
+    document.getElementById(id)!.addEventListener('input', () => { clearTimeout(_t); _t = setTimeout(calc, 150); })
+  );
+  document.querySelectorAll('input[name="gp-sex"]').forEach(el =>
+    el.addEventListener('change', calc)
+  );
+
+  calc();
 </script>

@@ -20,30 +20,22 @@ import { toolSchema } from '../../data/tools/_schema';
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem;">
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="dc-age">Baby's age (months)</label>
-        <input id="dc-age" type="number" min="0" max="36" value="3"
-          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+        <input id="dc-age" type="number" min="0" max="36" value="3" />
       </div>
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="dc-diaper-price">Price per diaper ($)</label>
-        <input id="dc-diaper-price" type="number" min="0.10" max="1.00" step="0.01" value="0.25"
-          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+        <input id="dc-diaper-price" type="number" min="0.10" max="1.00" step="0.01" value="0.25" />
       </div>
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="dc-wipe-price">Price per wipe ($)</label>
-        <input id="dc-wipe-price" type="number" min="0.01" max="0.30" step="0.01" value="0.03"
-          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+        <input id="dc-wipe-price" type="number" min="0.01" max="0.30" step="0.01" value="0.03" />
       </div>
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="dc-wipes-per">Wipes per change</label>
-        <input id="dc-wipes-per" type="number" min="1" max="8" value="2"
-          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+        <input id="dc-wipes-per" type="number" min="1" max="8" value="2" />
       </div>
     </div>
 
-    <button id="dc-calculate"
-      class="btn btn--primary btn--block">
-      Calculate diaper costs
-    </button>
 
     <!-- Result panel -->
     <div id="dc-result" style="min-height:240px;margin-top:1.5rem;display:none;">
@@ -97,7 +89,7 @@ import { toolSchema } from '../../data/tools/_schema';
 <script>
   import { calculateDiaperCost } from '../../islands/diaper-cost.js';
 
-  document.getElementById('dc-calculate')!.addEventListener('click', () => {
+  function calc() {
     const age        = parseFloat((document.getElementById('dc-age') as HTMLInputElement).value) || 0;
     const diaperP    = parseFloat((document.getElementById('dc-diaper-price') as HTMLInputElement).value) || 0;
     const wipeP      = parseFloat((document.getElementById('dc-wipe-price') as HTMLInputElement).value) || 0;
@@ -121,18 +113,24 @@ import { toolSchema } from '../../data/tools/_schema';
       `Diapers $${result.diaperMonthlyCost.toFixed(2)} + Wipes $${result.wipesMonthlyCost.toFixed(2)}`;
     document.getElementById('dc-yearly')!.textContent = '$' + result.yearlyCost.toFixed(2);
 
-    // URL state
     const url = new URL(window.location.href);
     url.searchParams.set('age', age.toString());
     url.searchParams.set('dp', diaperP.toString());
     url.searchParams.set('wp', wipeP.toString());
     history.replaceState(null, '', url);
-  });
+  }
 
   // Restore from URL
   const p = new URLSearchParams(window.location.search);
   if (p.get('age')) (document.getElementById('dc-age') as HTMLInputElement).value = p.get('age')!;
   if (p.get('dp'))  (document.getElementById('dc-diaper-price') as HTMLInputElement).value = p.get('dp')!;
   if (p.get('wp'))  (document.getElementById('dc-wipe-price') as HTMLInputElement).value = p.get('wp')!;
-  if (p.get('age') && p.get('dp')) document.getElementById('dc-calculate')!.click();
+
+  // Live-update
+  let _t: ReturnType<typeof setTimeout>;
+  ['dc-age', 'dc-diaper-price', 'dc-wipe-price', 'dc-wipes-per'].forEach(id =>
+    document.getElementById(id)!.addEventListener('input', () => { clearTimeout(_t); _t = setTimeout(calc, 150); })
+  );
+
+  calc();
 </script>

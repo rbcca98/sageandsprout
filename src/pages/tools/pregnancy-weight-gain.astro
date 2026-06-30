@@ -25,12 +25,12 @@ import { toolSchema } from '../../data/tools/_schema';
         <div style="display:flex;gap:0.5rem;">
           <div style="display:flex;align-items:center;gap:0.25rem;flex:1;">
             <input id="wg-height-ft" type="number" min="3" max="8" value="5"
-              style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);" />
+              style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);" />
             <span style="font-size:0.85rem;color:var(--color-muted);white-space:nowrap;">ft</span>
           </div>
           <div style="display:flex;align-items:center;gap:0.25rem;flex:1;">
             <input id="wg-height-in" type="number" min="0" max="11" value="5"
-              style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);" />
+              style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);" />
             <span style="font-size:0.85rem;color:var(--color-muted);">in</span>
           </div>
         </div>
@@ -39,13 +39,13 @@ import { toolSchema } from '../../data/tools/_schema';
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="wg-weight">Pre-pregnancy weight (lb)</label>
         <input id="wg-weight" type="number" min="80" max="450" value="140"
-          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);box-sizing:border-box;" />
       </div>
 
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="wg-weeks">Current gestational week</label>
         <input id="wg-weeks" type="number" min="1" max="42" value="20"
-          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);box-sizing:border-box;" />
       </div>
 
       <div>
@@ -61,10 +61,6 @@ import { toolSchema } from '../../data/tools/_schema';
       </div>
     </div>
 
-    <button id="wg-calculate"
-      class="btn btn--primary btn--block">
-      Calculate weight gain range
-    </button>
 
     <!-- Result panel (pre-sized to prevent CLS) -->
     <div id="wg-result" style="min-height:260px;margin-top:1.5rem;display:none;">
@@ -139,8 +135,6 @@ import { toolSchema } from '../../data/tools/_schema';
     history.replaceState(null, '', url);
   }
 
-  document.getElementById('wg-calculate')!.addEventListener('click', calc);
-
   // Restore from URL
   const p = new URLSearchParams(window.location.search);
   if (p.get('ft')) (document.getElementById('wg-height-ft') as HTMLInputElement).value = p.get('ft')!;
@@ -148,5 +142,15 @@ import { toolSchema } from '../../data/tools/_schema';
   if (p.get('wt')) (document.getElementById('wg-weight') as HTMLInputElement).value = p.get('wt')!;
   if (p.get('wks')) (document.getElementById('wg-weeks') as HTMLInputElement).value = p.get('wks')!;
   if (p.get('twins') === '1') (document.getElementById('wg-twins') as HTMLInputElement).checked = true;
-  if (p.get('wt') && p.get('wks')) calc();
+
+  // Live-update
+  let _t: ReturnType<typeof setTimeout>;
+  ['wg-height-ft', 'wg-height-in', 'wg-weight', 'wg-weeks'].forEach(id =>
+    document.getElementById(id)!.addEventListener('input', () => { clearTimeout(_t); _t = setTimeout(calc, 150); })
+  );
+  document.querySelectorAll('input[name="wg-twins"]').forEach(el =>
+    el.addEventListener('change', calc)
+  );
+
+  calc();
 </script>

@@ -21,31 +21,27 @@ import { toolSchema } from '../../data/tools/_schema';
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem;">
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="ml-due">Estimated due date</label>
-        <input id="ml-due" type="date"
-          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+        <input id="ml-due" type="date" />
       </div>
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="ml-lastday">Last work day (planned)</label>
-        <input id="ml-lastday" type="date"
-          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+        <input id="ml-lastday" type="date" />
       </div>
     </div>
 
     <div class="tool-grid-3" style="margin-bottom:1.25rem;">
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="ml-employer-paid">Employer paid weeks</label>
-        <input id="ml-employer-paid" type="number" min="0" max="52" value="0"
-          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+        <input id="ml-employer-paid" type="number" min="0" max="52" value="0" />
       </div>
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="ml-pto">PTO/sick weeks</label>
-        <input id="ml-pto" type="number" min="0" max="12" value="0"
-          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+        <input id="ml-pto" type="number" min="0" max="12" value="0" />
       </div>
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="ml-state">State</label>
         <select id="ml-state"
-          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:0.9rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;">
+          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:0.9rem;color:var(--color-ink);box-sizing:border-box;">
           {US_STATES.map(([code, name]) => <option value={code}>{name}</option>)}
         </select>
       </div>
@@ -56,10 +52,6 @@ import { toolSchema } from '../../data/tools/_schema';
       <label for="ml-fmla" style="cursor:pointer;font-size:0.9rem;color:var(--color-ink);">I am eligible for FMLA (12+ months employed, employer ≥ 50 employees)</label>
     </div>
 
-    <button id="ml-calculate"
-      class="btn btn--primary btn--block">
-      Plan my leave
-    </button>
 
     <!-- Result panel -->
     <div id="ml-result" style="min-height:300px;margin-top:1.5rem;display:none;">
@@ -110,7 +102,7 @@ import { toolSchema } from '../../data/tools/_schema';
   }
   setDateDefaults();
 
-  document.getElementById('ml-calculate')!.addEventListener('click', () => {
+  function calc() {
     const dueDate        = (document.getElementById('ml-due') as HTMLInputElement).value;
     const lastWorkDay    = (document.getElementById('ml-lastday') as HTMLInputElement).value;
     const employerPaid   = parseInt((document.getElementById('ml-employer-paid') as HTMLInputElement).value) || 0;
@@ -127,7 +119,6 @@ import { toolSchema } from '../../data/tools/_schema';
     document.getElementById('ml-paid-weeks')!.textContent   = result.totalPaidWeeks.toString();
     document.getElementById('ml-unpaid-weeks')!.textContent = result.totalUnpaidWeeks.toString();
 
-    // Timeline
     const tl = document.getElementById('ml-timeline')!;
     tl.innerHTML = '';
     const typeStyles: Record<string, string> = {
@@ -142,7 +133,6 @@ import { toolSchema } from '../../data/tools/_schema';
       tl.appendChild(el);
     });
 
-    // State PFL
     const pflBox  = document.getElementById('ml-pfl-box')!;
     const pflText = document.getElementById('ml-pfl-text')!;
     if (result.statePFLInfo) {
@@ -152,7 +142,6 @@ import { toolSchema } from '../../data/tools/_schema';
       pflBox.style.display = 'none';
     }
 
-    // Notes
     const nl = document.getElementById('ml-notes-list')!;
     nl.innerHTML = '';
     result.notes.forEach(note => {
@@ -161,5 +150,17 @@ import { toolSchema } from '../../data/tools/_schema';
       p.textContent = note;
       nl.appendChild(p);
     });
-  });
+  }
+
+  // Live-update
+  let _t: ReturnType<typeof setTimeout>;
+  document.getElementById('ml-due')!.addEventListener('change', calc);
+  document.getElementById('ml-lastday')!.addEventListener('change', calc);
+  ['ml-employer-paid', 'ml-pto'].forEach(id =>
+    document.getElementById(id)!.addEventListener('input', () => { clearTimeout(_t); _t = setTimeout(calc, 150); })
+  );
+  document.getElementById('ml-state')!.addEventListener('change', calc);
+  document.getElementById('ml-fmla')!.addEventListener('change', calc);
+
+  calc();
 </script>

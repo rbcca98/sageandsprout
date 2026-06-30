@@ -20,20 +20,14 @@ import { toolSchema } from '../../data/tools/_schema';
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.5rem;">
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="sl-age">Baby's age (months)</label>
-        <input id="sl-age" type="number" min="0" max="24" value="4"
-          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+        <input id="sl-age" type="number" min="0" max="24" value="4" />
       </div>
       <div>
         <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--color-muted);margin-bottom:0.4rem;" for="sl-wake">Morning wake time</label>
-        <input id="sl-wake" type="time" value="07:00"
-          style="width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--color-line);border-radius:var(--radius-sm);font-size:1rem;color:var(--color-ink);background:var(--color-bg);box-sizing:border-box;" />
+        <input id="sl-wake" type="time" value="07:00" />
       </div>
     </div>
 
-    <button id="sl-calculate"
-      class="btn btn--primary btn--block">
-      Generate sleep schedule
-    </button>
 
     <!-- Result panel -->
     <div id="sl-result" style="min-height:280px;margin-top:1.5rem;display:none;">
@@ -80,7 +74,7 @@ import { toolSchema } from '../../data/tools/_schema';
 <script>
   import { calculateSleepSchedule, formatTime } from '../../islands/sleep-schedule.js';
 
-  document.getElementById('sl-calculate')!.addEventListener('click', () => {
+  function calc() {
     const ageMonths = parseFloat((document.getElementById('sl-age') as HTMLInputElement).value) || 0;
     const wakeTime  = (document.getElementById('sl-wake') as HTMLInputElement).value || '07:00';
 
@@ -101,7 +95,6 @@ import { toolSchema } from '../../data/tools/_schema';
     const wHigh = Math.floor(result.wakeWindowMinsHigh / 60) + 'h' + (result.wakeWindowMinsHigh % 60 ? ` ${result.wakeWindowMinsHigh % 60}m` : '');
     document.getElementById('sl-window')!.textContent = `${wLow}–${wHigh}`;
 
-    // Build nap rows
     const napsContainer = document.getElementById('sl-naps')!;
     napsContainer.innerHTML = '';
 
@@ -131,16 +124,21 @@ import { toolSchema } from '../../data/tools/_schema';
     document.getElementById('sl-bedtime')!.textContent = result.bedtimeLabel;
     document.getElementById('sl-notes')!.textContent = result.notes;
 
-    // URL state
     const url = new URL(window.location.href);
     url.searchParams.set('age', ageMonths.toString());
     url.searchParams.set('wake', wakeTime);
     history.replaceState(null, '', url);
-  });
+  }
 
   // Restore from URL
   const p = new URLSearchParams(window.location.search);
   if (p.get('age')) (document.getElementById('sl-age') as HTMLInputElement).value = p.get('age')!;
   if (p.get('wake')) (document.getElementById('sl-wake') as HTMLInputElement).value = p.get('wake')!;
-  if (p.get('age') && p.get('wake')) document.getElementById('sl-calculate')!.click();
+
+  // Live-update
+  let _t: ReturnType<typeof setTimeout>;
+  document.getElementById('sl-age')!.addEventListener('input', () => { clearTimeout(_t); _t = setTimeout(calc, 150); });
+  document.getElementById('sl-wake')!.addEventListener('change', calc);
+
+  calc();
 </script>
