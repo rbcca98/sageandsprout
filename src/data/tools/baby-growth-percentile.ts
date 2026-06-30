@@ -1,9 +1,9 @@
 import type { ToolCopy } from './_types';
 
 const copy: ToolCopy = {
-  title: 'Baby Growth Percentile Calculator: WHO LMS Method | Sage & Sprout',
+  title: 'Baby Growth Percentile Calculator (WHO Charts) | Sage & Sprout',
   description:
-    'Free baby growth percentile calculator using WHO Child Growth Standards (LMS method). Works for weight, length, and head circumference from 0–24 months.',
+    'Free baby growth percentile calculator on WHO charts. Plot weight, length, or head size for ages 0 to 24 months, the standard US pediatricians use.',
   path: '/tools/baby-growth-percentile/',
   breadcrumb: 'Baby Growth Percentile Calculator',
   headline: 'Baby Growth Percentile Calculator',

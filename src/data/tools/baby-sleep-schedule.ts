@@ -3,7 +3,7 @@ import type { ToolCopy } from './_types';
 const copy: ToolCopy = {
   title: 'Baby Sleep Schedule Calculator: Wake Windows & Nap Times by Age | Sage & Sprout',
   description:
-    'Generate a baby sleep and nap schedule by age. Get suggested nap times, wake windows, bedtime, and total sleep targets based on AAP and AASM recommendations.',
+    'Build a baby sleep and nap schedule by age. Get wake windows, nap times, bedtime, and total sleep targets from AAP and AASM guidance. Free.',
   path: '/tools/baby-sleep-schedule/',
   breadcrumb: 'Baby Sleep Schedule Calculator',
   headline: 'Baby Sleep Schedule Calculator',

@@ -3,7 +3,7 @@ import type { ToolCopy } from './_types';
 const copy: ToolCopy = {
   title: 'Pregnancy Weight Gain Calculator: IOM Guidelines by BMI | Sage & Sprout',
   description:
-    'Calculate your recommended pregnancy weight gain based on IOM/NASEM 2009 guidelines. Personalized by BMI, current gestational week, and singleton or twin pregnancy.',
+    'See your healthy pregnancy weight gain range by pre-pregnancy BMI and week, per IOM/NASEM guidelines. Singleton or twins. Free, no sign-up.',
   path: '/tools/pregnancy-weight-gain/',
   breadcrumb: 'Pregnancy Weight Gain Calculator',
   headline: 'Pregnancy Weight Gain Calculator',

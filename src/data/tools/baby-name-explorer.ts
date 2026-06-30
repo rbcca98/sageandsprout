@@ -3,7 +3,7 @@ import type { ToolCopy } from './_types';
 const copy: ToolCopy = {
   title: 'Baby Name Explorer: Top Names with Meaning & Origin (2023 SSA Data) | Sage & Sprout',
   description:
-    'Search top baby names with meaning, origin, and 2023 SSA popularity rank. Filter by sex and popularity tier. Browse top 10 to top 100 boy and girl names.',
+    'Browse the top 100 boy and girl baby names with meaning, origin, and 2023 SSA rank. Filter by sex, popularity, or first letter. Free, no sign-up.',
   path: '/tools/baby-name-explorer/',
   breadcrumb: 'Baby Name Explorer',
   headline: 'Baby Name Explorer',

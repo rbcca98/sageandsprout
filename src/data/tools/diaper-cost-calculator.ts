@@ -3,7 +3,7 @@ import type { ToolCopy } from './_types';
 const copy: ToolCopy = {
   title: 'Diaper & Wipe Cost Calculator: Monthly & Yearly Estimate | Sage & Sprout',
   description:
-    'Calculate monthly and yearly diaper and wipe costs by baby age. See the right diaper size, daily usage, and total spending at your price per unit.',
+    'See your monthly and yearly diaper and wipe costs by age, plus the right size and daily usage, at the price you actually pay. Free calculator.',
   path: '/tools/diaper-cost-calculator/',
   breadcrumb: 'Diaper & Wipe Cost Calculator',
   headline: 'Diaper & Wipe Cost Calculator',

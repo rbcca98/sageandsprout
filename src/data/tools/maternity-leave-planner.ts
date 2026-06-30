@@ -3,7 +3,7 @@ import type { ToolCopy } from './_types';
 const copy: ToolCopy = {
   title: 'Maternity Leave Planner: FMLA + State Paid Leave Calculator | Sage & Sprout',
   description:
-    'US maternity leave planner using FMLA + state paid family leave rules. See your protected leave timeline, paid weeks, and return-to-work date. Covers 12 PFL states.',
+    'Plan US maternity leave with FMLA and state paid-leave rules. See protected weeks, paid weeks, and your return-to-work date. Free planner.',
   path: '/tools/maternity-leave-planner/',
   breadcrumb: 'Maternity Leave Planner',
   headline: 'Maternity Leave Planner',

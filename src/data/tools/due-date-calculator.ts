@@ -3,7 +3,7 @@ import type { ToolCopy } from './_types';
 const copy: ToolCopy = {
   title: "Due Date Calculator: Estimate Your Baby's Arrival | Sage & Sprout",
   description:
-    'Free due date calculator using your last menstrual period, conception date, or IVF transfer. Instantly see your estimated due date, trimester, and key pregnancy milestones.',
+    'Free due date calculator from your last period, conception date, or IVF transfer. See your estimated due date, trimester, and week-by-week milestones.',
   path: '/tools/due-date-calculator/',
   breadcrumb: 'Due Date Calculator',
   headline: 'Due Date Calculator',

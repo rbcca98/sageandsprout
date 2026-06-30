@@ -3,7 +3,7 @@ import type { ToolCopy } from './_types';
 const copy: ToolCopy = {
   title: 'Ovulation Calculator: Find Your Fertile Window | Sage & Sprout',
   description:
-    'Free ovulation calculator. Find your fertile window, ovulation date, and best days to try to conceive based on your last period and cycle length.',
+    'Free ovulation calculator. Find your fertile window, ovulation day, and the best days to conceive based on your last period and cycle length.',
   path: '/tools/ovulation-fertility-window/',
   breadcrumb: 'Ovulation Calculator',
   headline: 'Ovulation & Fertility Window Calculator',

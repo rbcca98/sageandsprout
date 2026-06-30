@@ -3,7 +3,7 @@ import type { ToolCopy } from './_types';
 const copy: ToolCopy = {
   title: 'Baby Feeding & Formula Amount Calculator: AAP Guidelines | Sage & Sprout',
   description:
-    'Calculate how much formula or breast milk your baby needs by age and weight. Based on AAP feeding guidelines. Shows oz/mL per feeding, feeds per day, and daily total.',
+    'See how much formula or breast milk your baby needs by age and weight, per AAP guidelines. Shows oz and mL per feeding, feeds per day, and daily total.',
   path: '/tools/feeding-formula-amount/',
   breadcrumb: 'Feeding & Formula Amount Calculator',
   headline: 'Baby Feeding & Formula Amount Calculator',

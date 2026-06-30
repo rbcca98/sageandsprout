@@ -3,7 +3,7 @@ import type { ToolCopy } from './_types';
 const copy: ToolCopy = {
   title: 'How Many Weeks Pregnant Am I? | Sage & Sprout',
   description:
-    "Find out exactly how many weeks and days pregnant you are, which trimester you're in, and what to expect this week. Free calculator based on your LMP or due date.",
+    "See exactly how many weeks and days pregnant you are, your trimester, and what to expect this week. Free, based on your last period or due date.",
   path: '/tools/how-many-weeks-pregnant/',
   breadcrumb: 'How Many Weeks Pregnant',
   headline: 'How Many Weeks Pregnant Am I?',
