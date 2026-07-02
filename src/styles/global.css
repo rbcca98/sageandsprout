@@ -192,6 +192,28 @@ select option { color: #26352B; }
 .prose a:hover { text-decoration-thickness: 2px; }
 .prose strong { font-weight: 700; }
 
+/* ── Quick answer box (top of tool articles) ────────── */
+.quick-answer {
+  margin: 0 0 2.25rem;
+  padding: 1.4rem 1.6rem;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-line);
+  border-left: 3px solid var(--color-accent);
+}
+.quick-answer .qa-label {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--color-accent-dark);
+  margin: 0 0 0.6rem;
+}
+.quick-answer p { margin: 0 0 0.75rem; font-size: 1rem; line-height: 1.6; }
+.quick-answer p:last-child, .quick-answer ul { margin-bottom: 0; }
+.quick-answer li { margin-bottom: 0.45rem; line-height: 1.55; }
+.quick-answer li:last-child { margin-bottom: 0; }
+
 .callout {
   display: flex; gap: 0.85rem; margin: 1.75rem 0; padding: 1.25rem 1.4rem;
   background: var(--color-surface-2); border: 1px solid var(--color-line);

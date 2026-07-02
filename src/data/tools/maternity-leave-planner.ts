@@ -8,7 +8,7 @@ const copy: ToolCopy = {
   breadcrumb: 'Maternity Leave Planner',
   headline: 'Maternity Leave Planner',
   hook:
-    "Plan your maternity or parental leave by entering your due date, last workday, FMLA eligibility, and state. Get a personalized timeline showing paid weeks, FMLA-protected weeks, and your estimated return-to-work date, including your state's paid family leave program details.",
+    'Enter your due date, last workday, and state. You get a timeline of paid weeks, protected weeks, and your estimated return date.',
   reviewedDate: '2025-01-15',
   medical: false,
 
@@ -57,6 +57,16 @@ const copy: ToolCopy = {
   ],
 
   contentHtml: `
+    <div class="quick-answer">
+      <span class="qa-label">Quick answer</span>
+      <p><strong>FMLA gives eligible US workers 12 weeks of unpaid, job-protected leave.</strong> Pay, if any, comes from your state program or your employer.</p>
+      <ul>
+        <li>FMLA eligibility: <strong>12 months</strong> with your employer, <strong>1,250 hours</strong> worked, and 50+ employees within 75 miles.</li>
+        <li><strong>Twelve states plus Washington, DC</strong> pay 60–100% of wages for 8–12 weeks.</li>
+        <li>Paid leave and FMLA usually run <strong>at the same time</strong>, not back to back.</li>
+      </ul>
+    </div>
+
     <h2>Understanding your US maternity leave rights</h2>
     <p>
       The United States does not have a federal paid family leave program. What you receive depends on three things: federal law (FMLA), your state's paid family leave program (if any), and your employer's own leave policy. Planning maternity leave requires understanding all three.

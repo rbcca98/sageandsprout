@@ -8,7 +8,7 @@ const copy: ToolCopy = {
   breadcrumb: 'Baby Growth Percentile Calculator',
   headline: 'Baby Growth Percentile Calculator',
   hook:
-    "Enter your baby's age, sex, and a measurement to get their WHO growth percentile for weight, length, or head circumference. It uses the WHO LMS method, the same standard US pediatricians use for children under 2 years.",
+    "Enter your baby's age, sex, and a measurement. You get their percentile on the same WHO charts US pediatricians use for ages 0–24 months.",
   reviewedDate: '2025-01-15',
 
   faqs: [
@@ -57,6 +57,16 @@ const copy: ToolCopy = {
   ],
 
   contentHtml: `
+    <div class="quick-answer">
+      <span class="qa-label">Quick answer</span>
+      <p><strong>A percentile compares your baby to other babies of the same age and sex.</strong> The 60th percentile for weight means your baby weighs more than 60% of them.</p>
+      <ul>
+        <li>Everything from the <strong>3rd to the 97th percentile</strong> is considered normal.</li>
+        <li>The <strong>trend over time</strong> matters far more than any single number.</li>
+        <li>A baby steady at the 10th percentile is usually just a small baby growing well.</li>
+      </ul>
+    </div>
+
     <h2>How pediatricians track baby growth</h2>
     <p>
       At every well-child visit, your pediatrician plots your baby's weight, length/height, and head circumference on a growth chart. The American Academy of Pediatrics (AAP) and CDC recommend using the World Health Organization (WHO) Child Growth Standards for children from birth to 24 months. These charts were developed from a carefully selected international sample of formula-fed and breastfed babies in six countries, raised in ideal conditions, to describe how infants <em>should</em> grow, not just how they do grow on average.

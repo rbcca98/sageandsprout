@@ -8,7 +8,7 @@ const copy: ToolCopy = {
   breadcrumb: 'Due Date Calculator',
   headline: 'Due Date Calculator',
   hook:
-    "Enter the first day of your last menstrual period (LMP) to calculate your estimated due date (EDD), current week, trimester, and key milestones. It's based on Naegele's rule and ACOG guidelines. You can also calculate from a conception date or IVF transfer.",
+    'Enter the first day of your last period. You get your due date, current week, and key milestones, using the same ACOG method your provider uses.',
   reviewedDate: '2026-06-27',
 
   faqs: [
@@ -57,6 +57,16 @@ const copy: ToolCopy = {
   ],
 
   contentHtml: `
+    <div class="quick-answer">
+      <span class="qa-label">Quick answer</span>
+      <p><strong>Your due date is the first day of your last period plus 280 days (40 weeks).</strong> That's Naegele's rule, the ACOG-endorsed standard.</p>
+      <ul>
+        <li>Only about <strong>4–5% of babies</strong> arrive on the exact date; 80% arrive within 10 days of it.</li>
+        <li>Know your conception date? Add <strong>266 days</strong> instead.</li>
+        <li>IVF: add <strong>261 days</strong> to a Day-5 transfer, <strong>263 days</strong> to a Day-3 transfer.</li>
+      </ul>
+    </div>
+
     <h2>How this calculator works</h2>
     <p>
       Your <strong>estimated due date (EDD)</strong> is calculated using <strong>Naegele's rule</strong>,
@@ -89,9 +99,8 @@ const copy: ToolCopy = {
 
     <h2>After you get your due date: what to do next</h2>
     <p>
-      Once you know your EDD, your next step is scheduling <strong>first prenatal care</strong>, ideally by
-      8–10 weeks of pregnancy. Early care establishes a baseline, screens for risk factors, and gives you
-      access to first-trimester genetic screening (available weeks 10–13).
+      <strong>Book your first prenatal visit, ideally by 8–10 weeks.</strong> Early care establishes a baseline,
+      screens for risk factors, and keeps first-trimester genetic screening (weeks 10–13) on the table.
     </p>
     <p>
       Key prenatal appointments to anticipate:

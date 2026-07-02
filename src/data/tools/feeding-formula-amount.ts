@@ -8,7 +8,7 @@ const copy: ToolCopy = {
   breadcrumb: 'Feeding & Formula Amount Calculator',
   headline: 'Baby Feeding & Formula Amount Calculator',
   hook:
-    "Enter your baby's age, weight, and feeding type to get AAP-based guidelines on how much formula or breast milk they need each day, broken down by oz per feeding, number of feedings, and total daily amount in both oz and mL.",
+    "Enter your baby's age and weight. You get AAP-based amounts per feeding, feedings per day, and the daily total in oz and mL.",
   reviewedDate: '2025-01-15',
 
   faqs: [
@@ -56,6 +56,16 @@ const copy: ToolCopy = {
   ],
 
   contentHtml: `
+    <div class="quick-answer">
+      <span class="qa-label">Quick answer</span>
+      <p><strong>Formula-fed babies need about 2.5 oz per pound of body weight per day, capped at 32 oz.</strong> A 10 lb baby needs roughly 25 oz across the day.</p>
+      <ul>
+        <li>Newborns: <strong>1–2 oz every 2–3 hours</strong>, 8–12 feeds a day.</li>
+        <li>Solids start around <strong>6 months</strong>; milk stays the main nutrition through 12 months.</li>
+        <li>Breastfed babies feed on demand; the volumes here apply most directly to formula.</li>
+      </ul>
+    </div>
+
     <h2>How much should a baby eat? The AAP framework</h2>
     <p>
       New parents are often surprised by how frequently babies need to eat, especially in the newborn phase. The American Academy of Pediatrics (AAP) provides age-based and weight-based feeding guidance to help parents understand what is normal and notice when something may be off.

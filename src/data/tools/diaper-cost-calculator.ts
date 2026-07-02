@@ -8,7 +8,7 @@ const copy: ToolCopy = {
   breadcrumb: 'Diaper & Wipe Cost Calculator',
   headline: 'Diaper & Wipe Cost Calculator',
   hook:
-    "Enter your baby's age and the price you pay per diaper and wipe to see exactly how many you need and how much you'll spend per month and per year. Includes the right diaper size to buy at every stage.",
+    "Enter your baby's age and your diaper price. You get your monthly and yearly cost, plus the right size to buy at every stage.",
   reviewedDate: '2025-01-15',
   medical: false,
 
@@ -56,6 +56,16 @@ const copy: ToolCopy = {
   ],
 
   contentHtml: `
+    <div class="quick-answer">
+      <span class="qa-label">Quick answer</span>
+      <p><strong>Expect 5,000–8,000 diapers before potty training.</strong> At $0.25 each, that's $1,250–$2,000, before wipes.</p>
+      <ul>
+        <li>Newborns use <strong>10–12 diapers a day</strong>; by 6 months it drops to 6–7.</li>
+        <li>Store brands cost <strong>30–50% less</strong> and rate close to name brands.</li>
+        <li>Don't stockpile more than 3 weeks of one size; babies outgrow sizes fast.</li>
+      </ul>
+    </div>
+
     <h2>How many diapers will your baby use?</h2>
     <p>
       Diapers are one of the biggest recurring expenses for new parents, and also one of the easiest to plan for with a little arithmetic. Total diaper usage over the first 2.5 years (before most children potty train) runs between 5,000 and 8,000 diapers, depending on the age at toilet training and how frequently you change. At $0.25 per diaper, that's $1,250–$2,000 on diapers alone, before wipes.

@@ -8,7 +8,7 @@ const copy: ToolCopy = {
   breadcrumb: 'Pregnancy Weight Gain Calculator',
   headline: 'Pregnancy Weight Gain Calculator',
   hook:
-    'Enter your pre-pregnancy height and weight to get your personalized IOM-recommended weight gain range, broken down by trimester and adjusted for twins. The calculations follow the 2009 Institute of Medicine guidelines adopted by ACOG.',
+    'Enter your pre-pregnancy height and weight. You get your recommended gain range by trimester, per the IOM guidelines ACOG uses.',
   reviewedDate: '2025-01-15',
 
   faqs: [
@@ -56,6 +56,16 @@ const copy: ToolCopy = {
   ],
 
   contentHtml: `
+    <div class="quick-answer">
+      <span class="qa-label">Quick answer</span>
+      <p><strong>With a normal pre-pregnancy BMI (18.5–24.9), the recommended total gain is 25–35 lb.</strong></p>
+      <ul>
+        <li>Underweight: <strong>28–40 lb</strong>. Overweight: <strong>15–25 lb</strong>. Obese: <strong>11–20 lb</strong>. Twins run higher.</li>
+        <li>First trimester: most women gain only <strong>1–4 lb</strong> total.</li>
+        <li>BMI uses your <strong>pre-pregnancy</strong> weight, not today's weight.</li>
+      </ul>
+    </div>
+
     <h2>What the IOM pregnancy weight gain guidelines mean for you</h2>
     <p>
       In 2009, the Institute of Medicine (now the National Academy of Medicine) published updated guidelines for weight gain during pregnancy. They are the standard used by ACOG and virtually every US obstetric provider. The guidelines divide women into four categories based on pre-pregnancy BMI and give a recommended total gain range plus a weekly rate for the second and third trimesters.

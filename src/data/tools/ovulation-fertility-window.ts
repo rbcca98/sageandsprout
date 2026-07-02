@@ -8,7 +8,7 @@ const copy: ToolCopy = {
   breadcrumb: 'Ovulation Calculator',
   headline: 'Ovulation & Fertility Window Calculator',
   hook:
-    'Enter the first day of your last period and your average cycle length to calculate your estimated ovulation date, six-day fertile window, and when to start using an ovulation predictor kit (OPK). All based on the 14-day luteal phase used in clinical reproductive medicine.',
+    'Enter your last period and cycle length. You get your estimated ovulation day, your six-day fertile window, and when to start testing.',
   reviewedDate: '2026-06-27',
 
   faqs: [
@@ -57,6 +57,16 @@ const copy: ToolCopy = {
   ],
 
   contentHtml: `
+    <div class="quick-answer">
+      <span class="qa-label">Quick answer</span>
+      <p><strong>Ovulation happens about 14 days before your next period starts</strong>, not on day 14 for everyone.</p>
+      <ul>
+        <li>Your fertile window is <strong>6 days</strong>: the 5 days before ovulation plus ovulation day.</li>
+        <li>The best odds come from intercourse <strong>1–2 days before ovulation</strong>.</li>
+        <li>A 32-day cycle puts ovulation near day 18; a 24-day cycle near day 10.</li>
+      </ul>
+    </div>
+
     <h2>Understanding your menstrual cycle</h2>
     <p>
       A typical menstrual cycle lasts between 21 and 35 days, with 28 days being the average. Each cycle

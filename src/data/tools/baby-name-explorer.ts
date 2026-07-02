@@ -8,7 +8,7 @@ const copy: ToolCopy = {
   breadcrumb: 'Baby Name Explorer',
   headline: 'Baby Name Explorer',
   hook:
-    'Browse and search the top 100 baby names for boys and girls with meaning, origin, and 2023 popularity rank from SSA data. Filter by sex, popularity tier, or search by letter to find the perfect name.',
+    'Browse the top 100 boy and girl names with meaning, origin, and official SSA rank. Filter by sex, popularity, or first letter.',
   reviewedDate: '2025-01-15',
   category: 'LifestyleApplication',
   medical: false,
@@ -52,6 +52,16 @@ const copy: ToolCopy = {
   ],
 
   contentHtml: `
+    <div class="quick-answer">
+      <span class="qa-label">Quick answer</span>
+      <p><strong>The rankings here come from the Social Security Administration's 2023 national data</strong>, the official count of US baby names.</p>
+      <ul>
+        <li>The top 10 names for each sex covered roughly <strong>8% of all 2023 births</strong>.</li>
+        <li>Name popularity cycles every <strong>20–30 years</strong>, which is why Eleanor and Theodore are back.</li>
+        <li>Names ranked 50–200 balance recognizable with not overused.</li>
+      </ul>
+    </div>
+
     <h2>How baby name trends work in the US</h2>
     <p>
       Every year, the Social Security Administration publishes a count of every name given to at least 5 babies in the United States, drawn from Social Security card applications. This dataset is the most comprehensive view of US baby name trends available. The most popular names in any given year account for a substantial fraction of all births. In 2023, the top 10 names for each sex together accounted for roughly 8% of all births.

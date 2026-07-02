@@ -8,7 +8,7 @@ const copy: ToolCopy = {
   breadcrumb: 'Baby Sleep Schedule Calculator',
   headline: 'Baby Sleep Schedule Calculator',
   hook:
-    "Enter your baby's age and morning wake time to get a suggested nap schedule, estimated bedtime, and total sleep targets. It draws on AAP safe sleep guidelines and AASM pediatric sleep duration recommendations.",
+    "Enter your baby's age and morning wake time. You get a suggested nap schedule, bedtime, and sleep targets from AAP and AASM guidance.",
   reviewedDate: '2025-01-15',
 
   faqs: [
@@ -56,6 +56,16 @@ const copy: ToolCopy = {
   ],
 
   contentHtml: `
+    <div class="quick-answer">
+      <span class="qa-label">Quick answer</span>
+      <p><strong>Babies need a lot of sleep: 14–17 hours a day as newborns, 12–16 hours from 4–12 months, 11–14 hours as toddlers.</strong></p>
+      <ul>
+        <li>Wake windows grow from <strong>45–60 minutes</strong> (newborn) to <strong>3–4 hours</strong> (age 1).</li>
+        <li>Naps: 4–5 at first, <strong>2 naps by 6–8 months, 1 nap by 12–18 months</strong>.</li>
+        <li>Safe sleep: <strong>on the back, firm flat surface, nothing loose in the crib</strong>.</li>
+      </ul>
+    </div>
+
     <h2>Why wake windows matter</h2>
     <p>
       A wake window is the span of time a baby can comfortably remain awake before sleep pressure builds to the point of overtiredness. Overtired babies often <em>fight</em> sleep. The stress hormones (cortisol, adrenaline) released by prolonged wakefulness make it harder, not easier, to fall asleep. This is the counterintuitive loop parents encounter when they think "if I keep baby awake longer, they'll sleep better."

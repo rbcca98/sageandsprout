@@ -8,7 +8,7 @@ const copy: ToolCopy = {
   breadcrumb: 'How Many Weeks Pregnant',
   headline: 'How Many Weeks Pregnant Am I?',
   hook:
-    "Enter the first day of your last menstrual period (LMP) or your estimated due date to see how far along you are, which trimester you're in, your progress, and what's happening at this stage. It uses the same gestational-age method your provider uses.",
+    "Enter your last period or your due date. You get your exact week, your trimester, and what's happening right now.",
   reviewedDate: '2026-06-27',
 
   faqs: [
@@ -57,6 +57,16 @@ const copy: ToolCopy = {
   ],
 
   contentHtml: `
+    <div class="quick-answer">
+      <span class="qa-label">Quick answer</span>
+      <p><strong>Pregnancy weeks count from the first day of your last period, not from conception.</strong> Your whole care team counts this way.</p>
+      <ul>
+        <li>First trimester: <strong>weeks 1–13</strong>. Second: <strong>weeks 14–27</strong>. Third: <strong>week 28 to birth</strong>.</li>
+        <li>At "4 weeks pregnant," the embryo is about 2 weeks old. That's normal counting, not an error.</li>
+        <li>Most parents feel the first movements around <strong>weeks 18–22</strong>.</li>
+      </ul>
+    </div>
+
     <h2>How pregnancy weeks are counted</h2>
     <p>
       Pregnancy is measured in <strong>gestational age</strong>, counted from the first day of your
