@@ -42,14 +42,14 @@ import { toolSchema } from '../../data/tools/_schema';
           Average cycle length
         </label>
         <div style="display:flex;align-items:center;gap:.5rem;">
-          <button id="o-minus" aria-label="Decrease" style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--color-line);background:var(--color-surface-2);cursor:pointer;font-size:1.1rem;display:grid;place-items:center;">−</button>
+          <button id="o-minus" aria-label="Decrease" style="width:44px;height:44px;border-radius:50%;border:1.5px solid var(--color-line);background:var(--color-surface-2);cursor:pointer;font-size:1.1rem;display:grid;place-items:center;">−</button>
           <input
             type="number"
             id="o-cycle"
             min="21" max="35" value="28"
             style="width:60px;text-align:center;padding:.5rem;border-radius:var(--radius-sm);border:1.5px solid var(--color-line);background:var(--color-surface-2);font-size:1rem;color:var(--color-ink);font-family:var(--font-family-mono);"
           />
-          <button id="o-plus" aria-label="Increase" style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--color-line);background:var(--color-surface-2);cursor:pointer;font-size:1.1rem;display:grid;place-items:center;">+</button>
+          <button id="o-plus" aria-label="Increase" style="width:44px;height:44px;border-radius:50%;border:1.5px solid var(--color-line);background:var(--color-surface-2);cursor:pointer;font-size:1.1rem;display:grid;place-items:center;">+</button>
           <span style="font-size:.85rem;color:var(--color-muted);">days</span>
         </div>
       </div>
@@ -72,6 +72,7 @@ import { toolSchema } from '../../data/tools/_schema';
       </div>
 
       <div id="o-content" style="display:none;padding:1.75rem;">
+        <p id="o-example" hidden style="font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--color-accent);border:1px solid currentColor;display:inline-block;padding:.25rem .6rem;margin:0 0 .85rem;">Example. Enter your date above</p>
         <!-- Phase badge -->
         <p id="o-phase" style="font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--color-primary);margin:0 0 .75rem;"></p>
 
@@ -95,10 +96,6 @@ import { toolSchema } from '../../data/tools/_schema';
           <p style="margin:.25rem 0 0;font-size:.82rem;color:var(--color-ink);">This is a calculated estimate. Confirm with an OPK for more accuracy.</p>
         </div>
 
-        <!-- Share -->
-        <div style="padding-top:1rem;border-top:1px solid var(--color-line);">
-          <button id="o-share" style="padding:.4rem .9rem;border-radius:999px;border:1.5px solid var(--color-primary);background:transparent;cursor:pointer;font-size:.82rem;font-weight:500;color:var(--color-primary);">Share link</button>
-        </div>
       </div>
     </div>
   </div>
@@ -116,28 +113,27 @@ import { toolSchema } from '../../data/tools/_schema';
   const oPlus  = document.getElementById('o-plus')  as HTMLButtonElement;
   const oEmpty   = document.getElementById('o-empty')!;
   const oContent = document.getElementById('o-content')!;
-  const oShare   = document.getElementById('o-share') as HTMLButtonElement;
 
   // Restore URL state
   const params = new URLSearchParams(location.search);
   if (params.get('lmp'))   { lmpInput.value = params.get('lmp')!; }
   if (params.get('cycle')) { cycleInput.value = params.get('cycle')!; }
+
+  // No date yet? Show a worked example (period 10 days ago) so the payoff is visible immediately.
+  let exampleMode = false;
+  if (!lmpInput.value) {
+    const ex = new Date();
+    ex.setDate(ex.getDate() - 10);
+    lmpInput.value = ex.toISOString().split('T')[0];
+    exampleMode = true;
+  }
   update();
 
-  lmpInput.addEventListener('input', update);
-  cycleInput.addEventListener('input', update);
-  oMinus.addEventListener('click', () => { cycleInput.value = String(Math.max(21, +cycleInput.value - 1)); update(); });
-  oPlus.addEventListener('click',  () => { cycleInput.value = String(Math.min(35, +cycleInput.value + 1)); update(); });
-
-  oShare.addEventListener('click', () => {
-    const url = new URL(location.href);
-    url.searchParams.set('lmp', lmpInput.value);
-    url.searchParams.set('cycle', cycleInput.value);
-    navigator.clipboard?.writeText(url.toString()).then(() => {
-      oShare.textContent = 'Copied!';
-      setTimeout(() => { oShare.textContent = 'Share link'; }, 1800);
-    });
-  });
+  function userEdit() { exampleMode = false; update(); }
+  lmpInput.addEventListener('input', userEdit);
+  cycleInput.addEventListener('input', userEdit);
+  oMinus.addEventListener('click', () => { cycleInput.value = String(Math.max(21, +cycleInput.value - 1)); userEdit(); });
+  oPlus.addEventListener('click',  () => { cycleInput.value = String(Math.min(35, +cycleInput.value + 1)); userEdit(); });
 
   function update() {
     const lmp   = lmpInput.value;
@@ -147,11 +143,15 @@ import { toolSchema } from '../../data/tools/_schema';
     const r = calculateOvulation({ lmp, cycleLength: cycle });
     if (!r) { showEmpty(); return; }
 
-    // URL state
-    const url = new URL(location.href);
-    url.searchParams.set('lmp', lmp);
-    url.searchParams.set('cycle', String(cycle));
-    history.replaceState(null, '', url);
+    (document.getElementById('o-example') as HTMLElement).hidden = !exampleMode;
+
+    // URL state — but never for the example values
+    if (!exampleMode) {
+      const url = new URL(location.href);
+      url.searchParams.set('lmp', lmp);
+      url.searchParams.set('cycle', String(cycle));
+      history.replaceState(null, '', url);
+    }
 
     // Phase badge
     (document.getElementById('o-phase') as HTMLElement).textContent = r.phaseLabel +

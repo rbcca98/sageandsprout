@@ -61,7 +61,7 @@ const AGE_BANDS = [
     napsPerDay: 3,
     napDurationMins: 75,
     wakeWindowLow: 75, wakeWindowHigh: 105,
-    notes: 'Many babies consolidate to 3 naps. Some begin longer night stretches. Sleep pressure builds with wake windows — watch for tired cues.',
+    notes: 'Many babies consolidate to 3 naps. Some begin longer night stretches. Sleep pressure builds with wake windows, so watch for tired cues.',
   },
   {
     maxMonths: 7,

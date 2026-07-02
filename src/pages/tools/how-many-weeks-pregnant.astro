@@ -77,6 +77,7 @@ import { toolSchema } from '../../data/tools/_schema';
 
       <div id="w-content" style="display:none;padding:1.75rem;">
         <!-- Primary result -->
+        <p id="w-example" hidden style="font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--color-accent);border:1px solid currentColor;display:inline-block;padding:.25rem .6rem;margin:0 0 .85rem;">Example. Enter your date above</p>
         <p id="w-trimester" style="font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--color-primary);margin:0 0 .2rem;"></p>
         <p style="font-family:var(--font-family-display);font-size:clamp(1.8rem,5vw,2.6rem);font-weight:700;color:var(--color-accent);margin:0 0 .35rem;" id="w-weeks"></p>
         <p id="w-edd" style="font-size:.88rem;color:var(--color-muted);margin:0 0 1.25rem;"></p>
@@ -94,6 +95,12 @@ import { toolSchema } from '../../data/tools/_schema';
         <!-- Next milestone -->
         <div id="w-milestone" style="padding:.8rem 1rem;background:transparent;border:1px solid var(--color-line);border-radius:3px;margin-bottom:1rem;"></div>
 
+        <!-- This week's note -->
+        <div id="w-week-note" style="display:none;padding:.85rem 1rem;border:1px solid var(--color-line);border-left:3px solid var(--color-accent);margin-bottom:1rem;">
+          <p id="w-week-note-title" style="margin:0 0 .25rem;font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--color-accent);"></p>
+          <p id="w-week-note-body" style="margin:0;font-size:.88rem;color:var(--color-ink);line-height:1.6;"></p>
+        </div>
+
         <!-- Trimester blurb -->
         <p id="w-blurb" style="font-size:.87rem;color:var(--color-muted);margin:0;line-height:1.65;"></p>
       </div>
@@ -106,6 +113,7 @@ import { toolSchema } from '../../data/tools/_schema';
 <!-- ── Client-side calculator ─────────────────────────────────── -->
 <script>
   import { calculateWeeksPregnant, formatDate } from '../../islands/weeks-pregnant.ts';
+  import { weekNote } from '../../data/week-notes.ts';
 
   let mode: 'lmp' | 'edd' = 'lmp';
 
@@ -118,15 +126,26 @@ import { toolSchema } from '../../data/tools/_schema';
   // Restore URL state
   const params = new URLSearchParams(location.search);
   if (params.get('mode') === 'edd') applyMode('edd', false);
-  if (params.get('date')) { dateInput.value = params.get('date')!; update(); }
+  if (params.get('date')) dateInput.value = params.get('date')!;
+
+  // No date yet? Show a worked example (18 weeks along) so the payoff is visible immediately.
+  let exampleMode = false;
+  if (!dateInput.value) {
+    const ex = new Date();
+    ex.setDate(ex.getDate() - 18 * 7);
+    dateInput.value = ex.toISOString().split('T')[0];
+    exampleMode = true;
+  }
+  update();
 
   tabs.forEach(btn => {
     btn.addEventListener('click', () => {
+      exampleMode = false;
       applyMode(btn.dataset.wmode as 'lmp' | 'edd', true);
       update();
     });
   });
-  dateInput.addEventListener('input', update);
+  dateInput.addEventListener('input', () => { exampleMode = false; update(); });
 
   function applyMode(m: 'lmp' | 'edd', reset: boolean) {
     mode = m;
@@ -148,11 +167,15 @@ import { toolSchema } from '../../data/tools/_schema';
     const r = calculateWeeksPregnant(mode === 'lmp' ? { lmp: date } : { edd: date });
     if (!r || r.trimester === 0) { showEmpty(); return; }
 
-    // Persist URL
-    const url = new URL(location.href);
-    url.searchParams.set('mode', mode);
-    url.searchParams.set('date', date);
-    history.replaceState(null, '', url);
+    (document.getElementById('w-example') as HTMLElement).hidden = !exampleMode;
+
+    // Persist URL — but never for the example values
+    if (!exampleMode) {
+      const url = new URL(location.href);
+      url.searchParams.set('mode', mode);
+      url.searchParams.set('date', date);
+      history.replaceState(null, '', url);
+    }
 
     // Render
     (document.getElementById('w-trimester') as HTMLElement).textContent = r.trimesterLabel;
@@ -172,6 +195,19 @@ import { toolSchema } from '../../data/tools/_schema';
       milestoneEl.style.display = 'block';
     } else {
       milestoneEl.style.display = 'none';
+    }
+
+    // This week's note
+    const wn = weekNote(r.weeksComplete);
+    const noteBox = document.getElementById('w-week-note')!;
+    if (wn) {
+      (document.getElementById('w-week-note-title') as HTMLElement).textContent =
+        `Week ${wn.week}: about the size of a ${wn.size}`;
+      (document.getElementById('w-week-note-body') as HTMLElement).textContent =
+        `${wn.note} Check back next week for what changes.`;
+      noteBox.style.display = 'block';
+    } else {
+      noteBox.style.display = 'none';
     }
 
     (document.getElementById('w-blurb') as HTMLElement).textContent = r.trimesterBlurb;

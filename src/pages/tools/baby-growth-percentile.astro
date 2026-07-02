@@ -149,6 +149,35 @@ import { toolSchema } from '../../data/tools/_schema';
     interpEl.textContent = result.interpretation;
     interpEl.style.background = result.interpretationClass === 'normal' ? '#DCE4D3' : '#F1DACB';
     interpEl.style.color = result.interpretationClass === 'normal' ? '#2C4234' : '#8A3D22';
+
+    // Persist URL state
+    const url = new URL(window.location.href);
+    url.searchParams.set('age', age.toString());
+    url.searchParams.set('sex', sex);
+    url.searchParams.set('measure', currentMeasure);
+    url.searchParams.set('unit', currentUnit);
+    url.searchParams.set('value', (document.getElementById('gp-value') as HTMLInputElement).value);
+    history.replaceState(null, '', url);
+  }
+
+  // Restore from URL
+  const p = new URLSearchParams(window.location.search);
+  if (p.get('age')) (document.getElementById('gp-age') as HTMLInputElement).value = p.get('age')!;
+  if (p.get('value')) (document.getElementById('gp-value') as HTMLInputElement).value = p.get('value')!;
+  if (p.get('sex') === 'F') (document.querySelector('input[name="gp-sex"][value="F"]') as HTMLInputElement).checked = true;
+  if (p.get('measure')) currentMeasure = p.get('measure') as Measure;
+  if (p.get('unit') === 'metric') currentUnit = 'metric';
+  if (p.get('measure') || p.get('unit')) {
+    document.querySelectorAll('[data-unit], .gp-measure-btn').forEach(b => {
+      const el = b as HTMLElement;
+      const isActive = el.dataset.unit === currentUnit || el.dataset.measure === currentMeasure;
+      if (el.dataset.unit || el.dataset.measure) {
+        el.style.background = isActive ? 'var(--color-primary)' : 'transparent';
+        el.style.color = isActive ? '#fff' : 'var(--color-muted)';
+        el.style.borderColor = isActive ? 'var(--color-primary)' : 'var(--color-line)';
+      }
+    });
+    updateValueLabel();
   }
 
   // Live-update

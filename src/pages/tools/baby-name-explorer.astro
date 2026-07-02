@@ -67,11 +67,14 @@ const allNamesJSON = JSON.stringify(BABY_NAMES);
   let activePop = 'all';
   let searchQuery = '';
 
+  const POP_MAX_RANK = { top10: 10, top25: 25, top50: 50, top100: 100 };
+
   function renderGrid() {
     let filtered = ALL_NAMES.filter(n => {
       if (activeSex === 'Boy' && n.sex !== 'M') return false;
       if (activeSex === 'Girl' && n.sex !== 'F') return false;
-      if (activePop !== 'all' && n.popularity !== activePop) return false;
+      // Cumulative tiers: "Top 25" includes ranks 1-25, not just 11-25
+      if (activePop !== 'all' && n.rank > POP_MAX_RANK[activePop]) return false;
       if (searchQuery && !n.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
       return true;
     });

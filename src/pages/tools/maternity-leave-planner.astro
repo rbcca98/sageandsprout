@@ -79,6 +79,10 @@ import { toolSchema } from '../../data/tools/_schema';
       <!-- Notes -->
       <div id="ml-notes-list" style="display:flex;flex-direction:column;gap:0.5rem;"></div>
 
+      <div style="margin:1rem 0 0;">
+        <button id="ml-ics" style="padding:.45rem 1rem;border-radius:999px;border:1.5px solid var(--color-primary);background:transparent;cursor:pointer;font-size:.82rem;font-weight:500;color:var(--color-primary);">Add timeline to calendar</button>
+      </div>
+
       <p style="margin:1rem 0 0;font-size:0.78rem;color:var(--color-muted);">
         This planner provides a general estimate. Leave policies vary by employer and state. Always confirm your specific entitlements with HR and your state labor office.
       </p>
@@ -90,6 +94,10 @@ import { toolSchema } from '../../data/tools/_schema';
 
 <script>
   import { calculateMaternityLeave, formatDateShort } from '../../islands/maternity-leave.js';
+  import type { MaternityLeaveResult } from '../../islands/maternity-leave.js';
+  import { downloadIcs } from '../../islands/ics.js';
+
+  let lastResult: MaternityLeaveResult | null = null;
 
   function setDateDefaults() {
     const today = new Date();
@@ -112,6 +120,7 @@ import { toolSchema } from '../../data/tools/_schema';
 
     const result = calculateMaternityLeave({ dueDate, lastWorkDay, fmlaEligible, employerPaidWeeks: employerPaid, statePFL, ptoPaidWeeks: ptoPaid });
     if (!result) return;
+    lastResult = result;
 
     const panel = document.getElementById('ml-result')!;
     panel.style.display = 'block';
@@ -150,7 +159,26 @@ import { toolSchema } from '../../data/tools/_schema';
       p.textContent = note;
       nl.appendChild(p);
     });
+
+    // Persist URL state
+    const url = new URL(window.location.href);
+    url.searchParams.set('due', dueDate);
+    url.searchParams.set('last', lastWorkDay);
+    url.searchParams.set('ep', employerPaid.toString());
+    url.searchParams.set('pto', ptoPaid.toString());
+    url.searchParams.set('state', statePFL);
+    url.searchParams.set('fmla', fmlaEligible ? '1' : '0');
+    history.replaceState(null, '', url);
   }
+
+  // Restore from URL (overrides the defaults set above)
+  const p = new URLSearchParams(window.location.search);
+  if (p.get('due'))  (document.getElementById('ml-due') as HTMLInputElement).value = p.get('due')!;
+  if (p.get('last')) (document.getElementById('ml-lastday') as HTMLInputElement).value = p.get('last')!;
+  if (p.get('ep'))   (document.getElementById('ml-employer-paid') as HTMLInputElement).value = p.get('ep')!;
+  if (p.get('pto'))  (document.getElementById('ml-pto') as HTMLInputElement).value = p.get('pto')!;
+  if (p.get('state')) (document.getElementById('ml-state') as HTMLSelectElement).value = p.get('state')!;
+  if (p.get('fmla') === '0') (document.getElementById('ml-fmla') as HTMLInputElement).checked = false;
 
   // Live-update
   let _t: ReturnType<typeof setTimeout>;
@@ -161,6 +189,20 @@ import { toolSchema } from '../../data/tools/_schema';
   );
   document.getElementById('ml-state')!.addEventListener('change', calc);
   document.getElementById('ml-fmla')!.addEventListener('change', calc);
+
+  // Calendar export: the full leave timeline as all-day events
+  document.getElementById('ml-ics')!.addEventListener('click', () => {
+    if (!lastResult) return;
+    downloadIcs(
+      lastResult.timeline.map((item) => ({
+        title: item.label,
+        date: item.date,
+        description: 'From the Sage & Sprout maternity leave planner. Confirm dates with HR.',
+      })),
+      'maternity-leave-timeline',
+      'Maternity leave timeline',
+    );
+  });
 
   calc();
 </script>

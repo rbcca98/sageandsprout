@@ -13,7 +13,7 @@
   --color-surface:      #F4ECDC;  /* cream box */
   --color-surface-2:    #EAE0CD;
   --color-ink:          #26352B;  /* dark text (on cream) */
-  --color-muted:        #7B7360;  /* muted (on cream) */
+  --color-muted:        #6B6350;  /* muted (on cream), WCAG AA on #F4ECDC */
   --color-line:         #D8CCB4;  /* hairline (on cream) */
 
   --font-family-display: "Hanken Grotesk", system-ui, sans-serif;
@@ -43,7 +43,7 @@ body {
   line-height: 1.6;
   margin: 0;
   --color-ink:       var(--color-cream);
-  --color-muted:     rgba(244,236,220,.64);
+  --color-muted:     rgba(244,236,220,.78); /* WCAG AA on the sage page bg */
   --color-line:      rgba(244,236,220,.34);
   --color-surface:   transparent;
   --color-surface-2: transparent;
@@ -53,7 +53,7 @@ body {
 /* Cream content island — restores the readable dark context */
 .sheet {
   --color-ink:       #26352B;
-  --color-muted:     #7B7360;
+  --color-muted:     #6B6350;
   --color-line:      #D8CCB4;
   --color-surface:   #F4ECDC;
   --color-surface-2: #EAE0CD;
@@ -101,6 +101,37 @@ a:hover { color: var(--color-accent-dark); }
 .pill--accent { border-color: currentColor; }
 .pill--accent:hover { background: var(--color-cream); color: var(--color-bg); border-color: var(--color-cream); }
 
+/* ── All-tools nav dropdown ─────────────────────────── */
+.nav-menu { position: relative; }
+.nav-menu summary { list-style: none; }
+.nav-menu summary::-webkit-details-marker { display: none; }
+.nav-menu[open] summary { background: var(--color-cream); color: var(--color-bg); border-color: var(--color-cream); }
+.nav-menu-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  z-index: 60;
+  width: min(calc(100vw - 2rem), 620px);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.4rem;
+  padding: 1.4rem 1.5rem 1.5rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-line);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+}
+.nav-menu-link {
+  font-size: 0.88rem;
+  color: var(--color-ink);
+  text-decoration: none;
+  opacity: 0.85;
+  transition: opacity .15s, color .15s;
+}
+.nav-menu-link:hover { opacity: 1; color: var(--color-accent); }
+@media (max-width: 640px) {
+  .nav-menu-panel { grid-template-columns: 1fr; width: min(calc(100vw - 2rem), 320px); }
+}
+
 /* ── Buttons — outlined, sharp, light-up on hover ───── */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
@@ -120,6 +151,22 @@ a:hover { color: var(--color-accent-dark); }
 .btn--accent { color: var(--color-accent); }
 .btn--accent:hover { background: var(--color-accent); color: var(--color-cream); border-color: var(--color-accent); }
 .btn:disabled { opacity: .5; cursor: not-allowed; }
+
+/* ── Share button (tool pages) ──────────────────────── */
+.share-btn {
+  padding: .55rem 1.1rem;
+  border: 1.5px solid currentColor;
+  background: transparent;
+  color: var(--color-accent);
+  cursor: pointer;
+  font-size: .74rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  font-family: var(--font-family-body);
+  transition: background .2s, color .2s;
+}
+.share-btn:hover { background: var(--color-accent); color: var(--color-cream); }
 
 /* ── Segmented control ──────────────────────────────── */
 .seg { display: inline-flex; flex-wrap: wrap; gap: 0.5rem; }

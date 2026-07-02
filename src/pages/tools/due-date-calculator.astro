@@ -70,7 +70,7 @@ import { toolSchema } from '../../data/tools/_schema';
           Cycle length (days)
         </label>
         <div style="display:flex;align-items:center;gap:.5rem;">
-          <button id="cycle-minus" aria-label="Decrease cycle length" style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--color-line);background:var(--color-surface-2);cursor:pointer;font-size:1.1rem;display:grid;place-items:center;">−</button>
+          <button id="cycle-minus" aria-label="Decrease cycle length" style="width:44px;height:44px;border-radius:50%;border:1.5px solid var(--color-line);background:var(--color-surface-2);cursor:pointer;font-size:1.1rem;display:grid;place-items:center;">−</button>
           <input
             type="number"
             id="cycle-length"
@@ -82,7 +82,7 @@ import { toolSchema } from '../../data/tools/_schema';
               font-size:1rem;color:var(--color-ink);font-family:var(--font-family-mono);
             "
           />
-          <button id="cycle-plus" aria-label="Increase cycle length" style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--color-line);background:var(--color-surface-2);cursor:pointer;font-size:1.1rem;display:grid;place-items:center;">+</button>
+          <button id="cycle-plus" aria-label="Increase cycle length" style="width:44px;height:44px;border-radius:50%;border:1.5px solid var(--color-line);background:var(--color-surface-2);cursor:pointer;font-size:1.1rem;display:grid;place-items:center;">+</button>
         </div>
       </div>
     </div>
@@ -112,6 +112,7 @@ import { toolSchema } from '../../data/tools/_schema';
 
       <!-- Populated state (hidden until calculated) -->
       <div id="result-content" style="display:none;padding:1.75rem;">
+        <p id="res-example" hidden style="font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--color-accent);border:1px solid currentColor;display:inline-block;padding:.25rem .6rem;margin:0 0 .85rem;">Example. Enter your date above</p>
         <p style="font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--color-primary);margin:0 0 .35rem;" id="res-trimester"></p>
         <p style="margin:0 0 .2rem;color:var(--color-muted);font-size:.9rem;" id="res-gest-label"></p>
         <p style="font-family:var(--font-family-display);font-size:clamp(1.6rem,5vw,2.4rem);font-weight:700;color:var(--color-accent);margin:0 0 1.25rem;" id="res-edd"></p>
@@ -130,11 +131,17 @@ import { toolSchema } from '../../data/tools/_schema';
         <!-- Milestone list -->
         <div id="res-milestones" style="display:grid;gap:.5rem;margin-bottom:1.25rem;"></div>
 
+        <!-- This week's note -->
+        <div id="res-week-note" style="display:none;padding:.85rem 1rem;border:1px solid var(--color-line);border-left:3px solid var(--color-accent);margin-bottom:1.25rem;">
+          <p id="res-week-note-title" style="margin:0 0 .25rem;font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--color-accent);"></p>
+          <p id="res-week-note-body" style="margin:0;font-size:.88rem;color:var(--color-ink);line-height:1.6;"></p>
+        </div>
+
         <!-- Actions -->
         <div style="display:flex;gap:.5rem;flex-wrap:wrap;padding-top:1rem;border-top:1px solid var(--color-line);">
           <button onclick="navigator.clipboard?.writeText(document.getElementById('res-edd').textContent||'')" style="padding:.4rem .9rem;border-radius:999px;border:1.5px solid var(--color-line);background:transparent;cursor:pointer;font-size:.82rem;font-weight:500;color:var(--color-ink);">Copy date</button>
           <button onclick="window.print()" style="padding:.4rem .9rem;border-radius:999px;border:1.5px solid var(--color-line);background:transparent;cursor:pointer;font-size:.82rem;font-weight:500;color:var(--color-ink);">Print</button>
-          <button id="share-btn" style="padding:.4rem .9rem;border-radius:999px;border:1.5px solid var(--color-primary);background:transparent;cursor:pointer;font-size:.82rem;font-weight:500;color:var(--color-primary);">Share link</button>
+          <button id="ics-btn" style="padding:.4rem .9rem;border-radius:999px;border:1.5px solid var(--color-primary);background:transparent;cursor:pointer;font-size:.82rem;font-weight:500;color:var(--color-primary);">Add milestones to calendar</button>
         </div>
       </div>
     </div>
@@ -145,8 +152,10 @@ import { toolSchema } from '../../data/tools/_schema';
 
 <!-- ── Client-side calculator script ─────────────────────────── -->
 <script>
-  import type { DueDateInputs, DueDateMethod } from '../../islands/due-date.ts';
+  import type { DueDateInputs, DueDateMethod, DueDateResult } from '../../islands/due-date.ts';
   import { calculateDueDate, formatDate, formatDateShort } from '../../islands/due-date.ts';
+  import { weekNote } from '../../data/week-notes.ts';
+  import { downloadIcs } from '../../islands/ics.ts';
 
   const METHODS: DueDateMethod[] = ['lmp', 'conception', 'ivf5', 'ivf3'];
   const DATE_LABELS: Record<DueDateMethod, string> = {
@@ -157,6 +166,7 @@ import { toolSchema } from '../../data/tools/_schema';
   };
 
   let activeMethod: DueDateMethod = 'lmp';
+  let lastResult: DueDateResult | null = null;
 
   // DOM refs
   const tabs = document.querySelectorAll<HTMLButtonElement>('[data-method]');
@@ -168,41 +178,54 @@ import { toolSchema } from '../../data/tools/_schema';
   const cyclePlus  = document.getElementById('cycle-plus')  as HTMLButtonElement;
   const resultEmpty   = document.getElementById('result-empty')!;
   const resultContent = document.getElementById('result-content')!;
-  const shareBtn = document.getElementById('share-btn') as HTMLButtonElement;
 
   // URL state: restore on load
   const params = new URLSearchParams(location.search);
   if (params.get('method')) activeMethod = (params.get('method') as DueDateMethod) || 'lmp';
   if (params.get('date')) dateInput.value = params.get('date')!;
   if (params.get('cycle')) cycleInput.value = params.get('cycle')!;
+
+  // No date yet? Show a worked example (10 weeks ago) so the payoff is visible immediately.
+  let exampleMode = false;
+  if (!dateInput.value) {
+    const ex = new Date();
+    ex.setDate(ex.getDate() - 70);
+    dateInput.value = ex.toISOString().split('T')[0];
+    exampleMode = true;
+  }
   applyMethod(activeMethod, false);
   update();
+
+  function userEdit() { exampleMode = false; update(); }
 
   // Tab clicks
   tabs.forEach(btn => {
     btn.addEventListener('click', () => {
       activeMethod = btn.dataset.method as DueDateMethod;
+      exampleMode = false;
       applyMethod(activeMethod, true);
       update();
     });
   });
 
   // Inputs
-  dateInput.addEventListener('input', update);
-  cycleInput.addEventListener('input', update);
-  cycleMinus.addEventListener('click', () => { cycleInput.value = String(Math.max(21, +cycleInput.value - 1)); update(); });
-  cyclePlus.addEventListener('click', () => { cycleInput.value = String(Math.min(45, +cycleInput.value + 1)); update(); });
+  dateInput.addEventListener('input', userEdit);
+  cycleInput.addEventListener('input', userEdit);
+  cycleMinus.addEventListener('click', () => { cycleInput.value = String(Math.max(21, +cycleInput.value - 1)); userEdit(); });
+  cyclePlus.addEventListener('click', () => { cycleInput.value = String(Math.min(45, +cycleInput.value + 1)); userEdit(); });
 
-  // Share
-  shareBtn.addEventListener('click', () => {
-    const url = new URL(location.href);
-    url.searchParams.set('method', activeMethod);
-    url.searchParams.set('date', dateInput.value);
-    if (activeMethod === 'lmp') url.searchParams.set('cycle', cycleInput.value);
-    navigator.clipboard?.writeText(url.toString()).then(() => {
-      shareBtn.textContent = 'Copied!';
-      setTimeout(() => { shareBtn.textContent = 'Share link'; }, 1800);
-    });
+  // Calendar export: every milestone as an all-day event
+  document.getElementById('ics-btn')!.addEventListener('click', () => {
+    if (!lastResult) return;
+    downloadIcs(
+      lastResult.milestones.map((m) => ({
+        title: `${m.label} (week ${m.weeksGA})`,
+        date: m.date,
+        description: 'From the Sage & Sprout due date calculator. Dates are estimates; confirm with your provider.',
+      })),
+      'pregnancy-milestones',
+      'Pregnancy milestones',
+    );
   });
 
   function applyMethod(m: DueDateMethod, resetDate: boolean) {
@@ -230,13 +253,31 @@ import { toolSchema } from '../../data/tools/_schema';
 
     const r = calculateDueDate(inputs);
     if (!r) { showEmpty(); return; }
+    lastResult = r;
 
-    // Persist URL state (no reload)
-    const url = new URL(location.href);
-    url.searchParams.set('method', activeMethod);
-    url.searchParams.set('date', date);
-    if (activeMethod === 'lmp') url.searchParams.set('cycle', cycleInput.value);
-    history.replaceState(null, '', url);
+    (document.getElementById('res-example') as HTMLElement).hidden = !exampleMode;
+
+    // This week's note (skip when the date is preconception)
+    const wn = !r.isPreconception ? weekNote(r.weeksComplete) : null;
+    const noteBox = document.getElementById('res-week-note')!;
+    if (wn) {
+      (document.getElementById('res-week-note-title') as HTMLElement).textContent =
+        `Week ${wn.week}: about the size of a ${wn.size}`;
+      (document.getElementById('res-week-note-body') as HTMLElement).textContent =
+        `${wn.note} Check back next week for what changes.`;
+      noteBox.style.display = 'block';
+    } else {
+      noteBox.style.display = 'none';
+    }
+
+    // Persist URL state (no reload) — but never for the example values
+    if (!exampleMode) {
+      const url = new URL(location.href);
+      url.searchParams.set('method', activeMethod);
+      url.searchParams.set('date', date);
+      if (activeMethod === 'lmp') url.searchParams.set('cycle', cycleInput.value);
+      history.replaceState(null, '', url);
+    }
 
     // Render
     (document.getElementById('res-trimester') as HTMLElement).textContent = r.trimesterLabel;

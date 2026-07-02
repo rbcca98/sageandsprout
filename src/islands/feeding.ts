@@ -40,7 +40,7 @@ const AGE_BANDS = [
     ozPerFeedLow: 1.5, ozPerFeedHigh: 3,
     feedsLow: 8, feedsHigh: 12,
     weightBased: false,
-    notes: 'Feed every 2–3 hours. Newborns have tiny stomachs — small, frequent feeds are normal.',
+    notes: 'Feed every 2–3 hours. Newborns have tiny stomachs, so small, frequent feeds are normal.',
     solids: null,
   },
   {
@@ -113,7 +113,7 @@ export function calculateFeeding(inputs: FeedingInputs): FeedingResult | null {
   }
 
   const breastNote = feedingType === 'breast'
-    ? 'Breastfed babies feed on demand. Amounts are harder to measure — watch for 6+ wet diapers/day and steady weight gain as signs of adequate intake.'
+    ? 'Breastfed babies feed on demand. Amounts are harder to measure: watch for 6+ wet diapers/day and steady weight gain as signs of adequate intake.'
     : band.notes;
 
   return {

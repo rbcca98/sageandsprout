@@ -59,11 +59,11 @@ function normalCDF(z: number): number {
 }
 
 function interpretPercentile(p: number): { text: string; cls: 'low' | 'normal' | 'high' } {
-  if (p < 3)  return { text: 'Below 3rd percentile — discuss with your pediatrician', cls: 'low' };
-  if (p < 15) return { text: 'Below average — monitor at next well visit', cls: 'low' };
+  if (p < 3)  return { text: 'Below 3rd percentile: discuss with your pediatrician', cls: 'low' };
+  if (p < 15) return { text: 'Below average: monitor at next well visit', cls: 'low' };
   if (p < 85) return { text: 'Normal range', cls: 'normal' };
-  if (p < 97) return { text: 'Above average — monitor at next well visit', cls: 'high' };
-  return { text: 'Above 97th percentile — discuss with your pediatrician', cls: 'high' };
+  if (p < 97) return { text: 'Above average: monitor at next well visit', cls: 'high' };
+  return { text: 'Above 97th percentile: discuss with your pediatrician', cls: 'high' };
 }
 
 const MEASURE_META: Record<Measure, { label: string; unit: string }> = {

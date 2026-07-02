@@ -9,7 +9,7 @@ const copy: ToolCopy = {
   headline: 'Maternity Leave Planner',
   hook:
     'Enter your due date, last workday, and state. You get a timeline of paid weeks, protected weeks, and your estimated return date.',
-  reviewedDate: '2025-01-15',
+  reviewedDate: '2026-07-01',
   medical: false,
 
   faqs: [

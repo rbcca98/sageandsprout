@@ -33,7 +33,7 @@ const MILESTONES = [
 
 const TRIMESTER_BLURBS: Record<1 | 2 | 3, string> = {
   1: "Major organs, the neural tube, and your baby's facial features are forming. Many parents experience nausea and fatigue. Most miscarriages occur in this period, so many wait until week 12–13 to share news.",
-  2: "Often called the 'honeymoon trimester'—energy typically returns and morning sickness eases. You may feel fetal movement (quickening) for the first time around weeks 18–22. Your provider will offer a detailed anatomy ultrasound around week 20.",
+  2: "Often called the 'honeymoon trimester': energy typically returns and morning sickness eases. You may feel fetal movement (quickening) for the first time around weeks 18–22. Your provider will offer a detailed anatomy ultrasound around week 20.",
   3: "Your baby is gaining weight rapidly and the lungs are maturing. Prenatal visits become more frequent. 'Full term' begins at 39 weeks. Labor may begin anywhere from week 37 onward.",
 };
 

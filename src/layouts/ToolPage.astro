@@ -111,6 +111,12 @@ const allSchema = [
       <slot name="tool" />
     </div>
 
+    <!-- ── Share row (same affordance on every tool) ── -->
+    <div style="display:flex;justify-content:flex-end;align-items:center;gap:.75rem;margin:0.75rem 0 1rem;">
+      <span style="font-size:.78rem;color:var(--color-muted);">Link carries your inputs</span>
+      <button id="tool-share" type="button" class="share-btn">Share result</button>
+    </div>
+
     <!-- ── CLS-safe ad slot (below result) ───────── -->
     <div class="ad-slot ad-slot--banner" style="margin-bottom:1rem;" aria-hidden="true">
       Advertisement
@@ -196,6 +202,25 @@ const allSchema = [
     </article>
   </div>
 </Base>
+
+<script>
+  // Share the current tool state: native share sheet on mobile, clipboard elsewhere.
+  const shareBtn = document.getElementById('tool-share') as HTMLButtonElement | null;
+  if (shareBtn) {
+    shareBtn.addEventListener('click', async () => {
+      const url = location.href;
+      if (navigator.share) {
+        try { await navigator.share({ title: document.title, url }); return; } catch { /* user closed the sheet */ }
+      }
+      try {
+        await navigator.clipboard.writeText(url);
+        const original = shareBtn.textContent;
+        shareBtn.textContent = 'Link copied!';
+        setTimeout(() => { shareBtn.textContent = original; }, 1800);
+      } catch { /* clipboard unavailable */ }
+    });
+  }
+</script>
 
 <style>
   /* ── Page wrapper ──────────────────────────────────── */
