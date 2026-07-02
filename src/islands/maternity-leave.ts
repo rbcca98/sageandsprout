@@ -33,7 +33,8 @@ export interface MaternityLeaveResult {
   notes: string[];
 }
 
-// 2026 state PFL programs (approximate — rates update annually)
+// State programs paying family-leave benefits as of mid-2026 (approximate — rates update annually).
+// Maryland FAMLI is excluded: contributions begin Jan 2027, benefits Jan 2028.
 const STATE_PFL: Record<string, StatePFLInfo> = {
   CA: { name: 'California PFL', weeks: 8, payPercent: 70, waitingDays: 7 },
   NY: { name: 'New York PFL', weeks: 12, payPercent: 67, waitingDays: 0 },
@@ -45,8 +46,9 @@ const STATE_PFL: Record<string, StatePFLInfo> = {
   CO: { name: 'Colorado FAMLI', weeks: 12, payPercent: 90, waitingDays: 7 },
   RI: { name: 'Rhode Island TDI/TCI', weeks: 8, payPercent: 60, waitingDays: 7 },
   DE: { name: 'Delaware PFML', weeks: 12, payPercent: 80, waitingDays: 0 },
-  MD: { name: 'Maryland FAMLI', weeks: 12, payPercent: 90, waitingDays: 7 },
   MN: { name: 'Minnesota PFML', weeks: 12, payPercent: 90, waitingDays: 7 },
+  ME: { name: 'Maine PFML', weeks: 12, payPercent: 90, waitingDays: 0 },
+  DC: { name: 'DC Paid Family Leave', weeks: 12, payPercent: 90, waitingDays: 0 },
 };
 
 function addDays(date: Date, days: number): Date {
@@ -107,7 +109,9 @@ export function calculateMaternityLeave(inputs: MaternityLeaveInputs): Maternity
   if (statePFLInfo) {
     notes.push(`${statePFLInfo.name} replaces ~${statePFLInfo.payPercent}% of wages for up to ${statePFLInfo.weeks} weeks. There may be a ${statePFLInfo.waitingDays}-day waiting period.`);
   }
-  if (!statePFLInfo && statePFL !== 'none') {
+  if (statePFL === 'MD') {
+    notes.push('Maryland\'s FAMLI program is not paying benefits yet: contributions begin January 2027 and benefits begin January 2028. Until then, check your employer\'s own leave policy.');
+  } else if (!statePFLInfo && statePFL !== 'none') {
     notes.push('Your state does not currently have a paid family leave program. Check your employer\'s leave policy.');
   }
   notes.push('Leave plans are subject to your specific employer policies, eligibility dates, and state law. Consult your HR department and your state labor office for personalized guidance.');
@@ -134,9 +138,11 @@ export function formatDateShort(date: Date): string {
 }
 
 export const US_STATES: [string, string][] = [
-  ['none', 'No state PFL'],
+  ['none', 'No state PFL / other state'],
   ['CA', 'California'], ['CO', 'Colorado'], ['CT', 'Connecticut'],
-  ['DE', 'Delaware'], ['MD', 'Maryland'], ['MA', 'Massachusetts'],
-  ['MN', 'Minnesota'], ['NJ', 'New Jersey'], ['NY', 'New York'],
+  ['DE', 'Delaware'], ['DC', 'District of Columbia'],
+  ['ME', 'Maine'], ['MD', 'Maryland (benefits start 2028)'],
+  ['MA', 'Massachusetts'], ['MN', 'Minnesota'],
+  ['NJ', 'New Jersey'], ['NY', 'New York'],
   ['OR', 'Oregon'], ['RI', 'Rhode Island'], ['WA', 'Washington'],
 ];

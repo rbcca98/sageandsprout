@@ -21,7 +21,7 @@ const copy: ToolCopy = {
     {
       question: 'What is the difference between FMLA and paid family leave?',
       answer:
-        'FMLA (federal law) provides job protection for up to 12 weeks but does not require pay. Paid family leave (PFL) programs, either from your employer or your state, provide partial income replacement during leave. Thirteen states plus DC currently have state-mandated paid family leave programs. FMLA and state PFL typically run concurrently.',
+        'FMLA (federal law) provides job protection for up to 12 weeks but does not require pay. Paid family leave (PFL) programs, either from your employer or your state, provide partial income replacement during leave. Twelve states plus Washington, DC currently pay state family leave benefits. FMLA and state PFL typically run concurrently.',
     },
     {
       question: 'Can my employer require me to use PTO during FMLA?',
@@ -72,7 +72,10 @@ const copy: ToolCopy = {
 
     <h2>State paid family leave programs</h2>
     <p>
-      Thirteen states and Washington DC have enacted paid family leave programs that provide partial wage replacement during leave: California, Colorado, Connecticut, Delaware, Maryland, Massachusetts, Minnesota, New Jersey, New York, Oregon, Rhode Island, and Washington. These programs are typically funded through small payroll deductions and replace 60–100% of wages for 8–12 weeks. Most state PFL programs run concurrently with FMLA rather than extending total leave.
+      Twelve states and Washington, DC pay partial wages during family leave as of 2026: California, Colorado, Connecticut, Delaware, Maine, Massachusetts, Minnesota, New Jersey, New York, Oregon, Rhode Island, and Washington, plus DC. These programs are typically funded through small payroll deductions and replace 60–100% of wages for 8–12 weeks. Most state PFL programs run concurrently with FMLA rather than extending total leave.
+    </p>
+    <p>
+      Maryland has passed a paid leave law (FAMLI), but it is not paying benefits yet: payroll contributions begin January 2027 and benefits begin January 2028.
     </p>
 
     <h2>Short-term disability and employer benefits</h2>
