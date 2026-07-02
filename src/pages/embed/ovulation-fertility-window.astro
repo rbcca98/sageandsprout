@@ -1,0 +1,67 @@
+---
+import Embed from '../../layouts/Embed.astro';
+---
+
+<Embed title="Ovulation Calculator | Sage & Sprout" toolPath="/tools/ovulation-fertility-window/">
+  <div class="embed-head">
+    <h2 class="embed-title">Ovulation Calculator</h2>
+    <p class="embed-sub">Find your fertile window and most likely ovulation day.</p>
+  </div>
+
+  <div class="embed-row">
+    <div class="embed-field">
+      <label for="o-lmp">First day of last period</label>
+      <input type="date" id="o-lmp" autocomplete="off" />
+    </div>
+    <div class="embed-field" style="max-width:150px;">
+      <label for="o-cycle">Cycle length</label>
+      <div class="embed-stepper">
+        <button type="button" id="o-minus" aria-label="Decrease cycle length">&minus;</button>
+        <input type="number" id="o-cycle" min="21" max="35" value="28" />
+        <button type="button" id="o-plus" aria-label="Increase cycle length">+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="embed-result">
+    <p class="embed-eyebrow" id="o-phase"></p>
+    <p class="embed-big" id="o-window"></p>
+    <div class="embed-stats">
+      <div class="embed-stat"><span>Most likely ovulation</span><span id="o-ov"></span></div>
+      <div class="embed-stat"><span>Best days to try</span><span id="o-best"></span></div>
+      <div class="embed-stat"><span>Next period</span><span id="o-next"></span></div>
+    </div>
+    <p class="embed-note">An estimate. An ovulation test (OPK) confirms timing more precisely.</p>
+  </div>
+</Embed>
+
+<script>
+  import { calculateOvulation, formatDateShort } from '../../islands/ovulation.ts';
+
+  const lmpInput = document.getElementById('o-lmp') as HTMLInputElement;
+  const cycleInput = document.getElementById('o-cycle') as HTMLInputElement;
+
+  // Prefill a worked example (period 10 days ago).
+  const ex = new Date();
+  ex.setDate(ex.getDate() - 10);
+  lmpInput.value = ex.toISOString().split('T')[0];
+
+  lmpInput.addEventListener('input', update);
+  cycleInput.addEventListener('input', update);
+  document.getElementById('o-minus')!.addEventListener('click', () => { cycleInput.value = String(Math.max(21, +cycleInput.value - 1)); update(); });
+  document.getElementById('o-plus')!.addEventListener('click', () => { cycleInput.value = String(Math.min(35, +cycleInput.value + 1)); update(); });
+
+  function update() {
+    const r = calculateOvulation({ lmp: lmpInput.value, cycleLength: +cycleInput.value });
+    const box = document.querySelector('.embed-result') as HTMLElement;
+    if (!r) { box.style.opacity = '0.4'; return; }
+    box.style.opacity = '1';
+    (document.getElementById('o-phase') as HTMLElement).textContent = r.phaseLabel;
+    (document.getElementById('o-window') as HTMLElement).textContent = `${formatDateShort(r.fertileStart)} – ${formatDateShort(r.fertileEnd)}`;
+    (document.getElementById('o-ov') as HTMLElement).textContent = formatDateShort(r.ovulationDate);
+    (document.getElementById('o-best') as HTMLElement).textContent = `${formatDateShort(r.testDate)} – ${formatDateShort(r.ovulationDate)}`;
+    (document.getElementById('o-next') as HTMLElement).textContent = formatDateShort(r.nextPeriod);
+  }
+
+  update();
+</script>

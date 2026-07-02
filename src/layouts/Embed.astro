@@ -1,0 +1,168 @@
+---
+/**
+ * Standalone layout for embeddable calculator widgets.
+ *
+ * Deliberately minimal: no site header, footer, nav, ads, or smooth-scroll.
+ * The page is meant to be dropped into an <iframe> on another site, so it is
+ * self-contained, noindex (the canonical tool page is what should rank), and
+ * self-sizing (it posts its height to the parent for auto-resize).
+ *
+ * Every embed carries a visible, followed "Powered by Sage & Sprout" link
+ * back to the canonical tool page. That backlink is the point of the widget.
+ */
+export interface Props {
+  /** Browser tab title (embeds are usually invisible, but set it anyway). */
+  title: string;
+  /** Canonical tool URL the "Powered by" link points to, e.g. /tools/due-date-calculator/ */
+  toolPath: string;
+}
+
+const { title, toolPath } = Astro.props;
+const toolUrl = `https://sage-and-sprout.com${toolPath}`;
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&display=swap"
+  />
+</head>
+<body>
+  <div class="embed">
+    <slot />
+
+    <a class="embed-foot" href={toolUrl} target="_blank" rel="noopener">
+      <svg width="15" height="18" viewBox="0 0 32 38" fill="none" aria-hidden="true">
+        <g fill="none" stroke="#CD6A4C" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 35 C15.4 27 15.4 19.5 17.4 7.5" />
+          <path d="M15.6 26.5 C20 26.5 24 24.5 26.4 20.4 C22 19.8 18 21.7 15.6 26.5 Z" />
+          <path d="M16 22 C11.8 22 8 20.2 5.4 16.2 C9.8 15.6 13.8 17.5 16 22 Z" />
+          <path d="M16.5 16.8 C20.3 16.2 23.6 14.3 25.6 10.6 C21.5 10 18.2 11.9 16.5 16.8 Z" />
+        </g>
+        <circle cx="17.6" cy="6.8" r="2.6" fill="#CD6A4C" />
+      </svg>
+      <span>Powered by <strong>Sage &amp; Sprout</strong></span>
+      <span class="embed-foot-cta">Free pregnancy &amp; baby calculators &rarr;</span>
+    </a>
+  </div>
+
+  <!-- Auto-resize: tell the parent page how tall we are, so the iframe fits with no scrollbar. -->
+  <script is:inline>
+    function postHeight() {
+      var h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+      if (window.parent !== window) {
+        window.parent.postMessage({ sageEmbedHeight: h }, '*');
+      }
+    }
+    if ('ResizeObserver' in window) {
+      new ResizeObserver(postHeight).observe(document.documentElement);
+    }
+    window.addEventListener('load', postHeight);
+    window.addEventListener('resize', postHeight);
+  </script>
+</body>
+</html>
+
+<style is:global>
+  :root {
+    --e-bg: #F4ECDC;
+    --e-ink: #26352B;
+    --e-muted: #6B6350;
+    --e-line: #D8CCB4;
+    --e-line-2: #EAE0CD;
+    --e-primary: #44614E;
+    --e-accent: #CD6A4C;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
+    color: var(--e-ink);
+    background: transparent;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .embed {
+    background: var(--e-bg);
+    border: 1px solid var(--e-line);
+    padding: 1.35rem 1.35rem 0.9rem;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .embed-head { margin: 0 0 1.1rem; }
+  .embed-title {
+    font-size: 1.15rem; font-weight: 700; margin: 0; letter-spacing: -0.01em;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .embed-sub { font-size: 0.82rem; color: var(--e-muted); margin: 0.3rem 0 0; }
+
+  /* Segmented tabs */
+  .embed-seg { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0 0 1.1rem; }
+  .embed-seg button {
+    padding: 0.4rem 0.8rem; border: 1.5px solid var(--e-line); background: transparent;
+    color: var(--e-muted); font: inherit; font-size: 0.78rem; font-weight: 600;
+    cursor: pointer; transition: background .15s, color .15s, border-color .15s;
+  }
+  .embed-seg button[aria-selected="true"] {
+    background: var(--e-primary); color: #fff; border-color: var(--e-primary);
+  }
+
+  /* Fields */
+  .embed-row { display: flex; flex-wrap: wrap; gap: 0.9rem; margin: 0 0 1.15rem; }
+  .embed-field { flex: 1; min-width: 150px; }
+  .embed-field label {
+    display: block; font-size: 0.78rem; font-weight: 600; margin: 0 0 0.35rem; color: var(--e-ink);
+  }
+  .embed-field input, .embed-field select {
+    width: 100%; padding: 0.55rem 0.7rem; border: 1.5px solid var(--e-line);
+    background: #fff; color: var(--e-ink); font: inherit; font-size: 0.92rem;
+  }
+  .embed-stepper { display: flex; align-items: center; gap: 0.4rem; }
+  .embed-stepper button {
+    width: 40px; height: 40px; flex-shrink: 0; border: 1.5px solid var(--e-line);
+    background: transparent; color: var(--e-ink); font: inherit; font-size: 1.1rem;
+    cursor: pointer; display: grid; place-items: center;
+  }
+  .embed-stepper input { text-align: center; }
+
+  /* Result block */
+  .embed-result { border-top: 1px solid var(--e-line); padding-top: 1.05rem; }
+  .embed-eyebrow {
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--e-primary); margin: 0 0 0.3rem;
+  }
+  .embed-big {
+    font-size: clamp(1.5rem, 6vw, 1.95rem); font-weight: 700; color: var(--e-accent);
+    margin: 0 0 0.25rem; line-height: 1.1; letter-spacing: -0.01em;
+  }
+  .embed-line { font-size: 0.9rem; color: var(--e-ink); margin: 0 0 0.15rem; }
+  .embed-note { font-size: 0.82rem; color: var(--e-muted); margin: 0.5rem 0 0; line-height: 1.55; }
+
+  .embed-bar { height: 6px; background: var(--e-line-2); margin: 0.85rem 0 0.4rem; overflow: hidden; }
+  .embed-bar > span { display: block; height: 100%; background: var(--e-accent); width: 0; transition: width .4s ease; }
+  .embed-bar-label { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--e-muted); }
+
+  .embed-stats { display: grid; gap: 0.5rem; margin: 0.9rem 0 0; }
+  .embed-stat { display: flex; justify-content: space-between; gap: 0.75rem; font-size: 0.85rem; }
+  .embed-stat span:first-child { color: var(--e-muted); }
+  .embed-stat span:last-child { color: var(--e-ink); font-weight: 600; text-align: right; }
+
+  /* Powered-by footer */
+  .embed-foot {
+    display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;
+    margin: 1.1rem 0 0; padding: 0.75rem 0 0.2rem; border-top: 1px solid var(--e-line);
+    font-size: 0.78rem; color: var(--e-muted); text-decoration: none;
+  }
+  .embed-foot strong { color: var(--e-ink); font-weight: 700; }
+  .embed-foot-cta { margin-left: auto; color: var(--e-accent); font-weight: 600; }
+  .embed-foot:hover .embed-foot-cta { text-decoration: underline; }
+</style>

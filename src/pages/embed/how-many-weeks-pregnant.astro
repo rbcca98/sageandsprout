@@ -1,0 +1,76 @@
+---
+import Embed from '../../layouts/Embed.astro';
+---
+
+<Embed title="How Many Weeks Pregnant Am I? | Sage & Sprout" toolPath="/tools/how-many-weeks-pregnant/">
+  <div class="embed-head">
+    <h2 class="embed-title">How Many Weeks Pregnant Am I?</h2>
+    <p class="embed-sub">Your current week, trimester, and what's next.</p>
+  </div>
+
+  <div class="embed-seg" role="tablist" aria-label="Input method">
+    <button role="tab" data-wmode="lmp" aria-selected="true">Last period</button>
+    <button role="tab" data-wmode="edd" aria-selected="false">Due date</button>
+  </div>
+
+  <div class="embed-row">
+    <div class="embed-field">
+      <label id="w-label" for="w-date">First day of last period</label>
+      <input type="date" id="w-date" autocomplete="off" />
+    </div>
+  </div>
+
+  <div class="embed-result">
+    <p class="embed-eyebrow" id="w-trimester"></p>
+    <p class="embed-big" id="w-weeks"></p>
+    <p class="embed-line" id="w-edd"></p>
+    <div class="embed-bar"><span id="w-progress"></span></div>
+    <div class="embed-bar-label"><span>Progress</span><span id="w-pct"></span></div>
+    <p class="embed-note" id="w-next"></p>
+  </div>
+</Embed>
+
+<script>
+  import { calculateWeeksPregnant, formatDate } from '../../islands/weeks-pregnant.ts';
+
+  let mode: 'lmp' | 'edd' = 'lmp';
+  const tabs = document.querySelectorAll<HTMLButtonElement>('[data-wmode]');
+  const dateInput = document.getElementById('w-date') as HTMLInputElement;
+  const dateLabel = document.getElementById('w-label') as HTMLElement;
+
+  // Prefill a worked example (18 weeks along).
+  const ex = new Date();
+  ex.setDate(ex.getDate() - 18 * 7);
+  dateInput.value = ex.toISOString().split('T')[0];
+
+  tabs.forEach((btn) => btn.addEventListener('click', () => {
+    mode = btn.dataset.wmode as 'lmp' | 'edd';
+    tabs.forEach((b) => b.setAttribute('aria-selected', String(b === btn)));
+    dateLabel.textContent = mode === 'lmp' ? 'First day of last period' : 'Estimated due date';
+    // Reset the example to a sensible value for the chosen mode.
+    const d = new Date();
+    if (mode === 'lmp') d.setDate(d.getDate() - 18 * 7);
+    else d.setDate(d.getDate() + 22 * 7);
+    dateInput.value = d.toISOString().split('T')[0];
+    update();
+  }));
+  dateInput.addEventListener('input', update);
+
+  function update() {
+    const r = calculateWeeksPregnant(mode === 'lmp' ? { lmp: dateInput.value } : { edd: dateInput.value });
+    const box = document.querySelector('.embed-result') as HTMLElement;
+    if (!r || r.trimester === 0) { box.style.opacity = '0.4'; return; }
+    box.style.opacity = '1';
+    (document.getElementById('w-trimester') as HTMLElement).textContent = r.trimesterLabel;
+    (document.getElementById('w-weeks') as HTMLElement).textContent = `${r.weeksComplete} weeks, ${r.daysRemainder} day${r.daysRemainder !== 1 ? 's' : ''}`;
+    (document.getElementById('w-edd') as HTMLElement).textContent = `Estimated due date: ${formatDate(r.edd)}`;
+    (document.getElementById('w-progress') as HTMLElement).style.width = r.percentComplete + '%';
+    (document.getElementById('w-pct') as HTMLElement).textContent = r.percentComplete + '% complete';
+    const next = r.nextMilestone;
+    (document.getElementById('w-next') as HTMLElement).textContent = next
+      ? `Next up: ${next.label} in about ${next.daysLeft} day${next.daysLeft !== 1 ? 's' : ''}.`
+      : 'You are full term. Labor could begin any day now.';
+  }
+
+  update();
+</script>

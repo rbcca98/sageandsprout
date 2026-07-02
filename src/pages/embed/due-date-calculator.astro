@@ -1,0 +1,91 @@
+---
+import Embed from '../../layouts/Embed.astro';
+---
+
+<Embed title="Due Date Calculator | Sage & Sprout" toolPath="/tools/due-date-calculator/">
+  <div class="embed-head">
+    <h2 class="embed-title">Due Date Calculator</h2>
+    <p class="embed-sub">From your last period, conception date, or IVF transfer.</p>
+  </div>
+
+  <div class="embed-seg" role="tablist" aria-label="Calculation method">
+    <button role="tab" data-method="lmp" aria-selected="true">Last period</button>
+    <button role="tab" data-method="conception" aria-selected="false">Conception</button>
+    <button role="tab" data-method="ivf5" aria-selected="false">IVF Day-5</button>
+    <button role="tab" data-method="ivf3" aria-selected="false">IVF Day-3</button>
+  </div>
+
+  <div class="embed-row">
+    <div class="embed-field">
+      <label id="dd-label" for="dd-date">First day of last period</label>
+      <input type="date" id="dd-date" autocomplete="off" />
+    </div>
+    <div class="embed-field" id="dd-cycle-wrap" style="max-width:140px;">
+      <label for="dd-cycle">Cycle length</label>
+      <div class="embed-stepper">
+        <button type="button" id="dd-minus" aria-label="Decrease cycle length">&minus;</button>
+        <input type="number" id="dd-cycle" min="21" max="45" value="28" />
+        <button type="button" id="dd-plus" aria-label="Increase cycle length">+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="embed-result">
+    <p class="embed-eyebrow" id="dd-trimester"></p>
+    <p class="embed-line" id="dd-gest"></p>
+    <p class="embed-big" id="dd-edd"></p>
+    <div class="embed-bar"><span id="dd-progress"></span></div>
+    <div class="embed-bar-label"><span>Progress</span><span id="dd-pct"></span></div>
+    <p class="embed-note">An estimate based on the ACOG method. Confirm with your provider.</p>
+  </div>
+</Embed>
+
+<script>
+  import { calculateDueDate, formatDate } from '../../islands/due-date.ts';
+  import type { DueDateMethod } from '../../islands/due-date.ts';
+
+  const LABELS: Record<DueDateMethod, string> = {
+    lmp: 'First day of last period',
+    conception: 'Conception date',
+    ivf5: 'Day-5 transfer date',
+    ivf3: 'Day-3 transfer date',
+  };
+
+  let method: DueDateMethod = 'lmp';
+  const tabs = document.querySelectorAll<HTMLButtonElement>('[data-method]');
+  const dateInput = document.getElementById('dd-date') as HTMLInputElement;
+  const cycleWrap = document.getElementById('dd-cycle-wrap') as HTMLElement;
+  const cycleInput = document.getElementById('dd-cycle') as HTMLInputElement;
+  const dateLabel = document.getElementById('dd-label') as HTMLElement;
+
+  // Prefill a worked example (10 weeks ago) so the result is never empty.
+  const ex = new Date();
+  ex.setDate(ex.getDate() - 70);
+  dateInput.value = ex.toISOString().split('T')[0];
+
+  tabs.forEach((btn) => btn.addEventListener('click', () => {
+    method = btn.dataset.method as DueDateMethod;
+    tabs.forEach((b) => b.setAttribute('aria-selected', String(b === btn)));
+    dateLabel.textContent = LABELS[method];
+    cycleWrap.style.display = method === 'lmp' ? '' : 'none';
+    update();
+  }));
+  dateInput.addEventListener('input', update);
+  cycleInput.addEventListener('input', update);
+  document.getElementById('dd-minus')!.addEventListener('click', () => { cycleInput.value = String(Math.max(21, +cycleInput.value - 1)); update(); });
+  document.getElementById('dd-plus')!.addEventListener('click', () => { cycleInput.value = String(Math.min(45, +cycleInput.value + 1)); update(); });
+
+  function update() {
+    const r = calculateDueDate({ method, date: dateInput.value, cycleLength: +cycleInput.value });
+    const box = document.querySelector('.embed-result') as HTMLElement;
+    if (!r) { box.style.opacity = '0.4'; return; }
+    box.style.opacity = '1';
+    (document.getElementById('dd-trimester') as HTMLElement).textContent = r.isPreconception ? 'Estimated due date' : r.trimesterLabel;
+    (document.getElementById('dd-gest') as HTMLElement).textContent = r.gestAgeLabel;
+    (document.getElementById('dd-edd') as HTMLElement).textContent = formatDate(r.edd);
+    (document.getElementById('dd-progress') as HTMLElement).style.width = r.percentComplete + '%';
+    (document.getElementById('dd-pct') as HTMLElement).textContent = r.percentComplete + '% complete';
+  }
+
+  update();
+</script>

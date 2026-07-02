@@ -1,0 +1,88 @@
+---
+/**
+ * "Put this calculator on your site" block.
+ * Shows a copy-paste <iframe> snippet that embeds the widget at
+ * /embed/<slug> and auto-resizes it. The snippet's link equity flows to the
+ * canonical tool page via the "Powered by" link inside the embed.
+ */
+export interface Props {
+  slug: string;   // e.g. 'due-date-calculator'
+  label: string;  // human title used in the iframe title attribute
+  height?: number;
+}
+
+const { slug, label, height = 560 } = Astro.props;
+const src = `https://sage-and-sprout.com/embed/${slug}`;
+const toolUrl = `https://sage-and-sprout.com/tools/${slug}/`;
+
+// The attribution link is deliberately OUTSIDE the iframe. A link inside the
+// iframe is same-origin to the widget, so search engines treat it as internal.
+// Placed in the host page's HTML, with a plain branded anchor, it is a real
+// followed backlink to the canonical tool page.
+const snippet =
+  `<iframe src="${src}" title="${label} | Sage & Sprout" width="100%" height="${height}" style="border:1px solid #d8ccb4;max-width:480px;" loading="lazy"></iframe>\n` +
+  `<p style="font:13px/1.5 system-ui,sans-serif;max-width:480px;margin:6px auto;color:#6b6350;text-align:right">${label} by <a href="${toolUrl}">Sage &amp; Sprout</a></p>\n` +
+  `<script>window.addEventListener("message",function(e){if(e.origin!=="https://sage-and-sprout.com"||!e.data||!e.data.sageEmbedHeight)return;document.querySelectorAll("iframe").forEach(function(f){if(f.contentWindow===e.source)f.style.height=e.data.sageEmbedHeight+"px"})});<\/script>`;
+---
+
+<div class="embed-code-block">
+  <h2>Put this calculator on your site</h2>
+  <p>Free to embed on any blog or website. It stays up to date automatically and links back here. Copy the code below.</p>
+  <textarea class="embed-code-text" readonly rows="6" aria-label={`Embed code for the ${label}`}>{snippet}</textarea>
+  <button type="button" class="embed-code-copy">Copy embed code</button>
+</div>
+
+<script>
+  const block = document.querySelector('.embed-code-block');
+  if (block) {
+    const btn = block.querySelector('.embed-code-copy') as HTMLButtonElement;
+    const ta = block.querySelector('.embed-code-text') as HTMLTextAreaElement;
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(ta.value);
+      } catch {
+        ta.select();
+        document.execCommand('copy');
+      }
+      const original = btn.textContent;
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = original; }, 1800);
+    });
+  }
+</script>
+
+<style>
+  .embed-code-block {
+    margin: 2.5rem 0 0;
+    padding: 1.5rem 1.5rem 1.6rem;
+    border: 1px solid var(--color-line);
+    background: var(--color-surface-2);
+  }
+  .embed-code-block h2 { margin: 0 0 0.4rem; font-size: 1.15rem; }
+  .embed-code-block p { margin: 0 0 0.9rem; font-size: 0.9rem; color: var(--color-muted); }
+  .embed-code-text {
+    width: 100%;
+    font-family: var(--font-family-mono, monospace);
+    font-size: 0.76rem;
+    line-height: 1.5;
+    color: var(--color-ink);
+    background: #fff;
+    border: 1px solid var(--color-line);
+    padding: 0.75rem 0.85rem;
+    resize: vertical;
+    box-sizing: border-box;
+  }
+  .embed-code-copy {
+    margin-top: 0.75rem;
+    padding: 0.55rem 1.1rem;
+    border: 1.5px solid var(--color-primary);
+    background: transparent;
+    color: var(--color-primary);
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s, color .2s;
+  }
+  .embed-code-copy:hover { background: var(--color-primary); color: #fff; }
+</style>

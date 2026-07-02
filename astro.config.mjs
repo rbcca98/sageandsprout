@@ -8,5 +8,7 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  integrations: [sitemap()],
+  // Keep the noindex embed widgets out of the sitemap; the canonical tool
+  // pages are what should be crawled and ranked.
+  integrations: [sitemap({ filter: (page) => !page.includes('/embed/') })],
 });

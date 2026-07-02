@@ -6,6 +6,7 @@
  */
 import Base from './Base.astro';
 import Icon from '../components/Icon.astro';
+import EmbedCode from '../components/EmbedCode.astro';
 import { iconForHref } from '../data/tool-icons';
 
 export interface FAQ {
@@ -36,6 +37,8 @@ export interface Props {
   sources: Source[];
   schema: object | object[];
   reviewedDate?: string;
+  /** If set, show an "embed this calculator" block that points to /embed/<slug>. */
+  embedSlug?: string;
 }
 
 const {
@@ -49,6 +52,7 @@ const {
   sources,
   schema,
   reviewedDate = new Date().toISOString().split('T')[0],
+  embedSlug,
 } = Astro.props;
 
 const faqSchema = {
@@ -177,6 +181,9 @@ const allSchema = [
           </li>
         ))}
       </ol>
+
+      <!-- ── Embed this calculator (link-building asset) ── -->
+      {embedSlug && <EmbedCode slug={embedSlug} label={headline} />}
 
       <!-- ── Reviewed + disclaimer ───────────────── -->
       <div class="callout" style="border-left-color:var(--color-primary);">
