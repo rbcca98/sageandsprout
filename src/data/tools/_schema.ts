@@ -1,29 +1,42 @@
 import type { ToolCopy } from './_types';
+import { author, authorRef, orgRef } from '../entities';
 
-/** Builds the JSON-LD (WebApplication + optional MedicalWebPage) from a tool's copy. */
+/** Builds the JSON-LD (WebApplication + WebPage/MedicalWebPage) from a tool's copy. */
 export function toolSchema(copy: ToolCopy): object[] {
+  const url = `https://sage-and-sprout.com${copy.path}`;
+
   const app = {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: copy.headline,
-    url: `https://sage-and-sprout.com${copy.path}`,
+    url,
     applicationCategory: copy.category ?? 'HealthApplication',
     description: copy.description,
     operatingSystem: 'All',
+    isAccessibleForFree: true,
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    publisher: orgRef,
   };
-  if (copy.medical === false) return [app];
-  const med = {
+
+  // Every tool page names its author and review date. For clinical tools we
+  // use MedicalWebPage (with a patient audience); for the rest, WebPage.
+  const page = {
     '@context': 'https://schema.org',
-    '@type': 'MedicalWebPage',
+    '@type': copy.medical === false ? 'WebPage' : 'MedicalWebPage',
     name: copy.headline,
-    medicalAudience: { '@type': 'MedicalAudience', audienceType: 'Patient' },
-    reviewedBy: {
-      '@type': 'Person',
-      jobTitle: 'Senior Medical Student',
-      affiliation: { '@type': 'Organization', name: 'Ivy League Medical School' },
-    },
+    url,
+    description: copy.description,
+    author: authorRef,
+    reviewedBy: authorRef,
     lastReviewed: copy.reviewedDate,
+    dateModified: copy.reviewedDate,
+    ...(copy.medical === false
+      ? {}
+      : { medicalAudience: { '@type': 'MedicalAudience', audienceType: 'Patient' } }),
   };
-  return [app, med];
+
+  // The full author definition, so the @id references above resolve.
+  const authorNode = { '@context': 'https://schema.org', ...author };
+
+  return [app, page, authorNode];
 }

@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { site } from '../data/site';
+import { baseGraph } from '../data/entities';
 
 export interface Props {
   title: string;
@@ -76,14 +77,8 @@ const toolStages = [
   <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4713095371071566" crossorigin="anonymous"></script>
 
-  <!-- JSON-LD: Organisation (sitewide) + page-specific schema -->
-  <script type="application/ld+json" set:html={JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'Sage & Sprout',
-    url: 'https://sage-and-sprout.com',
-    description: 'Free, evidence-based pregnancy and baby calculators.',
-  })} />
+  <!-- JSON-LD: Organization + WebSite (sitewide) + page-specific schema -->
+  <script type="application/ld+json" set:html={JSON.stringify(baseGraph())} />
   {schemaArray.map((s) => (
     <script type="application/ld+json" set:html={JSON.stringify(s)} />
   ))}
