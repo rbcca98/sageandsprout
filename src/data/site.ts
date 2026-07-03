@@ -47,6 +47,7 @@ export const site = {
   /* Order shown in the grid. Set featured:true for the "Most used" flag. */
   tools: [
     { href: '/tools/ovulation-fertility-window/', name: 'Ovulation & fertile window', stage: 'conceive' },
+    { href: '/tools/baby-name-explorer/', name: 'Baby name explorer', stage: 'conceive' },
     { href: '/tools/due-date-calculator/', name: 'Due date calculator', featured: true, stage: 'pregnancy' },
     { href: '/tools/how-many-weeks-pregnant/', name: 'How many weeks pregnant', stage: 'pregnancy' },
     { href: '/tools/pregnancy-weight-gain/', name: 'Pregnancy weight gain', stage: 'pregnancy' },
@@ -55,7 +56,6 @@ export const site = {
     { href: '/tools/feeding-formula-amount/', name: 'Feeding & formula amount', stage: 'baby' },
     { href: '/tools/baby-sleep-schedule/', name: 'Baby sleep schedule', stage: 'baby' },
     { href: '/tools/diaper-cost-calculator/', name: 'Diaper & wipe cost', stage: 'baby' },
-    { href: '/tools/baby-name-explorer/', name: 'Baby name explorer', stage: 'baby' },
   ],
 
   /* Homepage guide (the cream "sheet" below the grid). Paragraphs may
@@ -104,7 +104,7 @@ export const site = {
 
   /* Page <title> + meta description for the homepage */
   meta: {
-    title: 'Pregnancy & Baby Calculators: Free, Evidence-Based Tools | Sage & Sprout',
-    description: 'Free pregnancy and baby calculators: due date, weeks pregnant, ovulation, weight gain, baby growth, feeding, and more. Evidence-based and reviewed by a senior US medical student.',
+    title: 'Sage & Sprout: Free Pregnancy & Baby Calculators',
+    description: 'Due date, weeks pregnant, ovulation, weight gain, baby growth, feeding, and more. Free, evidence-based, and reviewed by a senior medical student. No sign-up.',
   },
 };

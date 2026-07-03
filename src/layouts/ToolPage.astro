@@ -263,15 +263,15 @@ const allSchema = [
     gap: 0.4rem;
     padding: 1.2rem;
     border-radius: var(--radius-sm);
-    background: var(--color-surface);
+    background: rgba(244, 236, 220, 0.05);
     text-decoration: none;
     border: 1px solid var(--color-line);
-    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    transition: transform .18s ease, background .18s ease, border-color .18s ease;
   }
   .related-card:hover {
     transform: translateY(-3px);
-    box-shadow: var(--shadow);
-    border-color: var(--color-primary);
+    background: rgba(244, 236, 220, 0.1);
+    border-color: var(--color-accent);
   }
   .related-name {
     font-family: var(--font-family-display);
@@ -285,7 +285,7 @@ const allSchema = [
   .faq {
     border: 1px solid var(--color-line);
     border-radius: var(--radius-sm);
-    background: var(--color-surface);
+    background: rgba(244, 236, 220, 0.04);
     overflow: hidden;
   }
   .faq summary {

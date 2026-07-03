@@ -58,9 +58,11 @@ export const website = {
   '@type': 'WebSite',
   '@id': WEBSITE_ID,
   name: 'Sage & Sprout',
+  alternateName: 'Sage and Sprout',
   url: SITE,
   description: 'Free, evidence-based pregnancy and baby calculators for expecting and new parents.',
   publisher: orgRef,
+  inLanguage: 'en-US',
 };
 
 /** The graph included in the sitewide <head> on every page. */

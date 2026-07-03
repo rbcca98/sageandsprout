@@ -5,14 +5,8 @@ import { iconForHref } from '../data/tool-icons';
 
 import { site } from '../data/site';
 
-const homeSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'Sage & Sprout',
-  url: 'https://sage-and-sprout.com',
-  description: 'Free, evidence-based pregnancy and baby calculators for expecting and new parents.',
-};
-
+// The canonical WebSite + Organization entities live in the sitewide graph
+// (see data/entities.ts). Here we only add the page-specific CollectionPage.
 const collSchema = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
@@ -25,7 +19,7 @@ const collSchema = {
 <Base
   title={site.meta.title}
   description={site.meta.description}
-  schema={[homeSchema, collSchema]}
+  schema={[collSchema]}
 >
   <script is:inline>
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -48,19 +42,21 @@ const collSchema = {
       </div>
     </div>
 
-    <!-- Hand-drawn sprig (draws in on load, parallax on scroll) -->
-    <svg class="hero-sprig" data-parallax="-0.08" data-rot="0.006" viewBox="0 0 240 320" fill="none" aria-hidden="true">
-      <g class="sprig" stroke="var(--color-primary)" stroke-width="2" opacity="0.55">
-        <path pathLength="1" d="M150 312 C128 250 158 196 138 150 C122 112 150 78 168 26" />
-        <path pathLength="1" d="M138 250 C108 244 78 250 56 276 C92 286 124 280 138 250 Z" />
-        <path pathLength="1" d="M146 214 C176 204 204 206 226 230 C196 244 162 242 146 214 Z" />
-        <path pathLength="1" d="M132 178 C102 170 74 174 52 198 C86 210 118 204 132 178 Z" />
-        <path pathLength="1" d="M140 140 C170 128 198 128 220 150 C190 166 158 166 140 140 Z" />
-        <path pathLength="1" d="M138 104 C110 94 84 96 64 118 C96 130 124 126 138 104 Z" />
-        <path pathLength="1" d="M150 70 C178 56 204 54 224 74 C196 92 166 92 150 70 Z" />
+    <!-- Hand-drawn sprig (draws in on load, parallax on scroll).
+         Each leaf begins at a point that sits on the stem, so they connect. -->
+    <svg class="hero-sprig" data-parallax="-0.2" data-rot="0.014" viewBox="0 0 240 320" fill="none" aria-hidden="true">
+      <g class="sprig" stroke="var(--color-primary)" stroke-width="2" opacity="0.6">
+        <!-- stem -->
+        <path pathLength="1" d="M150 300 C143 244 149 190 151 140 C153 96 159 60 168 28" />
+        <!-- leaves, alternating, each rooted on the stem -->
+        <path pathLength="1" d="M147 235 C178 224 202 205 214 176 C182 178 156 196 147 235 Z" />
+        <path pathLength="1" d="M149 198 C118 189 92 172 78 145 C110 143 138 162 149 198 Z" />
+        <path pathLength="1" d="M151 160 C182 150 206 132 218 104 C186 104 160 122 151 160 Z" />
+        <path pathLength="1" d="M153 124 C122 116 96 100 82 74 C114 72 142 90 153 124 Z" />
+        <path pathLength="1" d="M157 90 C186 80 208 64 220 38 C190 38 166 56 157 90 Z" />
       </g>
-      <circle class="bud" cx="168" cy="25" r="6" fill="var(--color-accent)" />
-      <circle class="bud" cx="150" cy="46" r="3.5" fill="var(--color-accent)" opacity="0.8" />
+      <circle class="bud" cx="168" cy="28" r="6.5" fill="var(--color-accent)" />
+      <circle class="bud" cx="160" cy="48" r="3.5" fill="var(--color-accent)" opacity="0.85" />
     </svg>
   </section>
 
@@ -79,30 +75,34 @@ const collSchema = {
       <p class="tools-sub">{site.toolkit.sub}</p>
     </div>
 
-    <div class="tool-grid">
+    <div class="tool-stages">
       {([
         { key: 'conceive', label: 'Trying to conceive' },
         { key: 'pregnancy', label: 'Pregnancy' },
         { key: 'baby', label: "Baby's first years" },
       ] as const).map(({ key, label }) => (
-        <Fragment>
-          <div class="stage-divider"><p class="eyebrow">{label}</p></div>
-          {site.tools
-            .filter((t) => t.stage === key)
-            .map((tool) => (
-              <a href={tool.href} class="tool-card reveal">
-                <div class="tool-card-top">
-                  <Icon name={iconForHref(tool.href)} size={30} />
-                  {('featured' in tool && tool.featured) && <span class="tool-card-flag">Most used</span>}
-                </div>
-                <div class="tool-card-foot">
-                  <span class="tool-card-name">{tool.name}</span>
-                  <span class="tool-card-plus" aria-hidden="true">+</span>
-                </div>
-              </a>
-            ))
-          }
-        </Fragment>
+        <section class="stage reveal">
+          <div class="stage-head">
+            <h3 class="stage-label">{label}</h3>
+          </div>
+          <div class="stage-grid">
+            {site.tools
+              .filter((t) => t.stage === key)
+              .map((tool) => (
+                <a href={tool.href} class="tool-card">
+                  <div class="tool-card-top">
+                    <Icon name={iconForHref(tool.href)} size={44} />
+                    {('featured' in tool && tool.featured) && <span class="tool-card-flag">Most used</span>}
+                  </div>
+                  <div class="tool-card-foot">
+                    <span class="tool-card-name">{tool.name}</span>
+                    <span class="tool-card-plus" aria-hidden="true">+</span>
+                  </div>
+                </a>
+              ))
+            }
+          </div>
+        </section>
       ))}
     </div>
   </section>
@@ -183,36 +183,45 @@ const collSchema = {
   .tools-head { margin-bottom: 2.5rem; max-width: 52ch; }
   .tools-head h2 { font-size: clamp(1.9rem, 4vw, 2.8rem); font-weight: 600; margin: 0.6rem 0 0.75rem; }
   .tools-sub { color: var(--color-muted); max-width: 48ch; margin: 0; line-height: 1.6; }
-  .tool-grid {
+  .tool-stages { display: flex; flex-direction: column; gap: 2.75rem; }
+  .stage-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.15rem; }
+  .stage-label {
+    font-family: var(--font-family-body);
+    text-transform: uppercase; letter-spacing: 0.22em;
+    font-size: 0.72rem; font-weight: 700;
+    color: var(--color-muted); margin: 0; white-space: nowrap;
+  }
+  .stage-head::after { content: ""; flex: 1; height: 1px; background: var(--color-line); }
+  .stage-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    border-left: 1px solid var(--color-line);
+    grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+    gap: 0.9rem;
   }
-  .stage-divider {
-    grid-column: 1 / -1;
-    border-top: 1px solid var(--color-line);
-    padding: 0.85rem 0 0.45rem;
-  }
-  .stage-divider .eyebrow { margin: 0; }
   .tool-card {
-    display: flex; flex-direction: column; justify-content: space-between; gap: 2.5rem;
-    min-height: 200px; padding: 1.4rem;
-    border-right: 1px solid var(--color-line);
-    border-bottom: 1px solid var(--color-line);
+    display: flex; flex-direction: column; justify-content: space-between; gap: 2rem;
+    min-height: 194px; padding: 1.5rem;
+    border: 1px solid var(--color-line);
     text-decoration: none; color: inherit;
-    transition: background .25s ease, color .25s ease;
+    transition: background .25s ease, color .25s ease, border-color .25s ease, transform .25s ease;
   }
-  .tool-card:hover { background: var(--color-cream); color: var(--color-bg); }
+  .tool-card:hover {
+    background: var(--color-cream); color: var(--color-bg);
+    border-color: var(--color-cream); transform: translateY(-2px);
+  }
   .tool-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: .5rem; }
   .tool-card-flag {
-    font-size: .58rem; text-transform: uppercase; letter-spacing: .1em; font-weight: 600;
-    border: 1px solid currentColor; padding: .18rem .45rem; opacity: .85; white-space: nowrap;
+    font-size: .58rem; text-transform: uppercase; letter-spacing: .1em; font-weight: 700;
+    border: 1px solid currentColor; padding: .2rem .5rem; opacity: .85; white-space: nowrap;
   }
   .tool-card-foot { display: flex; align-items: flex-end; justify-content: space-between; gap: .5rem; }
-  .tool-card-name { font-size: 1.05rem; font-weight: 500; line-height: 1.2; }
+  .tool-card-name { font-family: var(--font-family-display); font-size: 1.14rem; font-weight: 500; line-height: 1.2; }
   .tool-card-plus { font-size: 1.5rem; line-height: 1; font-weight: 300; }
-  @media (max-width: 980px) { .tool-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 520px) { .tool-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 640px) {
+    .stage-grid { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+    .tool-card { min-height: 148px; padding: 1.1rem; gap: 1.1rem; }
+    .tool-card-name { font-size: 1rem; }
+  }
+  @media (max-width: 340px) { .stage-grid { grid-template-columns: 1fr; } }
 
   /* ── Pillar ── */
   .pillar { position: relative; max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem 5rem; overflow: hidden; }

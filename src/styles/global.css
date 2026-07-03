@@ -16,8 +16,8 @@
   --color-muted:        #6B6350;  /* muted (on cream), WCAG AA on #F4ECDC */
   --color-line:         #D8CCB4;  /* hairline (on cream) */
 
-  --font-family-display: "Hanken Grotesk", system-ui, sans-serif;
-  --font-family-body:    "Hanken Grotesk", system-ui, sans-serif;
+  --font-family-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-family-body:    "Mulish", system-ui, -apple-system, sans-serif;
   --font-family-mono:    "JetBrains Mono", "Courier New", monospace;
 }
 
@@ -50,15 +50,12 @@ body {
   --color-primary:   var(--color-accent);   /* emphasis pops terracotta on sage */
 }
 
-/* Cream content island — restores the readable dark context */
+/* Content island — transparent with a thin outline, sits on the sage page.
+   Text stays cream (inherits the page tokens); the box reads as a crisp,
+   editorial frame rather than a solid beige block. */
 .sheet {
-  --color-ink:       #26352B;
-  --color-muted:     #6B6350;
-  --color-line:      #D8CCB4;
-  --color-surface:   #F4ECDC;
-  --color-surface-2: #EAE0CD;
-  --color-primary:   #3E5A49;
-  background: var(--color-surface);
+  background: transparent;
+  border: 1px solid var(--color-line);
   color: var(--color-ink);
 }
 
@@ -66,9 +63,9 @@ body {
 
 h1, h2, h3, h4 {
   font-family: var(--font-family-display);
-  line-height: 1.08;
-  font-weight: 600;
-  letter-spacing: -0.022em;
+  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: -0.005em;
 }
 
 a { color: var(--color-primary); }
@@ -235,15 +232,15 @@ select option { color: #26352B; }
 .prose ul, .prose ol { padding-left: 1.5rem; margin-bottom: 1.2rem; }
 .prose li { margin-bottom: 0.5rem; padding-left: 0.3rem; }
 .prose ul li::marker, .prose ol li::marker { color: var(--color-accent); }
-.prose a { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; text-decoration-color: var(--color-accent); }
-.prose a:hover { text-decoration-thickness: 2px; }
+.prose a { color: var(--color-cream); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; text-decoration-color: var(--color-accent); }
+.prose a:hover { color: var(--color-accent); text-decoration-thickness: 2px; }
 .prose strong { font-weight: 700; }
 
 /* ── Quick answer box (top of tool articles) ────────── */
 .quick-answer {
   margin: 0 0 2.25rem;
   padding: 1.4rem 1.6rem;
-  background: var(--color-surface-2);
+  background: rgba(244, 236, 220, 0.05);
   border: 1px solid var(--color-line);
   border-left: 3px solid var(--color-accent);
 }
@@ -253,7 +250,7 @@ select option { color: #26352B; }
   letter-spacing: 0.18em;
   font-size: 0.68rem;
   font-weight: 700;
-  color: var(--color-accent-dark);
+  color: var(--color-accent);
   margin: 0 0 0.6rem;
 }
 .quick-answer p { margin: 0 0 0.75rem; font-size: 1rem; line-height: 1.6; }
@@ -263,7 +260,7 @@ select option { color: #26352B; }
 
 .callout {
   display: flex; gap: 0.85rem; margin: 1.75rem 0; padding: 1.25rem 1.4rem;
-  background: var(--color-surface-2); border: 1px solid var(--color-line);
+  background: rgba(244, 236, 220, 0.05); border: 1px solid var(--color-line);
   border-left: 3px solid var(--color-accent); font-size: 0.95rem; line-height: 1.65;
 }
 .callout svg { flex-shrink: 0; margin-top: 2px; }
