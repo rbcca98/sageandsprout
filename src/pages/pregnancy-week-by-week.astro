@@ -49,11 +49,13 @@ const authorNode = { '@context': 'https://schema.org', ...author };
   breadcrumbs={[{ label: 'Pregnancy week by week', href: path }]}
   schema={[pageSchema, authorNode]}
 >
-  <div style="max-width:680px;margin:0 auto;padding:3rem 1.25rem 5rem;">
+  <div style="max-width:680px;margin:0 auto;padding:3rem 1.25rem 1.5rem;">
     <h1 style="font-family:var(--font-family-display);font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;color:var(--color-ink);margin:0 0 .5rem;">Pregnancy week by week</h1>
     <p style="font-size:1.05rem;color:var(--color-muted);margin:0 0 2.5rem;">Your baby's approximate size and what changes, every week from 4 to 42.</p>
 
-    <div class="prose sheet" style="padding:2.25rem 2rem;margin-top:1rem;">
+  </div>
+  <div class="paper"><div class="paper-inner" style="--paper-maxw:680px;">
+    <div class="prose sheet" style="padding:0;margin-top:0;">
       <p>
         Pregnancy is counted from the first day of your last menstrual period, the convention ACOG uses, not from conception.
         That is why "week 4" is roughly when a home test first turns positive, and why the count reaches 40 weeks at the due date.
@@ -121,5 +123,5 @@ const authorNode = { '@context': 'https://schema.org', ...author };
         </div>
       </div>
     </div>
-  </div>
+  </div></div>
 </Base>

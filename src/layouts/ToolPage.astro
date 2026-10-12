@@ -116,6 +116,11 @@ const allSchema = [
     <div class="card tool-card">
       <slot name="tool" />
     </div>
+  </div>
+
+  <!-- ── Paper: everything you read sits on cream, pulled up under the instrument ── -->
+  <div class="paper paper--under">
+    <div class="paper-inner tool-paper">
 
     <!-- ── Share row (same affordance on every tool) ── -->
     <div style="display:flex;justify-content:flex-end;align-items:center;gap:.75rem;margin:0.75rem 0 1rem;">
@@ -145,6 +150,8 @@ const allSchema = [
 
     <!-- ── Content below fold (cream sheet for readability) ── -->
     <article class="prose sheet tool-article">
+      <!-- One page-specific figure, supplied by each tool page -->
+      <slot name="visual" />
       <slot name="content" />
 
       <!-- ── Related tools (only when the tool lists some) ── -->
@@ -225,6 +232,7 @@ const allSchema = [
         </div>
       </div>
     </article>
+    </div>
   </div>
 </Base>
 
@@ -250,29 +258,30 @@ const allSchema = [
 <style>
   /* ── Page wrapper ──────────────────────────────────── */
   .tool-wrapper {
-    padding: 1.5rem 1.5rem 4rem;
+    padding: 1.5rem 1.5rem 0;
     overflow-x: hidden;
   }
   @media (max-width: 520px) {
-    .tool-wrapper { padding: 1.25rem 1rem 3rem; }
+    .tool-wrapper { padding: 1.25rem 1rem 0; }
   }
 
-  /* ── Calculator card ───────────────────────────────── */
+  /* ── The instrument: a solid, darker sage card that sits over the paper seam ── */
   .tool-card {
     padding: 2rem 1.75rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0;
+    background: var(--color-primary-dark);
+    border-color: rgba(244, 236, 220, .35);
+    position: relative;
+    z-index: 2;
   }
   @media (max-width: 520px) {
     .tool-card { padding: 1.5rem 1rem; }
   }
 
-  /* ── Cream content sheet ───────────────────────────── */
+  /* ── Article on paper ──────────────────────────────── */
   .tool-article {
-    padding: 2.5rem 2rem;
+    padding: 0.5rem 0 0;
     max-width: 100%;
-  }
-  @media (max-width: 520px) {
-    .tool-article { padding: 2rem 1.25rem; }
   }
 
   .related-card {

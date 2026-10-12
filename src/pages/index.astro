@@ -33,7 +33,7 @@ const collSchema = {
       <p class="eyebrow" style="margin:0 0 1.25rem;">{site.hero.eyebrow}</p>
       <h1>
         {site.hero.headlineLine1}<br/>
-        {site.hero.headlineLine2} <span style="font-style:italic;color:var(--color-accent);">{site.hero.headlineAccent}</span>.
+        {site.hero.headlineLine2} <span style="font-style:italic;color:var(--color-accent-light);">{site.hero.headlineAccent}</span>.
       </h1>
       <p class="hero-sub">{site.hero.sub}</p>
       <div class="hero-actions">
@@ -67,6 +67,9 @@ const collSchema = {
     ))}
   </section>
 
+  <!-- ── Paper: the tools, the guide and what's new sit on cream ── -->
+  <div class="paper paper--home">
+
   <!-- ── Tools, card grid ──────────────────────────── -->
   <section id="all-tools" class="tools" aria-label="All tools">
     <div class="tools-head reveal">
@@ -89,7 +92,7 @@ const collSchema = {
             {site.tools
               .filter((t) => t.stage === key)
               .map((tool) => (
-                <a href={tool.href} class="tool-card">
+                <a href={tool.href} class={'tool-card' + (('featured' in tool && tool.featured) ? ' tool-card--featured' : '')}>
                   <div class="tool-card-top">
                     <Icon name={iconForHref(tool.href)} size={44} />
                     {('featured' in tool && tool.featured) && <span class="tool-card-flag">Most used</span>}
@@ -136,6 +139,8 @@ const collSchema = {
       ))}
     </ul>
   </section>
+
+  </div>
 </Base>
 
 <style>
@@ -194,7 +199,7 @@ const collSchema = {
   }
 
   /* ── Tools card grid ── */
-  .tools { max-width: var(--maxw); margin: 0 auto; padding: 4.5rem 1.5rem 2rem; }
+  .tools { max-width: var(--maxw); margin: 0 auto; padding: 1rem 1.5rem 2rem; }
   .tools-head { margin-bottom: 2.5rem; max-width: 52ch; }
   .tools-head h2 { font-size: clamp(1.9rem, 4vw, 2.8rem); font-weight: 600; margin: 0.6rem 0 0.75rem; }
   .tools-sub { color: var(--color-muted); max-width: 48ch; margin: 0; line-height: 1.6; }
@@ -212,17 +217,24 @@ const collSchema = {
     grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
     gap: 0.9rem;
   }
+  /* Cream tiles with a sage outline on the paper band; the featured one is inverted */
   .tool-card {
     display: flex; flex-direction: column; justify-content: space-between; gap: 2rem;
     min-height: 194px; padding: 1.5rem;
-    border: 1px solid var(--color-line);
-    text-decoration: none; color: inherit;
+    border: 1px solid var(--color-primary);
+    background: var(--color-cream);
+    text-decoration: none; color: var(--color-ink);
     transition: background .25s ease, color .25s ease, border-color .25s ease, transform .25s ease;
   }
+  .tool-card .icon { color: var(--color-primary); transition: color .25s ease; }
   .tool-card:hover {
-    background: var(--color-cream); color: var(--color-bg);
-    border-color: var(--color-cream); transform: translateY(-2px);
+    background: var(--color-primary); color: var(--color-cream);
+    border-color: var(--color-primary); transform: translateY(-2px);
   }
+  .tool-card:hover .icon { color: var(--color-cream); }
+  .tool-card--featured { background: var(--color-primary); color: var(--color-cream); }
+  .tool-card--featured .icon { color: var(--color-cream); }
+  .tool-card--featured:hover { background: var(--color-primary-dark); border-color: var(--color-primary-dark); }
   .tool-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: .5rem; }
   .tool-card-flag {
     font-size: .58rem; text-transform: uppercase; letter-spacing: .1em; font-weight: 700;
