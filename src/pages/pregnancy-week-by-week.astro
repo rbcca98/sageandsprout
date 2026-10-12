@@ -5,6 +5,7 @@
  * Edit the notes in src/data/week-notes.ts and this page updates.
  */
 import Base from '../layouts/Base.astro';
+import Fruit from '../components/Fruit.astro';
 import { WEEK_NOTES } from '../data/week-notes';
 import { author, authorRef } from '../data/entities';
 
@@ -86,10 +87,13 @@ const authorNode = { '@context': 'https://schema.org', ...author };
           <Fragment>
             {i > 0 && <hr class="rule" style="margin:2rem 0;" />}
             {trimesterStart[w] && <p class="eyebrow" style="margin:0 0 .6rem;">{trimesterStart[w]}</p>}
-            <section id={`week-${w}`}>
-              <h2 style="margin-top:0;">Week {w}</h2>
-              <p style="font-style:italic;color:var(--color-muted);margin-bottom:.5rem;">About the size of {article(size)} {size}</p>
-              <p>{note}</p>
+            <section id={`week-${w}`} style="display:flex;gap:1.25rem;align-items:flex-start;">
+              <Fruit week={w} size={72} />
+              <div style="min-width:0;">
+                <h2 style="margin-top:0;">Week {w}</h2>
+                <p style="font-style:italic;color:var(--color-muted);margin-bottom:.5rem;">About the size of {article(size)} {size}</p>
+                <p>{note}</p>
+              </div>
             </section>
           </Fragment>
         );

@@ -111,35 +111,40 @@ import { toolSchema } from '../../data/tools/_schema';
         </div>
       </div>
 
-      <!-- Populated state (hidden until calculated) -->
+      <!-- Populated state (hidden until calculated). Rows carry .r so the result can "arrive" in order. -->
       <div id="result-content" style="display:none;padding:1.75rem;">
         <p id="res-example" hidden style="font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--color-accent);border:1px solid currentColor;display:inline-block;padding:.25rem .6rem;margin:0 0 .85rem;">Example. Enter your date above</p>
-        <p style="font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--color-primary);margin:0 0 .35rem;" id="res-trimester"></p>
-        <p style="margin:0 0 .2rem;color:var(--color-muted);font-size:.9rem;" id="res-gest-label"></p>
-        <p style="font-family:var(--font-family-display);font-size:clamp(1.6rem,5vw,2.4rem);font-weight:700;color:var(--color-accent);margin:0 0 1.25rem;" id="res-edd"></p>
+        <p class="r" style="font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--color-primary);margin:0 0 .35rem;" id="res-trimester"></p>
+        <p class="r" style="margin:0 0 .2rem;color:var(--color-muted);font-size:.9rem;" id="res-gest-label"></p>
+        <p class="r" style="font-family:var(--font-family-display);font-size:clamp(1.6rem,5vw,2.4rem);font-weight:700;color:var(--color-accent);margin:0 0 1.25rem;font-variant-numeric:tabular-nums;" id="res-edd"></p>
 
         <!-- Progress bar -->
-        <div style="margin-bottom:1.5rem;">
+        <div class="r" style="margin-bottom:1.5rem;">
           <div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--color-muted);margin-bottom:.35rem;">
             <span>Progress</span>
             <span id="res-pct"></span>
           </div>
           <div style="height:6px;border-radius:3px;background:var(--color-surface-2);overflow:hidden;">
-            <div id="res-bar" style="height:100%;background:var(--color-primary);border-radius:3px;transition:width .4s ease;width:0%;"></div>
+            <div id="res-bar" style="height:100%;background:var(--color-primary);border-radius:3px;transition:width 1s cubic-bezier(.2,.8,.3,1);width:0%;"></div>
           </div>
         </div>
 
         <!-- Milestone list -->
-        <div id="res-milestones" style="display:grid;gap:.5rem;margin-bottom:1.25rem;"></div>
+        <div class="r" id="res-milestones" style="display:grid;gap:.5rem;margin-bottom:1.25rem;"></div>
 
-        <!-- This week's note -->
-        <div id="res-week-note" style="display:none;padding:.85rem 1rem;border:1px solid var(--color-line);border-left:3px solid var(--color-accent);margin-bottom:1.25rem;">
-          <p id="res-week-note-title" style="margin:0 0 .25rem;font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--color-accent);"></p>
-          <p id="res-week-note-body" style="margin:0;font-size:.88rem;color:var(--color-ink);line-height:1.6;"></p>
+        <!-- This week's note, with the week's hand-drawn fruit -->
+        <div class="r" id="res-week-note" style="display:none;padding:.85rem 1rem;border:1px solid var(--color-line);border-left:3px solid var(--color-accent);margin-bottom:1.25rem;">
+          <div style="display:flex;gap:1rem;align-items:center;">
+            <div id="res-fruit" style="flex-shrink:0;"></div>
+            <div style="min-width:0;">
+              <p id="res-week-note-title" style="margin:0 0 .25rem;font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--color-accent);"></p>
+              <p id="res-week-note-body" style="margin:0;font-size:.88rem;color:var(--color-ink);line-height:1.6;"></p>
+            </div>
+          </div>
         </div>
 
         <!-- Actions -->
-        <div style="display:flex;gap:.5rem;flex-wrap:wrap;padding-top:1rem;border-top:1px solid var(--color-line);">
+        <div class="r" style="display:flex;gap:.5rem;flex-wrap:wrap;padding-top:1rem;border-top:1px solid var(--color-line);">
           <button onclick="navigator.clipboard?.writeText(document.getElementById('res-edd').textContent||'')" style="padding:.4rem .9rem;border-radius:999px;border:1.5px solid var(--color-line);background:transparent;cursor:pointer;font-size:.82rem;font-weight:500;color:var(--color-ink);">Copy date</button>
           <button onclick="window.print()" style="padding:.4rem .9rem;border-radius:999px;border:1.5px solid var(--color-line);background:transparent;cursor:pointer;font-size:.82rem;font-weight:500;color:var(--color-ink);">Print</button>
           <button id="ics-btn" style="padding:.4rem .9rem;border-radius:999px;border:1.5px solid var(--color-primary);background:transparent;cursor:pointer;font-size:.82rem;font-weight:500;color:var(--color-primary);">Add milestones to calendar</button>
@@ -157,6 +162,7 @@ import { toolSchema } from '../../data/tools/_schema';
   import { calculateDueDate, formatDate, formatDateShort } from '../../islands/due-date.ts';
   import { weekNote } from '../../data/week-notes.ts';
   import { downloadIcs } from '../../islands/ics.ts';
+  import { fruitSvg } from '../../data/week-fruits.ts';
 
   const METHODS: DueDateMethod[] = ['lmp', 'conception', 'ivf5', 'ivf3'];
   const DATE_LABELS: Record<DueDateMethod, string> = {
@@ -168,6 +174,8 @@ import { toolSchema } from '../../data/tools/_schema';
 
   let activeMethod: DueDateMethod = 'lmp';
   let lastResult: DueDateResult | null = null;
+  let lastFruitWeek = -1;
+  const motion = document.documentElement.classList.contains('motion');
 
   // DOM refs
   const tabs = document.querySelectorAll<HTMLButtonElement>('[data-method]');
@@ -196,6 +204,7 @@ import { toolSchema } from '../../data/tools/_schema';
   }
   applyMethod(activeMethod, false);
   update();
+  playArrival();
 
   function userEdit() { exampleMode = false; update(); }
 
@@ -206,6 +215,7 @@ import { toolSchema } from '../../data/tools/_schema';
       exampleMode = false;
       applyMethod(activeMethod, true);
       update();
+      playArrival();
     });
   });
 
@@ -262,10 +272,18 @@ import { toolSchema } from '../../data/tools/_schema';
     const wn = !r.isPreconception ? weekNote(r.weeksComplete) : null;
     const noteBox = document.getElementById('res-week-note')!;
     if (wn) {
+      const an = /^(?:[aeiou]|heir)/i.test(wn.size) ? 'an' : 'a';
       (document.getElementById('res-week-note-title') as HTMLElement).textContent =
-        `Week ${wn.week}: about the size of a ${wn.size}`;
+        `Week ${wn.week}: about the size of ${an} ${wn.size}`;
       (document.getElementById('res-week-note-body') as HTMLElement).textContent =
         `${wn.note} Check back next week for what changes.`;
+      // Redraw the week's fruit only when the week changes, so typing does not replay it
+      if (wn.week !== lastFruitWeek) {
+        const fruitEl = document.getElementById('res-fruit') as HTMLElement;
+        fruitEl.innerHTML = fruitSvg(wn.week, 64);
+        (window as any).ssDrawIn?.(fruitEl.querySelector('svg'), { duration: 1000, stagger: 110 });
+        lastFruitWeek = wn.week;
+      }
       noteBox.style.display = 'block';
     } else {
       noteBox.style.display = 'none';
@@ -283,7 +301,12 @@ import { toolSchema } from '../../data/tools/_schema';
     // Render
     (document.getElementById('res-trimester') as HTMLElement).textContent = r.trimesterLabel;
     (document.getElementById('res-gest-label') as HTMLElement).textContent = r.gestAgeLabel;
-    (document.getElementById('res-edd') as HTMLElement).textContent = formatDate(r.edd);
+    // Split the day out so the arrival can count it in; textContent still reads as the full date
+    const weekday = r.edd.toLocaleDateString('en-US', { weekday: 'long' });
+    const month = r.edd.toLocaleDateString('en-US', { month: 'long' });
+    (document.getElementById('res-edd') as HTMLElement).innerHTML =
+      `${weekday}, ${month} <span id="res-edd-day">${r.edd.getDate()}</span>, ${r.edd.getFullYear()}`;
+    (document.getElementById('res-edd') as HTMLElement).setAttribute('title', formatDate(r.edd));
     (document.getElementById('res-pct') as HTMLElement).textContent = `${r.percentComplete}% complete`;
     (document.getElementById('res-bar') as HTMLElement).style.width = `${r.percentComplete}%`;
 
@@ -298,6 +321,40 @@ import { toolSchema } from '../../data/tools/_schema';
     `).join('');
 
     showResult();
+  }
+
+  // The result "arrives": rows fade up in order, the day counts in, the bar fills.
+  // Runs on first render and when the method changes, never on every keystroke.
+  function playArrival() {
+    if (!motion || !lastResult) return;
+    const rows = Array.from(resultContent.querySelectorAll<HTMLElement>('.r'));
+    const bar = document.getElementById('res-bar') as HTMLElement;
+    const pct = lastResult.percentComplete;
+    const dayEl = document.getElementById('res-edd-day');
+    const day = lastResult.edd.getDate();
+    rows.forEach(r => r.classList.remove('on'));
+    resultContent.classList.add('playing');
+    bar.style.transition = 'none';
+    bar.style.width = '0%';
+    void bar.offsetWidth;
+    bar.style.transition = '';
+    rows.forEach((r, i) => {
+      setTimeout(() => {
+        r.classList.add('on');
+        if (r.id === 'res-edd' && dayEl) {
+          const start = performance.now();
+          const step = (now: number) => {
+            const t = Math.min(1, (now - start) / 650);
+            const eased = 1 - Math.pow(1 - t, 3);
+            dayEl.textContent = String(Math.max(1, Math.round(eased * day)));
+            if (t < 1) requestAnimationFrame(step); else dayEl.textContent = String(day);
+          };
+          requestAnimationFrame(step);
+        }
+        if (r.querySelector('#res-bar')) bar.style.width = `${pct}%`;
+      }, 100 + i * 110);
+    });
+    setTimeout(() => resultContent.classList.remove('playing'), 100 + rows.length * 110 + 700);
   }
 
   function showEmpty() {

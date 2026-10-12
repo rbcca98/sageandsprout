@@ -77,33 +77,38 @@ import { toolSchema } from '../../data/tools/_schema';
       </div>
 
       <div id="w-content" style="display:none;padding:1.75rem;">
-        <!-- Primary result -->
+        <!-- Primary result. Rows carry .r so the result can "arrive" in order. -->
         <p id="w-example" hidden style="font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--color-accent);border:1px solid currentColor;display:inline-block;padding:.25rem .6rem;margin:0 0 .85rem;">Example. Enter your date above</p>
-        <p id="w-trimester" style="font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--color-primary);margin:0 0 .2rem;"></p>
-        <p style="font-family:var(--font-family-display);font-size:clamp(1.8rem,5vw,2.6rem);font-weight:700;color:var(--color-accent);margin:0 0 .35rem;" id="w-weeks"></p>
-        <p id="w-edd" style="font-size:.88rem;color:var(--color-muted);margin:0 0 1.25rem;"></p>
+        <p class="r" id="w-trimester" style="font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--color-primary);margin:0 0 .2rem;"></p>
+        <p class="r" style="font-family:var(--font-family-display);font-size:clamp(1.8rem,5vw,2.6rem);font-weight:700;color:var(--color-accent);margin:0 0 .35rem;font-variant-numeric:tabular-nums;" id="w-weeks"></p>
+        <p class="r" id="w-edd" style="font-size:.88rem;color:var(--color-muted);margin:0 0 1.25rem;"></p>
 
         <!-- Progress bar -->
-        <div style="margin-bottom:1.5rem;">
+        <div class="r" style="margin-bottom:1.5rem;">
           <div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--color-muted);margin-bottom:.35rem;">
             <span>Week 1</span><span id="w-pct"></span><span>Week 40</span>
           </div>
           <div style="height:8px;border-radius:4px;background:var(--color-surface-2);overflow:hidden;position:relative;">
-            <div id="w-bar" style="height:100%;background:linear-gradient(90deg,var(--color-primary),var(--color-accent));border-radius:4px;transition:width .4s ease;width:0%;"></div>
+            <div id="w-bar" style="height:100%;background:linear-gradient(90deg,var(--color-primary),var(--color-accent));border-radius:4px;transition:width 1s cubic-bezier(.2,.8,.3,1);width:0%;"></div>
           </div>
         </div>
 
         <!-- Next milestone -->
-        <div id="w-milestone" style="padding:.8rem 1rem;background:transparent;border:1px solid var(--color-line);border-radius:3px;margin-bottom:1rem;"></div>
+        <div class="r" id="w-milestone" style="padding:.8rem 1rem;background:transparent;border:1px solid var(--color-line);border-radius:3px;margin-bottom:1rem;"></div>
 
-        <!-- This week's note -->
-        <div id="w-week-note" style="display:none;padding:.85rem 1rem;border:1px solid var(--color-line);border-left:3px solid var(--color-accent);margin-bottom:1rem;">
-          <p id="w-week-note-title" style="margin:0 0 .25rem;font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--color-accent);"></p>
-          <p id="w-week-note-body" style="margin:0;font-size:.88rem;color:var(--color-ink);line-height:1.6;"></p>
+        <!-- This week's note, with the week's hand-drawn fruit -->
+        <div class="r" id="w-week-note" style="display:none;padding:.85rem 1rem;border:1px solid var(--color-line);border-left:3px solid var(--color-accent);margin-bottom:1rem;">
+          <div style="display:flex;gap:1rem;align-items:center;">
+            <div id="w-fruit" style="flex-shrink:0;"></div>
+            <div style="min-width:0;">
+              <p id="w-week-note-title" style="margin:0 0 .25rem;font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--color-accent);"></p>
+              <p id="w-week-note-body" style="margin:0;font-size:.88rem;color:var(--color-ink);line-height:1.6;"></p>
+            </div>
+          </div>
         </div>
 
         <!-- Trimester blurb -->
-        <p id="w-blurb" style="font-size:.87rem;color:var(--color-muted);margin:0;line-height:1.65;"></p>
+        <p class="r" id="w-blurb" style="font-size:.87rem;color:var(--color-muted);margin:0;line-height:1.65;"></p>
       </div>
     </div>
   </div>
@@ -115,8 +120,13 @@ import { toolSchema } from '../../data/tools/_schema';
 <script>
   import { calculateWeeksPregnant, formatDate } from '../../islands/weeks-pregnant.ts';
   import { weekNote } from '../../data/week-notes.ts';
+  import { fruitSvg } from '../../data/week-fruits.ts';
 
   let mode: 'lmp' | 'edd' = 'lmp';
+  let lastWeeks = 0;
+  let lastPct = 0;
+  let lastFruitWeek = -1;
+  const motion = document.documentElement.classList.contains('motion');
 
   const tabs = document.querySelectorAll<HTMLButtonElement>('[data-wmode]');
   const dateInput = document.getElementById('w-date') as HTMLInputElement;
@@ -138,14 +148,49 @@ import { toolSchema } from '../../data/tools/_schema';
     exampleMode = true;
   }
   update();
+  playArrival();
 
   tabs.forEach(btn => {
     btn.addEventListener('click', () => {
       exampleMode = false;
       applyMode(btn.dataset.wmode as 'lmp' | 'edd', true);
       update();
+      playArrival();
     });
   });
+
+  // The result "arrives": rows fade up in order, the week count counts in, the bar fills.
+  // Runs on first render and when the mode changes, never on every keystroke.
+  function playArrival() {
+    if (!motion || wContent.style.display === 'none') return;
+    const rows = Array.from(wContent.querySelectorAll<HTMLElement>('.r'));
+    const bar = document.getElementById('w-bar') as HTMLElement;
+    const nEl = document.getElementById('w-weeks-n');
+    rows.forEach(r => r.classList.remove('on'));
+    wContent.classList.add('playing');
+    bar.style.transition = 'none';
+    bar.style.width = '0%';
+    void bar.offsetWidth;
+    bar.style.transition = '';
+    rows.forEach((r, i) => {
+      setTimeout(() => {
+        r.classList.add('on');
+        if (r.id === 'w-weeks' && nEl) {
+          const target = lastWeeks;
+          const start = performance.now();
+          const step = (now: number) => {
+            const t = Math.min(1, (now - start) / 650);
+            const eased = 1 - Math.pow(1 - t, 3);
+            nEl.textContent = String(Math.round(eased * target));
+            if (t < 1) requestAnimationFrame(step); else nEl.textContent = String(target);
+          };
+          requestAnimationFrame(step);
+        }
+        if (r.querySelector('#w-bar')) bar.style.width = `${lastPct}%`;
+      }, 100 + i * 110);
+    });
+    setTimeout(() => wContent.classList.remove('playing'), 100 + rows.length * 110 + 700);
+  }
   dateInput.addEventListener('input', () => { exampleMode = false; update(); });
 
   function applyMode(m: 'lmp' | 'edd', reset: boolean) {
@@ -180,7 +225,9 @@ import { toolSchema } from '../../data/tools/_schema';
 
     // Render
     (document.getElementById('w-trimester') as HTMLElement).textContent = r.trimesterLabel;
-    (document.getElementById('w-weeks') as HTMLElement).textContent = `${r.weeksComplete} weeks, ${r.daysRemainder} day${r.daysRemainder !== 1 ? 's' : ''}`;
+    lastWeeks = r.weeksComplete;
+    lastPct = r.percentComplete;
+    (document.getElementById('w-weeks') as HTMLElement).innerHTML = `<span id="w-weeks-n">${r.weeksComplete}</span> weeks, ${r.daysRemainder} day${r.daysRemainder !== 1 ? 's' : ''}`;
     (document.getElementById('w-edd') as HTMLElement).textContent = `Due date: ${formatDate(r.edd)}`;
     (document.getElementById('w-pct') as HTMLElement).textContent = `${r.percentComplete}%`;
     (document.getElementById('w-bar') as HTMLElement).style.width = `${r.percentComplete}%`;
@@ -202,10 +249,18 @@ import { toolSchema } from '../../data/tools/_schema';
     const wn = weekNote(r.weeksComplete);
     const noteBox = document.getElementById('w-week-note')!;
     if (wn) {
+      const an = /^(?:[aeiou]|heir)/i.test(wn.size) ? 'an' : 'a';
       (document.getElementById('w-week-note-title') as HTMLElement).textContent =
-        `Week ${wn.week}: about the size of a ${wn.size}`;
+        `Week ${wn.week}: about the size of ${an} ${wn.size}`;
       (document.getElementById('w-week-note-body') as HTMLElement).textContent =
         `${wn.note} Check back next week for what changes.`;
+      // Redraw the week's fruit only when the week changes, so typing does not replay it
+      if (wn.week !== lastFruitWeek) {
+        const fruitEl = document.getElementById('w-fruit') as HTMLElement;
+        fruitEl.innerHTML = fruitSvg(wn.week, 64);
+        (window as any).ssDrawIn?.(fruitEl.querySelector('svg'), { duration: 1000, stagger: 110 });
+        lastFruitWeek = wn.week;
+      }
       noteBox.style.display = 'block';
     } else {
       noteBox.style.display = 'none';

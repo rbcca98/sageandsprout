@@ -1,0 +1,15 @@
+---
+/**
+ * The hand-drawn fruit for a pregnancy week, from data/week-fruits.ts.
+ * Draws itself in when scrolled into view (see the .fruit-svg rules in global.css).
+ */
+import { fruitSvg } from '../data/week-fruits';
+
+export interface Props {
+  week: number;
+  size?: number;
+  class?: string;
+}
+const { week, size = 64, class: cls = '' } = Astro.props;
+---
+<Fragment set:html={fruitSvg(week, size, cls)} />

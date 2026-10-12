@@ -285,6 +285,40 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
 
+/* ── Motion layer ───────────────────────────────────────
+   Everything below is gated on html.motion (set in Base.astro only when the
+   visitor has not asked for reduced motion). At rest, every drawing is fully
+   drawn; adding .in replays the stroke draw-in. */
+/* Hand-drawn fruit per week (data/week-fruits.ts). The draw-in is done in Base.astro
+   (window.ssDrawIn) from each shape's measured length, so at rest this is a plain stroke. */
+.fruit-svg { display: block; flex-shrink: 0; color: var(--color-ink); }
+.fruit-svg :is(path, circle, ellipse) {
+  fill: none; stroke: currentColor; stroke-width: 2.7;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* Tool tiles: the plus turns on hover; the icon redraw is triggered from Base.astro */
+.tool-card-plus { transition: transform .25s ease; }
+.tool-card:hover .tool-card-plus { transform: rotate(90deg); }
+
+/* Result "arrival": rows carry .r; the panel gets .playing, then rows get .on in order */
+.r { transition: opacity .55s ease, transform .55s cubic-bezier(.2, .65, .25, 1); }
+.motion .playing .r { opacity: 0; transform: translateY(10px); }
+.motion .playing .r.on { opacity: 1; transform: none; }
+
+/* Vine that grows down the left edge as you scroll (desktop only) */
+.rail { position: fixed; left: 14px; top: 0; height: 100vh; width: 56px; pointer-events: none; z-index: 2; display: none; }
+@media (min-width: 1180px) { .motion .rail { display: block; } }
+.rail .stem { stroke: var(--color-accent-light); stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; opacity: .8; }
+.rail .leaf { fill: none; stroke: var(--color-accent-light); stroke-width: 1.4; stroke-linejoin: round; transform-box: fill-box; transform-origin: 0% 50%; transform: scale(0); transition: transform .5s cubic-bezier(.2, .8, .3, 1.1); opacity: .8; }
+.rail .leaf.flip { transform-origin: 100% 50%; }
+.rail .leaf.on { transform: scale(1); }
+
+/* Paper grain: one SVG noise filter over the page so surfaces read as material */
+.grain-overlay { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: .07; mix-blend-mode: soft-light; z-index: 1; display: none; }
+@media (min-width: 700px) { .motion .grain-overlay { display: block; } }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  .rail, .grain-overlay { display: none !important; }
 }

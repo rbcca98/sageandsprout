@@ -85,6 +85,30 @@ const toolStages = [
 </head>
 
 <body>
+  <!-- Motion is opt-out: everything animated is gated on html.motion -->
+  <script is:inline>
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('motion', 'motion-ready');
+    }
+  </script>
+
+  <!-- Paper grain (one noise filter, composited once) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="ss-grain"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  </svg>
+  <svg class="grain-overlay" aria-hidden="true"><rect width="100%" height="100%" filter="url(#ss-grain)"/></svg>
+
+  <!-- Vine that grows down the left edge as you scroll -->
+  <svg class="rail" viewBox="0 0 56 1000" preserveAspectRatio="none" aria-hidden="true">
+    <path class="stem" pathLength="1" d="M28 1000 C20 900 36 820 28 740 C20 660 36 580 28 500 C20 420 36 340 28 260 C20 180 36 100 28 20"/>
+    <path class="leaf" data-at=".18" d="M28 820 C34 810 44 806 50 812 C44 820 36 822 28 820 Z"/>
+    <path class="leaf flip" data-at=".34" d="M28 660 C22 650 12 646 6 652 C12 660 20 662 28 660 Z"/>
+    <path class="leaf" data-at=".5" d="M28 500 C34 490 44 486 50 492 C44 500 36 502 28 500 Z"/>
+    <path class="leaf flip" data-at=".66" d="M28 340 C22 330 12 326 6 332 C12 340 20 342 28 340 Z"/>
+    <path class="leaf" data-at=".82" d="M28 180 C34 170 44 166 50 172 C44 180 36 182 28 180 Z"/>
+    <circle class="leaf" data-at=".96" cx="28" cy="22" r="5" style="fill:var(--color-accent);stroke:none;"/>
+  </svg>
+
   <!-- ── Header ──────────────────────────────────────── -->
   <header style="background: transparent;">
     <div style="max-width: var(--maxw); margin: 0 auto; padding: 1.4rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
@@ -214,6 +238,79 @@ const toolStages = [
         if (menu) menu.open = false;
       }
     });
+  </script>
+
+  <!-- Motion helpers: let line icons draw in, grow the rail vine with scroll,
+       and draw in any fruit illustration as it enters view -->
+  <script is:inline>
+    (function () {
+      var motion = document.documentElement.classList.contains('motion');
+      // Draw an inline SVG in stroke by stroke, from each shape's measured length.
+      // { prime: true } only hides the strokes, ready to be drawn in later.
+      // No-op without motion, so reduced-motion visitors see every drawing complete.
+      window.ssDrawIn = function (svg, opts) {
+        if (!motion || !svg) return;
+        var o = opts || {};
+        var shapes = svg.querySelectorAll('path, circle, ellipse, rect, line, polyline');
+        shapes.forEach(function (el, i) {
+          var len;
+          try { len = el.getTotalLength(); } catch (e) { return; }
+          if (!len) return;
+          if (el._ssAnim) { el._ssAnim.cancel(); el._ssAnim = null; }
+          el.style.strokeDasharray = len;
+          el.style.strokeDashoffset = len;
+          if (o.prime) return;
+          var a = el.animate(
+            [{ strokeDashoffset: len }, { strokeDashoffset: 0 }],
+            { duration: o.duration || 1000, delay: i * (o.stagger == null ? 90 : o.stagger), easing: 'cubic-bezier(.45,.05,.2,1)', fill: 'forwards' }
+          );
+          el._ssAnim = a;
+          a.onfinish = function () { el.style.strokeDasharray = ''; el.style.strokeDashoffset = ''; a.cancel(); el._ssAnim = null; };
+        });
+      };
+      if (!motion) return;
+      // Line icons redraw when a tool tile or related card is hovered
+      document.querySelectorAll('.tool-card, .related-card').forEach(function (card) {
+        var icon = card.querySelector('.icon');
+        if (!icon) return;
+        card.addEventListener('mouseenter', function () { window.ssDrawIn(icon, { duration: 800, stagger: 60 }); });
+      });
+      // Rail vine
+      var stem = document.querySelector('.rail .stem');
+      var leaves = document.querySelectorAll('.rail .leaf');
+      if (stem) {
+        // Poll scrollY on animation frames rather than listening for scroll events:
+        // Lenis drives the scroll position itself, and this stays correct for any scroll source.
+        var lastY = -1, lastH = -1;
+        var rail = function () {
+          var max = document.documentElement.scrollHeight - window.innerHeight;
+          var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+          stem.style.strokeDashoffset = (1 - p).toFixed(4);
+          leaves.forEach(function (l) { l.classList.toggle('on', p >= parseFloat(l.getAttribute('data-at'))); });
+        };
+        var loop = function () {
+          var y = window.scrollY, h = document.documentElement.scrollHeight;
+          if (y !== lastY || h !== lastH) { lastY = y; lastH = h; rail(); }
+          requestAnimationFrame(loop);
+        };
+        requestAnimationFrame(loop);
+      }
+      // Fruit illustrations: the ones already on screen draw in now, the rest are
+      // primed (hidden) and draw in as they scroll into view
+      var fruits = document.querySelectorAll('.fruit-svg');
+      if (fruits.length && 'IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { window.ssDrawIn(e.target, { duration: 1000, stagger: 110 }); io.unobserve(e.target); }
+          });
+        }, { threshold: .4 });
+        fruits.forEach(function (el) {
+          var r = el.getBoundingClientRect();
+          if (r.top > window.innerHeight) window.ssDrawIn(el, { prime: true });
+          io.observe(el);
+        });
+      }
+    })();
   </script>
 
   <!-- Smooth scroll (Lenis) — buttery inertia, off for reduced-motion -->
