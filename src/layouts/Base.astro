@@ -251,21 +251,35 @@ const toolStages = [
       window.ssDrawIn = function (svg, opts) {
         if (!motion || !svg) return;
         var o = opts || {};
+        var dur = o.duration || 1000;
+        var stag = o.stagger == null ? 90 : o.stagger;
         var shapes = svg.querySelectorAll('path, circle, ellipse, rect, line, polyline');
         shapes.forEach(function (el, i) {
           var len;
           try { len = el.getTotalLength(); } catch (e) { return; }
           if (!len) return;
-          if (el._ssAnim) { el._ssAnim.cancel(); el._ssAnim = null; }
-          el.style.strokeDasharray = len;
-          el.style.strokeDashoffset = len;
+          // Fully visible, no dash, nothing pending. Every path below ends here.
+          var reveal = function () {
+            el.style.strokeDasharray = '';
+            el.style.strokeDashoffset = '';
+            if (el._ssAnim) { try { el._ssAnim.cancel(); } catch (e) {} el._ssAnim = null; }
+            if (el._ssTimer) { clearTimeout(el._ssTimer); el._ssTimer = null; }
+          };
+          reveal();
+          el.style.strokeDasharray = len + 'px';
+          el.style.strokeDashoffset = len + 'px';
           if (o.prime) return;
-          var a = el.animate(
-            [{ strokeDashoffset: len }, { strokeDashoffset: 0 }],
-            { duration: o.duration || 1000, delay: i * (o.stagger == null ? 90 : o.stagger), easing: 'cubic-bezier(.45,.05,.2,1)', fill: 'forwards' }
-          );
-          el._ssAnim = a;
-          a.onfinish = function () { el.style.strokeDasharray = ''; el.style.strokeDashoffset = ''; a.cancel(); el._ssAnim = null; };
+          try {
+            var a = el.animate(
+              [{ strokeDashoffset: len + 'px' }, { strokeDashoffset: '0px' }],
+              { duration: dur, delay: i * stag, easing: 'cubic-bezier(.45,.05,.2,1)', fill: 'forwards' }
+            );
+            el._ssAnim = a;
+            a.onfinish = reveal;
+            if (a.finished && a.finished.then) a.finished.then(reveal, function () {});
+          } catch (e) { reveal(); return; }
+          // Whatever the animation does, the stroke is visible once its window has passed
+          el._ssTimer = setTimeout(reveal, dur + i * stag + 150);
         });
       };
       if (!motion) return;
