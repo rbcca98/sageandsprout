@@ -8,7 +8,7 @@ const copy: ToolCopy = {
   breadcrumb: 'Baby Sleep Schedule Calculator',
   headline: 'Baby Sleep Schedule Calculator',
   hook:
-    "Enter your baby's age and morning wake time. You get a suggested nap schedule, bedtime, and sleep targets from AAP and AASM guidance.",
+    "Wake windows, not the clock, drive most baby sleep. Build a nap and bedtime schedule for your baby's age from AAP and AASM guidance.",
   reviewedDate: '2025-01-15',
 
   faqs: [

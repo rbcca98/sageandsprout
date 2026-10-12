@@ -8,7 +8,7 @@ const copy: ToolCopy = {
   breadcrumb: 'Feeding & Formula Amount Calculator',
   headline: 'Baby Feeding & Formula Amount Calculator',
   hook:
-    "Enter your baby's age and weight. You get AAP-based amounts per feeding, feedings per day, and the daily total in oz and mL.",
+    "Most babies take about 2.5 oz of formula per pound of body weight each day. See the amount per feeding and per day for your baby's age and weight.",
   reviewedDate: '2025-01-15',
 
   faqs: [

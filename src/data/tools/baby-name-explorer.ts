@@ -8,7 +8,7 @@ const copy: ToolCopy = {
   breadcrumb: 'Baby Name Explorer',
   headline: 'Baby Name Explorer',
   hook:
-    'Browse the top 100 boy and girl names with meaning, origin, and official SSA rank. Filter by sex, popularity, or first letter.',
+    'The top 100 boy and girl names from the SSA, with meaning, origin, and rank. Filter by sex, popularity, or first letter.',
   reviewedDate: '2025-01-15',
   category: 'LifestyleApplication',
   medical: false,

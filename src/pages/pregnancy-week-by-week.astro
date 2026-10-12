@@ -1,0 +1,121 @@
+---
+/**
+ * Pregnancy week by week: one short section per week, built from the shared
+ * WEEK_NOTES data (the same notes the due-date and weeks-pregnant tools show).
+ * Edit the notes in src/data/week-notes.ts and this page updates.
+ */
+import Base from '../layouts/Base.astro';
+import { WEEK_NOTES } from '../data/week-notes';
+import { author, authorRef } from '../data/entities';
+
+const title = "Pregnancy Week by Week: Baby's Size and What Changes | Sage & Sprout";
+const description =
+  "A week-by-week guide to pregnancy from week 4 to 42: your baby's size and what changes each week. Free, evidence-based, counted from your last period.";
+const path = '/pregnancy-week-by-week/';
+const reviewedDate = '2026-10-12';
+
+// Weeks 4 to 42 in ascending order.
+const weeks = Object.keys(WEEK_NOTES).map(Number).sort((a, b) => a - b);
+
+// Eyebrow label shown above the first week of each trimester.
+const trimesterStart: Record<number, string> = {
+  4: 'First trimester',
+  14: 'Second trimester',
+  28: 'Third trimester',
+};
+
+// "an apple", "an ear of corn", "an heirloom tomato"; "a lemon" otherwise.
+const article = (noun: string) => (/^(?:[aeiou]|heir)/i.test(noun) ? 'an' : 'a');
+
+const pageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'Pregnancy week by week',
+  url: `https://sage-and-sprout.com${path}`,
+  description,
+  author: authorRef,
+  reviewedBy: authorRef,
+  dateModified: reviewedDate,
+};
+
+// The full author definition, so the @id references above resolve.
+const authorNode = { '@context': 'https://schema.org', ...author };
+---
+
+<Base
+  title={title}
+  description={description}
+  breadcrumbs={[{ label: 'Pregnancy week by week', href: path }]}
+  schema={[pageSchema, authorNode]}
+>
+  <div style="max-width:680px;margin:0 auto;padding:3rem 1.25rem 5rem;">
+    <h1 style="font-family:var(--font-family-display);font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;color:var(--color-ink);margin:0 0 .5rem;">Pregnancy week by week</h1>
+    <p style="font-size:1.05rem;color:var(--color-muted);margin:0 0 2.5rem;">Your baby's approximate size and what changes, every week from 4 to 42.</p>
+
+    <div class="prose sheet" style="padding:2.25rem 2rem;margin-top:1rem;">
+      <p>
+        Pregnancy is counted from the first day of your last menstrual period, the convention ACOG uses, not from conception.
+        That is why "week 4" is roughly when a home test first turns positive, and why the count reaches 40 weeks at the due date.
+        The <a href="/tools/how-many-weeks-pregnant/">how many weeks pregnant calculator</a> gives today's week, and the
+        <a href="/tools/due-date-calculator/">due date calculator</a> gives the date it is counting toward.
+      </p>
+      <p>
+        The size comparisons follow the conventional fruit chart used in most patient guides. They are approximate: babies of
+        the same gestational age vary in length and weight, and the fruit is only a familiar way to picture how much changes
+        from one week to the next.
+      </p>
+      <p>
+        Every pregnancy is different, and any date worked out from a last period is an estimate. Your provider will confirm or
+        adjust your dates, usually with a first-trimester ultrasound, so read the weeks below against that confirmed date.
+      </p>
+
+      <!-- ── Jump to a week ──────────────────────── -->
+      <nav aria-label="Jump to a week" style="margin:2.25rem 0 2.5rem;">
+        <p class="eyebrow" style="margin:0 0 .75rem;">Jump to a week</p>
+        <div class="seg">
+          {weeks.map((w) => (
+            <a href={`#week-${w}`} class="seg__btn" style="text-decoration:none;">{w}</a>
+          ))}
+        </div>
+      </nav>
+
+      <!-- ── One section per week, with a rule between and a trimester label at 4, 14, 28 ── -->
+      {weeks.map((w, i) => {
+        const { size, note } = WEEK_NOTES[w];
+        return (
+          <Fragment>
+            {i > 0 && <hr class="rule" style="margin:2rem 0;" />}
+            {trimesterStart[w] && <p class="eyebrow" style="margin:0 0 .6rem;">{trimesterStart[w]}</p>}
+            <section id={`week-${w}`}>
+              <h2 style="margin-top:0;">Week {w}</h2>
+              <p style="font-style:italic;color:var(--color-muted);margin-bottom:.5rem;">About the size of {article(size)} {size}</p>
+              <p>{note}</p>
+            </section>
+          </Fragment>
+        );
+      })}
+
+      <!-- ── Reviewed + disclaimer (same callout as the tool pages) ── -->
+      <div class="callout" style="border-left-color:var(--color-primary);">
+        <svg width="20" height="24" viewBox="0 0 32 38" fill="none" aria-hidden="true">
+          <g class="sprig" stroke="var(--color-primary)" stroke-width="1.8">
+            <path d="M16 36 C15.4 28 15.4 20 17.4 7" />
+            <path d="M15.6 27 C20 27 24 25 26.6 20.6 C22 20 18 22 15.6 27 Z" />
+            <path d="M16 22.5 C11.6 22.5 7.6 20.6 5 16.4 C9.6 15.8 13.8 17.8 16 22.5 Z" />
+            <path d="M16.5 17 C20.4 16.4 23.8 14.4 25.8 10.6 C21.6 10 18.2 12 16.5 17 Z" />
+          </g>
+          <circle cx="17.6" cy="6.4" r="2.6" fill="var(--color-accent)" />
+        </svg>
+        <div>
+          <p style="margin:0 0 0.4rem;color:var(--color-ink);">
+            Reviewed <time datetime={reviewedDate}>{reviewedDate}</time> by <a href="/about/">Rebecca, a senior medical student</a> at an Ivy League institution. Every figure cites primary medical literature.
+          </p>
+          <p style="margin:0;color:var(--color-muted);font-size:0.85rem;">
+            <strong style="color:var(--color-ink);">This is general educational information, not medical advice.</strong> Always consult your doctor, midwife, or qualified clinician for personal guidance.
+            <a href="/medical-disclaimer/">Read the full disclaimer →</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</Base>

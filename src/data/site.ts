@@ -10,6 +10,9 @@
 export const site = {
   brand: 'Sage & Sprout',
 
+  /* Flip to true once AdSense approves; the placeholder boxes render only when true. */
+  adsEnabled: false,
+
   /* Top navigation (header) */
   nav: [
     { href: '/tools/due-date-calculator/', label: 'Due date' },
@@ -73,7 +76,7 @@ export const site = {
       },
       {
         heading: 'Know how far along you are',
-        body: 'Once you have a due date, the <a href="/tools/how-many-weeks-pregnant/">how many weeks pregnant calculator</a> shows your week, trimester, and what’s happening now. The <a href="/tools/pregnancy-weight-gain/">weight gain calculator</a> gives a healthy range for your BMI per IOM/NASEM guidelines, and the <a href="/tools/maternity-leave-planner/">maternity leave planner</a> turns FMLA and your state’s paid-leave rules into a real timeline.',
+        body: 'Once you have a due date, the <a href="/tools/how-many-weeks-pregnant/">how many weeks pregnant calculator</a> shows your week, trimester, and what’s happening now. The <a href="/tools/pregnancy-weight-gain/">weight gain calculator</a> gives a healthy range for your BMI per IOM/NASEM guidelines, and the <a href="/tools/maternity-leave-planner/">maternity leave planner</a> turns FMLA and your state’s paid-leave rules into a real timeline. For what changes each week, see the <a href="/pregnancy-week-by-week/">week-by-week guide</a>.',
       },
       {
         heading: 'Trying to conceive',
@@ -87,12 +90,20 @@ export const site = {
     aboutNote: '<strong>About Sage &amp; Sprout.</strong> Our tools are built on primary medical literature (ACOG, AAP, NIH, CDC) and reviewed by a senior US medical student at an Ivy League institution. Every calculation runs in your browser. We never store your dates or personal information. This is general educational information, not a substitute for your own provider. <a href="/about/">Learn more →</a>',
   },
 
+  /* Homepage "What's new" list, newest first */
+  whatsNew: [
+    { date: 'Oct 2026', text: 'Added the week-by-week pregnancy guide.' },
+    { date: 'Jul 2026', text: 'Calculators can now be embedded on any site.' },
+    { date: 'Jul 2026', text: 'Every calculator shows a worked example and a shareable link.' },
+  ],
+
   /* Footer */
   footer: {
     blurb: 'Evidence-based tools for pregnancy, fertility, and the first years.',
     popularLabel: 'Popular tools',
     moreLabel: 'More',
     moreLinks: [
+      { href: '/pregnancy-week-by-week/', label: 'Week by week' },
       { href: '/about/', label: 'About' },
       { href: '/medical-disclaimer/', label: 'Medical disclaimer' },
       { href: '/privacy/', label: 'Privacy policy' },

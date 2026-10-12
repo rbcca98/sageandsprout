@@ -8,7 +8,7 @@ const copy: ToolCopy = {
   breadcrumb: 'Diaper & Wipe Cost Calculator',
   headline: 'Diaper & Wipe Cost Calculator',
   hook:
-    "Enter your baby's age and your diaper price. You get your monthly and yearly cost, plus the right size to buy at every stage.",
+    'Diapers are a bigger line item than most budgets expect. See the monthly and first-year cost at the price you actually pay, plus the size and count per day.',
   reviewedDate: '2025-01-15',
   medical: false,
 

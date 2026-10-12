@@ -8,7 +8,7 @@ const copy: ToolCopy = {
   breadcrumb: 'Baby Growth Percentile Calculator',
   headline: 'Baby Growth Percentile Calculator',
   hook:
-    "Enter your baby's age, sex, and a measurement. You get their percentile on the same WHO charts US pediatricians use for ages 0–24 months.",
+    'A percentile is a snapshot, not a grade. Plot weight, length, or head size on the WHO charts US pediatricians use, and see where your baby sits today.',
   reviewedDate: '2025-01-15',
 
   faqs: [

@@ -8,6 +8,7 @@ import Base from './Base.astro';
 import Icon from '../components/Icon.astro';
 import EmbedCode from '../components/EmbedCode.astro';
 import { iconForHref } from '../data/tool-icons';
+import { site } from '../data/site';
 
 export interface FAQ {
   question: string;
@@ -79,9 +80,10 @@ const breadcrumbSchema = {
   ],
 };
 
+// FAQPage schema only when the page actually has FAQs.
 const allSchema = [
   ...(Array.isArray(schema) ? schema : [schema]),
-  faqSchema,
+  ...(faqs.length > 0 ? [faqSchema] : []),
   breadcrumbSchema,
 ];
 ---
@@ -121,10 +123,12 @@ const allSchema = [
       <button id="tool-share" type="button" class="share-btn">Share result</button>
     </div>
 
-    <!-- ── CLS-safe ad slot (below result) ───────── -->
-    <div class="ad-slot ad-slot--banner" style="margin-bottom:1rem;" aria-hidden="true">
-      Advertisement
-    </div>
+    <!-- ── CLS-safe ad slot (below result); hidden until site.adsEnabled ── -->
+    {site.adsEnabled && (
+      <div class="ad-slot ad-slot--banner" style="margin-bottom:1rem;" aria-hidden="true">
+        Advertisement
+      </div>
+    )}
 
     <!-- ── Illustrated divider ─────────────────────── -->
     <div class="sprig-divider" aria-hidden="true">
@@ -143,44 +147,58 @@ const allSchema = [
     <article class="prose sheet tool-article">
       <slot name="content" />
 
-      <!-- ── Related tools ─────────────────────── -->
-      <h2>Keep exploring</h2>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-bottom:2rem;">
-        {relatedTools.map(({ href, label, description: desc }) => (
-          <a href={href} class="related-card">
-            <Icon name={iconForHref(href)} size={26} />
-            <span class="related-name">{label}<span class="related-arrow" aria-hidden="true"> →</span></span>
-            <span style="font-size:0.82rem;color:var(--color-muted);line-height:1.45;">{desc}</span>
-          </a>
-        ))}
-      </div>
+      <!-- ── Related tools (only when the tool lists some) ── -->
+      {relatedTools.length > 0 && (
+        <>
+          <h2>You might also need</h2>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-bottom:2rem;">
+            {relatedTools.map(({ href, label, description: desc }) => (
+              <a href={href} class="related-card">
+                <Icon name={iconForHref(href)} size={26} />
+                <span class="related-name">{label}<span class="related-arrow" aria-hidden="true"> →</span></span>
+                <span style="font-size:0.82rem;color:var(--color-muted);line-height:1.45;">{desc}</span>
+              </a>
+            ))}
+          </div>
+        </>
+      )}
 
-      <!-- ── In-content ad slot ─────────────────── -->
-      <div class="ad-slot" style="margin-bottom:2rem;" aria-hidden="true">Advertisement</div>
+      <!-- ── In-content ad slot; hidden until site.adsEnabled ── -->
+      {site.adsEnabled && (
+        <div class="ad-slot" style="margin-bottom:2rem;" aria-hidden="true">Advertisement</div>
+      )}
 
-      <!-- ── FAQ ───────────────────────────────── -->
-      <h2>Frequently asked questions</h2>
-      <div style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:2rem;">
-        {faqs.map(({ question, answer }) => (
-          <details class="faq">
-            <summary>
-              {question}
-              <span class="faq-icon" aria-hidden="true"></span>
-            </summary>
-            <div class="faq-body">{answer}</div>
-          </details>
-        ))}
-      </div>
+      <!-- ── FAQ (only when the tool has questions) ── -->
+      {faqs.length > 0 && (
+        <>
+          <h2>Common questions</h2>
+          <div style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:2rem;">
+            {faqs.map(({ question, answer }) => (
+              <details class="faq">
+                <summary>
+                  {question}
+                  <span class="faq-icon" aria-hidden="true"></span>
+                </summary>
+                <div class="faq-body">{answer}</div>
+              </details>
+            ))}
+          </div>
+        </>
+      )}
 
-      <!-- ── Sources ────────────────────────────── -->
-      <h2>Sources &amp; further reading</h2>
-      <ol style="display:flex;flex-direction:column;gap:0.5rem;padding-left:1.25rem;margin-bottom:2rem;">
-        {sources.map(({ label, url }) => (
-          <li style="font-size:0.85rem;color:var(--color-muted);line-height:1.5;">
-            <a href={url} target="_blank" rel="noopener noreferrer">{label}</a>
-          </li>
-        ))}
-      </ol>
+      <!-- ── Sources (only when the tool cites some) ── -->
+      {sources.length > 0 && (
+        <>
+          <h2>Sources &amp; further reading</h2>
+          <ol style="display:flex;flex-direction:column;gap:0.5rem;padding-left:1.25rem;margin-bottom:2rem;">
+            {sources.map(({ label, url }) => (
+              <li style="font-size:0.85rem;color:var(--color-muted);line-height:1.5;">
+                <a href={url} target="_blank" rel="noopener noreferrer">{label}</a>
+              </li>
+            ))}
+          </ol>
+        </>
+      )}
 
       <!-- ── Embed this calculator (link-building asset) ── -->
       {embedSlug && <EmbedCode slug={embedSlug} label={headline} />}

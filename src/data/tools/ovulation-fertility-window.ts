@@ -8,7 +8,7 @@ const copy: ToolCopy = {
   breadcrumb: 'Ovulation Calculator',
   headline: 'Ovulation & Fertility Window Calculator',
   hook:
-    'Enter your last period and cycle length. You get your estimated ovulation day, your six-day fertile window, and when to start testing.',
+    'The fertile window is six days, and the best odds fall one to two days before ovulation. Find yours from your last period and cycle length.',
   reviewedDate: '2026-06-27',
 
   faqs: [

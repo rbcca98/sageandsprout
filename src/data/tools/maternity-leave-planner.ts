@@ -8,7 +8,7 @@ const copy: ToolCopy = {
   breadcrumb: 'Maternity Leave Planner',
   headline: 'Maternity Leave Planner',
   hook:
-    'Enter your due date, last workday, and state. You get a timeline of paid weeks, protected weeks, and your estimated return date.',
+    'FMLA protects your job for 12 weeks but does not pay you. Whether any of it is paid depends on your state and your employer. This works out both.',
   reviewedDate: '2026-07-01',
   medical: false,
 

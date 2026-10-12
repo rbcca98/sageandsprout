@@ -8,7 +8,7 @@ const copy: ToolCopy = {
   breadcrumb: 'Due Date Calculator',
   headline: 'Due Date Calculator',
   hook:
-    'Enter the first day of your last period. You get your due date, current week, and key milestones, using the same ACOG method your provider uses.',
+    'Only about 1 in 20 babies arrives on their due date. This gives you the date, plus the two-week window around it that matters more.',
   reviewedDate: '2026-06-27',
 
   faqs: [
@@ -47,6 +47,7 @@ const copy: ToolCopy = {
   related: [
     { href: '/tools/how-many-weeks-pregnant/', label: 'How Many Weeks Pregnant', description: 'See your current week, trimester, and progress.' },
     { href: '/tools/ovulation-fertility-window/', label: 'Ovulation Calculator', description: 'Find your fertile window and ovulation day.' },
+    { href: '/pregnancy-week-by-week/', label: 'Pregnancy week by week', description: "Baby's size and what changes, every week from 4 to 42." },
   ],
 
   sources: [

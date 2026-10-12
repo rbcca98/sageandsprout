@@ -121,6 +121,21 @@ const collSchema = {
       <p class="about-note reveal" set:html={site.guide.aboutNote}></p>
     </div>
   </section>
+
+  <!-- ── What's new (dated, newest first) ───────────── -->
+  <section aria-label="What's new" style="max-width:720px;margin:0 auto;padding:0 1.5rem 2rem;">
+    <div class="stage-head reveal">
+      <h2 class="stage-label">What's new</h2>
+    </div>
+    <ul class="reveal" style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0.6rem;">
+      {site.whatsNew.map(({ date, text }) => (
+        <li style="display:flex;gap:1.25rem;font-size:0.92rem;line-height:1.6;">
+          <span style="flex-shrink:0;min-width:5.5ch;font-weight:700;color:var(--color-muted);">{date}</span>
+          <span style="color:var(--color-ink);">{text}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
 </Base>
 
 <style>

@@ -8,7 +8,7 @@ const copy: ToolCopy = {
   breadcrumb: 'How Many Weeks Pregnant',
   headline: 'How Many Weeks Pregnant Am I?',
   hook:
-    "Enter your last period or your due date. You get your exact week, your trimester, and what's happening right now.",
+    "Pregnancy is counted from the first day of your last period, not from conception, which is why 'four weeks' comes before most people even know. Here is where you are today.",
   reviewedDate: '2026-06-27',
 
   faqs: [
@@ -47,6 +47,7 @@ const copy: ToolCopy = {
   related: [
     { href: '/tools/due-date-calculator/', label: 'Due Date Calculator', description: 'Calculate your estimated due date from LMP or IVF.' },
     { href: '/tools/ovulation-fertility-window/', label: 'Ovulation Calculator', description: "Find your fertile window if you're trying to conceive." },
+    { href: '/pregnancy-week-by-week/', label: 'Pregnancy week by week', description: "Baby's size and what changes, every week from 4 to 42." },
   ],
 
   sources: [

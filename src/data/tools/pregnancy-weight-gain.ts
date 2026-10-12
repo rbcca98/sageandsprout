@@ -8,7 +8,7 @@ const copy: ToolCopy = {
   breadcrumb: 'Pregnancy Weight Gain Calculator',
   headline: 'Pregnancy Weight Gain Calculator',
   hook:
-    'Enter your pre-pregnancy height and weight. You get your recommended gain range by trimester, per the IOM guidelines ACOG uses.',
+    'Healthy weight gain in pregnancy depends on where you started. See the IOM/NASEM range for your pre-pregnancy BMI, singleton or twins.',
   reviewedDate: '2025-01-15',
 
   faqs: [
