@@ -82,4 +82,6 @@ const twoYears = `${last(lines[2].pts)[1].toFixed(1)} to ${last(lines[0].pts)[1]
   .xaxis span { position: absolute; top: 0; line-height: 1.5rem; white-space: nowrap; transform: translateX(-50%); }
   .xaxis span.first { transform: none; }
   .xaxis span.last { transform: translateX(-100%); }
+  /* At phone width the "24 months" label reaches back over the 18 tick; drop that one label */
+  @media (max-width: 520px) { .xaxis span:nth-child(4) { display: none; } }
 </style>
