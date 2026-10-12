@@ -79,6 +79,14 @@ const allNamesJSON = JSON.stringify(BABY_NAMES);
       return true;
     });
 
+    // Persist filters in the URL so the share link carries them
+    const url = new URL(window.location.href);
+    ['sex', 'pop', 'q'].forEach(k => url.searchParams.delete(k));
+    if (activeSex !== 'All') url.searchParams.set('sex', activeSex);
+    if (activePop !== 'all') url.searchParams.set('pop', activePop);
+    if (searchQuery) url.searchParams.set('q', searchQuery);
+    history.replaceState(null, '', url);
+
     document.getElementById('bn-count').textContent = `${filtered.length} name${filtered.length !== 1 ? 's' : ''}`;
 
     const grid = document.getElementById('bn-grid');
@@ -131,6 +139,27 @@ const allNamesJSON = JSON.stringify(BABY_NAMES);
     renderGrid();
   });
 
-  // Initial render
+  // Restore filters from the URL (share links), then render
+  const params = new URLSearchParams(window.location.search);
+  const urlSex = params.get('sex');
+  if (urlSex === 'Boy' || urlSex === 'Girl') {
+    activeSex = urlSex;
+    document.querySelectorAll('.bn-sex-btn').forEach(b => {
+      const isActive = b.dataset.sex === activeSex;
+      b.style.background = isActive ? 'var(--color-primary)' : 'transparent';
+      b.style.color = isActive ? '#fff' : 'var(--color-muted)';
+      b.style.borderColor = isActive ? 'var(--color-primary)' : 'var(--color-line)';
+    });
+  }
+  const urlPop = params.get('pop');
+  if (urlPop && POP_MAX_RANK[urlPop]) {
+    activePop = urlPop;
+    document.getElementById('bn-pop').value = urlPop;
+  }
+  const urlQ = params.get('q');
+  if (urlQ) {
+    searchQuery = urlQ;
+    document.getElementById('bn-search').value = urlQ;
+  }
   renderGrid();
 </script>

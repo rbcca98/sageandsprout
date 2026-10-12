@@ -94,7 +94,7 @@ export const site = {
   whatsNew: [
     { date: 'Oct 2026', text: 'Added the week-by-week pregnancy guide.' },
     { date: 'Jul 2026', text: 'Calculators can now be embedded on any site.' },
-    { date: 'Jul 2026', text: 'Every calculator shows a worked example and a shareable link.' },
+    { date: 'Jul 2026', text: 'Calculators now update as you type and give you a shareable link.' },
   ],
 
   /* Footer */

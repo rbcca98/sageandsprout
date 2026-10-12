@@ -22,3 +22,8 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# planning docs and reference PDFs kept beside the repo; never publish
+*.pdf
+*_PLAN.md
+*_HANDOFF.md
