@@ -1,0 +1,50 @@
+---
+/**
+ * First-year diaper cost by size at the calculator's default price, from the
+ * age bands and changes-per-day in islands/diaper-cost.ts. The band edges
+ * mirror AGE_BANDS up to 12 months; the price is the tool's default input.
+ */
+import { calculateDiaperCost } from '../../islands/diaper-cost';
+
+const PRICE = 0.25;                 // default of the price field on the tool page
+const EDGES = [0, 1, 3, 6, 9, 12];  // first-year AGE_BANDS boundaries, in months
+const rows = EDGES.slice(1).map((end, i) => {
+  const start = EDGES[i];
+  const r = calculateDiaperCost({ babyAgeMonths: (start + end) / 2, diaperPricePerUnit: PRICE, wipesPerDiaper: 0, wipesPricePerUnit: 0 })!;
+  return { size: r.diaperSize, start, end, perDay: r.diapersPerDay, cost: r.diaperMonthlyCost * (end - start) };
+});
+const MAX = Math.max(...rows.map((r) => r.cost));
+const total = rows.reduce((sum, r) => sum + r.cost, 0);
+const usd = (n: number) => `$${n.toFixed(2)}`;
+---
+
+<figure class="tool-visual">
+  <p class="eyebrow tv-title">First year: about {usd(total)} in diapers at {usd(PRICE)} each</p>
+
+  <div class="rows">
+    {rows.map((r) => (
+      <div class="row">
+        <div class="head">
+          <span class="name">{r.size}</span>
+          <span class="sub">months {r.start}–{r.end}, {r.perDay} a day</span>
+          <span class="val">{usd(r.cost)}</span>
+        </div>
+        <div class="track"><span class:list={['bar', { top: r.cost === MAX }]} style={`width:${((r.cost / MAX) * 100).toFixed(2)}%`}></span></div>
+      </div>
+    ))}
+  </div>
+
+  <figcaption>At the calculator's default price; change the price in the tool for your own number.</figcaption>
+</figure>
+
+<style>
+  .tv-title { margin: 0 0 .9rem; font-size: .76rem; line-height: 1.4; }
+  .rows { display: grid; gap: .75rem; }
+  .head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .1rem .6rem; font-size: .82rem; line-height: 1.4; }
+  .head .name { color: var(--color-ink); font-weight: 600; }
+  .head .sub { color: var(--color-muted); }
+  .head .val { margin-left: auto; color: var(--color-accent); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .track { position: relative; height: 14px; margin-top: .3rem; border-bottom: 1px solid var(--color-line); }
+  .bar { position: absolute; top: 0; bottom: -1px; left: 0; border: 1.8px solid var(--color-ink); }
+  .bar.top { background: var(--color-accent-light); }
+</style>

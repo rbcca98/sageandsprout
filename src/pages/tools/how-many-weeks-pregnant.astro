@@ -2,6 +2,7 @@
 import ToolPage from '../../layouts/ToolPage.astro';
 import copy from '../../data/tools/how-many-weeks-pregnant';
 import { toolSchema } from '../../data/tools/_schema';
+import WeeksVisual from '../../components/visuals/WeeksVisual.astro';
 ---
 
 <ToolPage
@@ -114,6 +115,7 @@ import { toolSchema } from '../../data/tools/_schema';
   </div>
 
   <Fragment slot="content" set:html={copy.contentHtml} />
+  <Fragment slot="visual"><WeeksVisual /></Fragment>
 </ToolPage>
 
 <!-- ── Client-side calculator ─────────────────────────────────── -->

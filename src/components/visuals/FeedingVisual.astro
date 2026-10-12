@@ -1,0 +1,49 @@
+---
+/**
+ * Daily formula by weight from the rule islands/feeding.ts applies in its
+ * weight-based bands (1 to 6 months): 2.5 oz per lb per day, capped at the
+ * AAP ceiling of 32 oz. The bars come from running the calculator itself.
+ */
+import { calculateFeeding } from '../../islands/feeding';
+
+const WEIGHTS = [6, 8, 10, 12, 14];
+const AGE = 3;      // any age inside a weight-based band
+const CAP_OZ = 32;  // the Math.min(..., 32) ceiling in feeding.ts
+const results = WEIGHTS.map((lb) => ({ lb, r: calculateFeeding({ ageMonths: AGE, weightLbs: lb, feedingType: 'formula' })! }));
+const bars = results.map(({ lb, r }) => ({ lb, oz: r.dailyOzHigh, capped: r.dailyOzHigh >= CAP_OZ }));
+const rate = results[0].r.weightOzPerLbPerDay;
+
+const AXIS_MAX = 40;  // oz, leaves headroom above the cap line
+const h = (oz: number) => `${((oz / AXIS_MAX) * 100).toFixed(1)}%`;
+---
+
+<figure class="tool-visual">
+  <p class="eyebrow tv-title">About {rate} oz per pound a day, up to {CAP_OZ} oz</p>
+
+  <div class="plot">
+    <span class="cap" style={`bottom:${h(CAP_OZ)}`}><i>{CAP_OZ} oz a day cap</i></span>
+    {bars.map((b) => (
+      <div class="col"><span class:list={['bar', { capped: b.capped }]} style={`height:${h(b.oz)}`}></span></div>
+    ))}
+  </div>
+  <div class="labels">
+    {bars.map((b) => (
+      <div><b>{b.lb} lb</b><span>{b.oz} oz</span></div>
+    ))}
+  </div>
+
+  <figcaption>Daily formula from the weight rule the tool applies between 1 and 6 months, about 2.5 oz per pound per day up to 32 oz, per the AAP guidance it cites.</figcaption>
+</figure>
+
+<style>
+  .tv-title { margin: 0 0 .9rem; font-size: .76rem; line-height: 1.4; }
+  .plot { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); height: 160px; border-bottom: 1.6px solid var(--color-line); }
+  .col { display: flex; align-items: flex-end; justify-content: center; }
+  .bar { display: block; width: 46%; border: 1.8px solid var(--color-ink); }
+  .bar.capped { background: var(--color-accent-light); }
+  .cap { position: absolute; left: 0; right: 0; border-top: 1.6px dashed var(--color-muted); }
+  .cap i { position: absolute; right: 0; bottom: .2rem; font-style: normal; font-size: .78rem; color: var(--color-muted); white-space: nowrap; }
+  .labels { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding-top: .4rem; text-align: center; font-size: .8rem; line-height: 1.4; font-variant-numeric: tabular-nums; }
+  .labels b { display: block; color: var(--color-ink); }
+  .labels span { color: var(--color-muted); }
+</style>

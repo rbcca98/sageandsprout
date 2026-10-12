@@ -3,6 +3,7 @@ import ToolPage from '../../layouts/ToolPage.astro';
 import { BABY_NAMES } from '../../data/baby-names.js';
 import copy from '../../data/tools/baby-name-explorer';
 import { toolSchema } from '../../data/tools/_schema';
+import NamesVisual from '../../components/visuals/NamesVisual.astro';
 
 // Pre-filter data server-side for the initial render — JS handles filtering interactively
 const allNamesJSON = JSON.stringify(BABY_NAMES);
@@ -58,6 +59,7 @@ const allNamesJSON = JSON.stringify(BABY_NAMES);
   </div>
 
   <Fragment slot="content" set:html={copy.contentHtml} />
+  <Fragment slot="visual"><NamesVisual /></Fragment>
 </ToolPage>
 
 <script define:vars={{ allNamesJSON }}>

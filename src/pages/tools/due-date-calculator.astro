@@ -2,6 +2,7 @@
 import ToolPage from '../../layouts/ToolPage.astro';
 import copy from '../../data/tools/due-date-calculator';
 import { toolSchema } from '../../data/tools/_schema';
+import DueDateVisual from '../../components/visuals/DueDateVisual.astro';
 ---
 
 <ToolPage
@@ -154,6 +155,7 @@ import { toolSchema } from '../../data/tools/_schema';
   </div>
 
   <Fragment slot="content" set:html={copy.contentHtml} />
+  <Fragment slot="visual"><DueDateVisual /></Fragment>
 </ToolPage>
 
 <!-- ── Client-side calculator script ─────────────────────────── -->

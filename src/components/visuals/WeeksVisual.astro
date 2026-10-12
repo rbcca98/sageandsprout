@@ -1,0 +1,61 @@
+---
+/**
+ * The 40-week band as the weeks calculator divides it.
+ * Trimester cut-offs (weeks complete < 14 and < 28) and the milestone weeks are
+ * the ones in islands/weeks-pregnant.ts; keep them in step if that file changes.
+ */
+const WEEKS = 40;
+const TRIMESTERS = [
+  { label: 'Trimester 1', from: 0, to: 14 },
+  { label: 'Trimester 2', from: 14, to: 28 },
+  { label: 'Trimester 3', from: 28, to: WEEKS },
+];
+const MILESTONES = [
+  { week: 13, label: 'End of first trimester' },
+  { week: 20, label: 'Anatomy scan window' },
+  { week: 24, label: 'Viability threshold' },
+  { week: 28, label: 'Third trimester begins' },
+  { week: 39, label: 'Full term' },
+  { week: 40, label: 'Estimated due date' },
+];
+
+const W = 400, H = 38, TOP = 2, BAND = 24;
+const x = (week: number) => (week / WEEKS) * W;
+const pct = (week: number) => `${((week / WEEKS) * 100).toFixed(2)}%`;
+---
+
+<figure class="tool-visual">
+  <p class="eyebrow tv-title">Forty weeks, three trimesters</p>
+
+  <div class="row">
+    {TRIMESTERS.map((t) => <span style={`left:${pct((t.from + t.to) / 2)}`}>{t.label}</span>)}
+  </div>
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="A forty-week band split into three trimesters at weeks 14 and 28, with ticks at weeks 13, 20, 24, 28, 39 and 40.">
+    {TRIMESTERS.map((t, i) => (
+      <rect x={x(t.from)} y={TOP} width={x(t.to) - x(t.from)} height={BAND} fill={i === 1 ? 'var(--color-line)' : 'none'} stroke="var(--color-ink)" stroke-width="1.8" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+    ))}
+    {MILESTONES.map((m) => (
+      <line x1={x(m.week)} y1={TOP + BAND} x2={x(m.week)} y2={H} stroke={m.week === WEEKS ? 'var(--color-accent)' : 'var(--color-ink)'} stroke-width={m.week === WEEKS ? 2.2 : 1.8} stroke-linecap="round" vector-effect="non-scaling-stroke" />
+    ))}
+  </svg>
+  <div class="row">
+    {MILESTONES.filter((m) => m.week < WEEKS).map((m) => <span style={`left:${pct(m.week)}`}>{m.week}</span>)}
+  </div>
+
+  <ul class="legend">
+    {MILESTONES.map((m) => <li><b class:list={{ due: m.week === WEEKS }}>{m.week}</b> {m.label}</li>)}
+  </ul>
+
+  <figcaption>The trimester boundaries and milestone weeks the calculator counts from the first day of the last period.</figcaption>
+</figure>
+
+<style>
+  .tv-title { margin: 0 0 .9rem; font-size: .76rem; line-height: 1.4; }
+  svg { overflow: visible; }
+  .row { position: relative; height: 1.4rem; font-size: .8rem; color: var(--color-muted); font-variant-numeric: tabular-nums; }
+  .row span { position: absolute; top: 0; line-height: 1.4rem; white-space: nowrap; transform: translateX(-50%); }
+  .legend { list-style: none; display: flex; flex-wrap: wrap; gap: .3rem 1.2rem; margin: .8rem 0 0; padding: 0; font-size: .8rem; color: var(--color-muted); }
+  .legend li { margin: 0; padding: 0; }
+  .legend b { color: var(--color-ink); font-variant-numeric: tabular-nums; }
+  .legend b.due { color: var(--color-accent); }
+</style>

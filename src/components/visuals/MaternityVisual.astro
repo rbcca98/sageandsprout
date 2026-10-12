@@ -1,0 +1,56 @@
+---
+/**
+ * State paid family leave programs the planner models, read by running the
+ * planner once per state in islands/maternity-leave.ts (US_STATES). States
+ * without a paying program (the "none" option, Maryland until 2028) drop out.
+ */
+import { calculateMaternityLeave, US_STATES } from '../../islands/maternity-leave';
+
+const programs = US_STATES.flatMap(([code]) => {
+  if (code === 'none') return [];
+  const r = calculateMaternityLeave({
+    dueDate: '2026-01-01', lastWorkDay: '2026-01-01',
+    fmlaEligible: false, employerPaidWeeks: 0, statePFL: code, ptoPaidWeeks: 0,
+  });
+  return r?.statePFLInfo ? [r.statePFLInfo] : [];
+});
+
+// Two short tables side by side on wide screens, one under the other on phones
+const half = Math.ceil(programs.length / 2);
+const columns = [programs.slice(0, half), programs.slice(half)];
+---
+
+<figure class="tool-visual">
+  <p class="eyebrow tv-title">{programs.length} state programs the planner knows</p>
+
+  <div class="tables">
+    {columns.map((group) => (
+      <table>
+        <thead>
+          <tr><th scope="col">Program</th><th scope="col">Paid weeks</th></tr>
+        </thead>
+        <tbody>
+          {group.map((p) => (
+            <tr><td>{p.name}</td><td>up to {p.weeks}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    ))}
+  </div>
+
+  <figcaption>States with a paid family leave program the planner models, as of the planner's last update.</figcaption>
+</figure>
+
+<style>
+  .tv-title { margin: 0 0 .9rem; font-size: .76rem; line-height: 1.4; }
+  .tables { display: grid; grid-template-columns: 1fr 1fr; gap: 0 2rem; align-items: start; }
+  @media (max-width: 560px) {
+    .tables { grid-template-columns: 1fr; gap: 0; }
+    .tables table + table thead { display: none; }
+  }
+  table { width: 100%; border-collapse: collapse; font-size: .85rem; line-height: 1.4; }
+  th, td { text-align: left; padding: .4rem .5rem .4rem 0; border-bottom: 1px solid var(--color-line); color: var(--color-ink); }
+  th { font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--color-muted); }
+  th:last-child, td:last-child { text-align: right; padding-right: 0; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  td:last-child { color: var(--color-muted); }
+</style>

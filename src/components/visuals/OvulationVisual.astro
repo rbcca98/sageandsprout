@@ -1,0 +1,59 @@
+---
+/**
+ * The fertile window as islands/ovulation.ts draws it:
+ * fertileStart = ovulation - 5 days, fertileEnd = ovulation + 1 day.
+ * "Best odds one to two days before" is the guide line in data/site.ts.
+ */
+const FIRST = -5, LAST = 1;  // offsets from ovulation day
+const BEST = [-2, -1];       // highest-odds days
+const days = Array.from({ length: LAST - FIRST + 1 }, (_, i) => FIRST + i);
+const pct = (d: number) => `${(((d - FIRST) / days.length) * 100).toFixed(2)}%`;  // left edge of a cell
+const tag = (d: number) => (d < 0 ? `−${-d}` : d > 0 ? `+${d}` : '0');
+---
+
+<figure class="tool-visual">
+  <p class="eyebrow tv-title">The fertile window, day by day</p>
+
+  <div class="row">
+    <span class="best" style={`left:${pct(-1)}`}>Best odds</span>
+    <span class="ov" style={`left:${pct(0)}`}>Ovulation</span>
+  </div>
+  <div class="strip" role="img" aria-label="Seven day cells from five days before ovulation to one day after; the two days before ovulation are shaded as the best odds, and ovulation day is outlined in the accent color.">
+    {days.map((d) => (
+      <div class:list={['cell', { best: BEST.includes(d), ov: d === 0, tail: d > 0 }]}>
+        {d === 0 && (
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+            <circle cx="8" cy="8" r="6.2" fill="none" stroke="var(--color-accent)" stroke-width="1.8" />
+            <circle cx="8" cy="8" r="1.9" fill="var(--color-accent)" />
+          </svg>
+        )}
+      </div>
+    ))}
+  </div>
+  <div class="days" aria-hidden="true">
+    {days.map((d) => <span>{tag(d)}</span>)}
+  </div>
+  <div class="row ends">
+    <span>5 days before</span>
+    <span>1 day after</span>
+  </div>
+
+  <figcaption>The window the calculator marks, from five days before ovulation through the day after, with the best odds one to two days before as the guide notes.</figcaption>
+</figure>
+
+<style>
+  .tv-title { margin: 0 0 .9rem; font-size: .76rem; line-height: 1.4; }
+  .row { position: relative; height: 1.4rem; font-size: .8rem; color: var(--color-muted); }
+  .row span { position: absolute; top: 0; line-height: 1.4rem; white-space: nowrap; }
+  .row .best { transform: translateX(-50%); color: var(--color-accent); font-weight: 600; }
+  .row .ov { color: var(--color-ink); font-weight: 600; }
+  .row.ends { display: flex; justify-content: space-between; }
+  .row.ends span { position: static; }
+  .strip, .days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: .3rem; }
+  .cell { height: 2.6rem; display: grid; place-items: center; border: 1.8px solid var(--color-ink); }
+  .cell.best { background: var(--color-accent-light); }
+  .cell.ov { border-color: var(--color-accent); border-width: 2.2px; }
+  .cell.tail { border-color: var(--color-muted); }
+  .cell svg { width: 16px; height: 16px; }
+  .days span { text-align: center; padding-top: .3rem; font-size: .8rem; color: var(--color-ink); font-variant-numeric: tabular-nums; }
+</style>

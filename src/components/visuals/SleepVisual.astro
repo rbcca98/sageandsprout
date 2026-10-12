@@ -1,0 +1,77 @@
+---
+/**
+ * A sample day for a 6-month-old, generated at build time by the same
+ * calculateSleepSchedule the tool runs (islands/sleep-schedule.ts) with a
+ * 7:00 AM wake time. The visible range is 6:00 AM to 8:00 PM.
+ */
+import { calculateSleepSchedule, formatTime } from '../../islands/sleep-schedule';
+
+const AGE = 6, WAKE = 7 * 60;
+const s = calculateSleepSchedule({ ageMonths: AGE, wakeTimeMins: WAKE })!;
+
+const START = 6 * 60, END = 20 * 60, SPAN = END - START;
+const H = 56;
+const x = (mins: number) => mins - START;  // one viewBox unit per minute
+const pct = (mins: number) => `${((x(mins) / SPAN) * 100).toFixed(2)}%`;
+
+// Awake stretches run from wake-up to the first nap, between naps, and from the last nap to bed
+const edges = [WAKE, ...s.naps.flatMap((n) => [n.startMins, n.endMins]), s.bedtimeMins];
+const awake: [number, number][] = [];
+for (let i = 0; i < edges.length; i += 2) awake.push([edges[i], edges[i + 1]]);
+const windowMins = s.naps[0].startMins - WAKE;
+const window = `${Math.floor(windowMins / 60)} h ${windowMins % 60} min`;
+const napTimes = s.naps.map((n) => `${formatTime(n.startMins)}–${formatTime(n.endMins)}`).join(', ');
+
+const HOURS = Array.from({ length: SPAN / 120 + 1 }, (_, i) => START + i * 120);
+const hourLabel = (m: number) =>
+  m === START ? '6 am' : m === END ? '8 pm' : m === 12 * 60 ? 'noon' : String((m / 60) % 12);
+---
+
+<figure class="tool-visual">
+  <p class="eyebrow tv-title">Sample day, {AGE} months</p>
+
+  <div class="row">
+    <span style={`left:${pct(WAKE)}`}>Wake {formatTime(WAKE)}</span>
+    <span class="bed" style={`left:${pct(s.bedtimeMins)}`}>Bedtime {s.bedtimeLabel}</span>
+  </div>
+  <svg viewBox={`0 0 ${SPAN} ${H}`} role="img" aria-label={`A timeline from 6 AM to 8 PM for a ${AGE}-month-old: wake at ${formatTime(WAKE)}, ${s.napsPerDay} naps at ${napTimes}, awake about ${window} at a stretch, bedtime ${s.bedtimeLabel}.`}>
+    <rect x="0" y="12" width={x(WAKE)} height="32" fill="var(--color-line)" />
+    <rect x={x(s.bedtimeMins)} y="12" width={SPAN - x(s.bedtimeMins)} height="32" fill="var(--color-line)" />
+    {awake.map(([a, b]) => (
+      <rect x={x(a)} y="12" width={b - a} height="32" fill="none" stroke="var(--color-ink)" stroke-width="1.8" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+    ))}
+    {s.naps.map((n) => (
+      <rect x={x(n.startMins)} y="8" width={n.durationMins} height="40" fill="var(--color-accent-light)" stroke="var(--color-ink)" stroke-width="1.8" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+    ))}
+    <line x1={x(s.bedtimeMins)} y1="0" x2={x(s.bedtimeMins)} y2={H} stroke="var(--color-accent)" stroke-width="2.2" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+  </svg>
+  <div class="row hours" aria-hidden="true">
+    {HOURS.map((m, i) => (
+      <span class:list={{ first: i === 0, last: i === HOURS.length - 1 }} style={`left:${pct(m)}`}>{hourLabel(m)}</span>
+    ))}
+  </div>
+
+  <ul class="legend">
+    <li><i class="sw nap"></i>Naps {napTimes}</li>
+    <li><i class="sw awake"></i>Awake about {window} at a stretch</li>
+    <li><i class="sw night"></i>Night sleep</li>
+  </ul>
+
+  <figcaption>Built from the same age band the schedule tool uses.</figcaption>
+</figure>
+
+<style>
+  .tv-title { margin: 0 0 .9rem; font-size: .76rem; line-height: 1.4; }
+  svg { overflow: visible; }
+  .row { position: relative; height: 1.4rem; font-size: .8rem; color: var(--color-muted); font-variant-numeric: tabular-nums; }
+  .row span { position: absolute; top: 0; line-height: 1.4rem; white-space: nowrap; }
+  .row .bed { transform: translateX(-100%); color: var(--color-accent); font-weight: 600; }
+  .hours span { transform: translateX(-50%); }
+  .hours span.first { transform: none; }
+  .hours span.last { transform: translateX(-100%); }
+  .legend { list-style: none; display: flex; flex-wrap: wrap; gap: .35rem 1.4rem; margin: .7rem 0 0; padding: 0; font-size: .8rem; color: var(--color-muted); }
+  .legend li { margin: 0; padding: 0; }
+  .sw { display: inline-block; width: .85em; height: .85em; margin-right: .45em; vertical-align: -.08em; border: 1.6px solid var(--color-ink); }
+  .sw.nap { background: var(--color-accent-light); }
+  .sw.night { background: var(--color-line); border-color: transparent; }
+</style>

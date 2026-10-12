@@ -1,0 +1,85 @@
+---
+/**
+ * WHO weight-for-age, girls, 0 to 24 months, at the 3rd, 50th and 97th
+ * percentiles. Computed at build time from the LMS rows in data/who-lms.ts:
+ * value = M * (1 + L*S*z)^(1/L) when L is not 0, else M * exp(S*z).
+ */
+import { WEIGHT_GIRLS } from '../../data/who-lms';
+
+const fromLMS = (L: number, M: number, S: number, z: number) =>
+  L !== 0 ? M * Math.pow(1 + L * S * z, 1 / L) : M * Math.exp(S * z);
+const series = (z: number) => WEIGHT_GIRLS.map(([age, L, M, S]) => [age, fromLMS(L, M, S, z)] as const);
+
+const lines = [
+  { key: '97th', pts: series(1.881) },
+  { key: '50th', pts: series(0) },
+  { key: '3rd', pts: series(-1.881) },
+];
+const last = (pts: (readonly [number, number])[]) => pts[pts.length - 1];
+
+// Plot geometry: the curves fill the viewBox so HTML labels can share its percentages
+const W = 480, H = 300, PAD = 6;
+const MAX_AGE = last(lines[1].pts)[0];
+const KG_MIN = Math.floor(lines[2].pts[0][1]);
+const KG_MAX = Math.ceil(last(lines[0].pts)[1]);
+const x = (age: number) => PAD + (age / MAX_AGE) * (W - 2 * PAD);
+const y = (kg: number) => H - PAD - ((kg - KG_MIN) / (KG_MAX - KG_MIN)) * (H - 2 * PAD);
+const points = (pts: (readonly [number, number])[]) => pts.map(([a, kg]) => `${x(a).toFixed(1)},${y(kg).toFixed(1)}`).join(' ');
+const pctX = (age: number) => `${((x(age) / W) * 100).toFixed(2)}%`;
+const pctY = (kg: number) => `${((y(kg) / H) * 100).toFixed(2)}%`;
+
+const X_TICKS = [0, 6, 12, 18, 24];
+const DOT_AGE = 6;
+const dotKg = lines[1].pts[DOT_AGE][1];
+const NOTE_TOP = 82;  // % down the plot, in the open space under the 3rd-percentile line
+
+const birth = `${lines[2].pts[0][1].toFixed(1)} to ${lines[0].pts[0][1].toFixed(1)} kg`;
+const twoYears = `${last(lines[2].pts)[1].toFixed(1)} to ${last(lines[0].pts)[1].toFixed(1)} kg`;
+---
+
+<figure class="tool-visual">
+  <p class="eyebrow tv-title">Girls, weight for age, birth to 24 months</p>
+
+  <div class="plot">
+    <div class="area">
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Three weight-for-age curves for girls from birth to 24 months at the 3rd, 50th and 97th percentiles, rising from ${birth} at birth to ${twoYears} at two years; a dot marks the 50th percentile at 6 months, ${dotKg.toFixed(1)} kg.`}>
+        <polyline points={`${PAD},${PAD} ${PAD},${H - PAD} ${W - PAD},${H - PAD}`} fill="none" stroke="var(--color-line)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+        {X_TICKS.map((t) => (
+          <line x1={x(t)} y1={H - PAD} x2={x(t)} y2={H + 4} stroke="var(--color-line)" stroke-width="1.6" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+        ))}
+        {lines.map((l) => (
+          <polyline points={points(l.pts)} fill="none" stroke="var(--color-ink)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+        ))}
+      </svg>
+      {lines.map((l) => (
+        <span class="end" style={`top:${pctY(last(l.pts)[1])}`}><b>{l.key}</b> {last(l.pts)[1].toFixed(1)} kg</span>
+      ))}
+      <span class="leader" style={`left:${pctX(DOT_AGE)};top:${pctY(dotKg)};height:calc(${NOTE_TOP}% - ${pctY(dotKg)})`}></span>
+      <span class="dot" style={`left:${pctX(DOT_AGE)};top:${pctY(dotKg)}`}></span>
+      <span class="note" style={`left:${pctX(DOT_AGE)};top:${NOTE_TOP}%`}>stays on their own line</span>
+    </div>
+    <div class="xaxis" aria-hidden="true">
+      {X_TICKS.map((t, i) => (
+        <span class:list={{ first: i === 0, last: i === X_TICKS.length - 1 }} style={`left:${pctX(t)}`}>{t}{i === X_TICKS.length - 1 ? ' months' : ''}</span>
+      ))}
+    </div>
+  </div>
+
+  <figcaption>WHO Child Growth Standards, girls, weight for age.</figcaption>
+</figure>
+
+<style>
+  .tv-title { margin: 0 0 .9rem; font-size: .76rem; line-height: 1.4; }
+  .plot { padding-right: 5.6rem; }
+  .area { position: relative; }
+  svg { overflow: visible; }
+  .end { position: absolute; left: 100%; margin-left: .5rem; transform: translateY(-50%); font-size: .78rem; line-height: 1.2; color: var(--color-muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .end b { color: var(--color-ink); }
+  .dot { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--color-accent); transform: translate(-50%, -50%); }
+  .leader { position: absolute; border-left: 1.4px solid var(--color-accent); transform: translateX(-50%); }
+  .note { position: absolute; margin-left: .45rem; transform: translateY(-50%); font-size: .78rem; color: var(--color-accent); white-space: nowrap; }
+  .xaxis { position: relative; height: 1.5rem; margin-top: .3rem; font-size: .78rem; color: var(--color-muted); font-variant-numeric: tabular-nums; }
+  .xaxis span { position: absolute; top: 0; line-height: 1.5rem; white-space: nowrap; transform: translateX(-50%); }
+  .xaxis span.first { transform: none; }
+  .xaxis span.last { transform: translateX(-100%); }
+</style>

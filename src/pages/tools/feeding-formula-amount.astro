@@ -2,6 +2,7 @@
 import ToolPage from '../../layouts/ToolPage.astro';
 import copy from '../../data/tools/feeding-formula-amount';
 import { toolSchema } from '../../data/tools/_schema';
+import FeedingVisual from '../../components/visuals/FeedingVisual.astro';
 ---
 
 <ToolPage
@@ -67,6 +68,7 @@ import { toolSchema } from '../../data/tools/_schema';
   </div>
 
   <Fragment slot="content" set:html={copy.contentHtml} />
+  <Fragment slot="visual"><FeedingVisual /></Fragment>
 </ToolPage>
 
 <script>

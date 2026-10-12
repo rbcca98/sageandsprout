@@ -318,6 +318,11 @@ html.lenis, html.lenis body { height: auto; }
 .paper .fruit-svg { color: var(--color-primary); }
 .paper .sprig-divider { color: var(--color-accent-dark); }
 
+/* ── Tool visual (one page-specific figure per calculator) ── */
+.tool-visual { margin: 0 0 2.25rem; padding: 1.25rem 1.4rem 1.1rem; border: 1px solid var(--color-line); }
+.tool-visual figcaption { margin-top: .75rem; font-size: .82rem; color: var(--color-muted); line-height: 1.5; }
+.tool-visual svg { display: block; width: 100%; height: auto; max-width: 100%; }
+
 /* ── Motion layer ───────────────────────────────────────
    Everything below is gated on html.motion (set in Base.astro only when the
    visitor has not asked for reduced motion). At rest, every drawing is fully
