@@ -13,6 +13,12 @@ export const site = {
   /* Flip to true once AdSense approves; the placeholder boxes render only when true. */
   adsEnabled: false,
 
+  /* Contact form. Create a free form at formspree.io and paste its 8-character
+     ID here (the part after /f/ in the form's endpoint). While this is empty the
+     contact page shows a "being set up" notice instead of a form that would
+     silently drop messages. */
+  contact: { formspreeId: '' },
+
   /* Top navigation (header) */
   nav: [
     { href: '/tools/due-date-calculator/', label: 'Due date' },

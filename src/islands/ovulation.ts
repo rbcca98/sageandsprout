@@ -2,7 +2,8 @@
  * Ovulation and fertile window calculation.
  * Basis: ACOG & ASRM guidelines.
  * Ovulation occurs approximately 14 days BEFORE the next expected period.
- * Fertile window: 5 days before ovulation through 1 day after (day of ovulation).
+ * Fertile window: the 5 days before ovulation through ovulation day, six days in
+ * total (Wilcox et al., NEJM 1995; ACOG patient guidance).
  */
 
 export interface OvulationInputs {
@@ -40,9 +41,9 @@ export function calculateOvulation(inputs: OvulationInputs): OvulationResult | n
   // Ovulation = next period - 14 days = LMP + cycleLength - 14
   const ovulationDate = addDays(lmpDate, cycleLength - 14);
 
-  // Fertile window: ovulation - 5 through ovulation + 1
+  // Fertile window: ovulation - 5 through ovulation day (six days)
   const fertileStart = addDays(ovulationDate, -5);
-  const fertileEnd   = addDays(ovulationDate,  1);
+  const fertileEnd   = addDays(ovulationDate,  0);
 
   // Next expected period
   const nextPeriod = addDays(lmpDate, cycleLength);

@@ -1,5 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+
+// The form posts to Formspree (site.contact.formspreeId). Without an ID the
+// page says so, rather than showing a form that would drop every message.
+const formId = site.contact.formspreeId;
+const endpoint = formId ? `https://formspree.io/f/${formId}` : '';
 ---
 
 <Base
@@ -11,43 +17,90 @@ import Base from '../layouts/Base.astro';
     <h1 style="font-family:var(--font-family-display);font-size:clamp(1.8rem,4vw,2.4rem);font-weight:700;color:var(--color-ink);margin:0 0 .5rem;">Contact</h1>
     <p style="color:var(--color-muted);margin:0 0 2.5rem;">Questions, corrections, or suggestions for new tools? We'd love to hear from you.</p>
 
-    <form
-      name="contact"
-      method="POST"
-      data-netlify="true"
-      style="display:flex;flex-direction:column;gap:1.25rem;"
-    >
-      <div>
-        <label for="name" style="display:block;font-size:.85rem;font-weight:600;margin-bottom:.4rem;color:var(--color-ink);">Your name</label>
-        <input
-          type="text" id="name" name="name" required autocomplete="name"
-          style="width:100%;padding:.65rem .9rem;border-radius:var(--radius-sm);border:1.5px solid var(--color-line);background:var(--color-surface-2);font-size:1rem;color:var(--color-ink);font-family:var(--font-family-body);"
-        />
-      </div>
-      <div>
-        <label for="email" style="display:block;font-size:.85rem;font-weight:600;margin-bottom:.4rem;color:var(--color-ink);">Email address</label>
-        <input
-          type="email" id="email" name="email" required autocomplete="email"
-          style="width:100%;padding:.65rem .9rem;border-radius:var(--radius-sm);border:1.5px solid var(--color-line);background:var(--color-surface-2);font-size:1rem;color:var(--color-ink);font-family:var(--font-family-body);"
-        />
-      </div>
-      <div>
-        <label for="message" style="display:block;font-size:.85rem;font-weight:600;margin-bottom:.4rem;color:var(--color-ink);">Message</label>
-        <textarea
-          id="message" name="message" required rows="5"
-          style="width:100%;padding:.65rem .9rem;border-radius:var(--radius-sm);border:1.5px solid var(--color-line);background:var(--color-surface-2);font-size:1rem;color:var(--color-ink);font-family:var(--font-family-body);resize:vertical;"
-        ></textarea>
-      </div>
-      <button
-        type="submit"
-        style="padding:.75rem 1.75rem;border-radius:999px;border:none;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:600;cursor:pointer;transition:background .15s;align-self:flex-start;"
+    {endpoint ? (
+      <form
+        id="contact-form"
+        action={endpoint}
+        method="POST"
+        style="display:flex;flex-direction:column;gap:1.25rem;"
       >
-        Send message
-      </button>
-    </form>
+        <div>
+          <label for="name" style="display:block;font-size:.85rem;font-weight:600;margin-bottom:.4rem;color:var(--color-ink);">Your name</label>
+          <input
+            type="text" id="name" name="name" required autocomplete="name"
+            style="width:100%;padding:.65rem .9rem;border-radius:var(--radius-sm);border:1.5px solid var(--color-line);background:var(--color-surface-2);font-size:1rem;color:var(--color-ink);font-family:var(--font-family-body);"
+          />
+        </div>
+        <div>
+          <label for="email" style="display:block;font-size:.85rem;font-weight:600;margin-bottom:.4rem;color:var(--color-ink);">Email address</label>
+          <input
+            type="email" id="email" name="email" required autocomplete="email"
+            style="width:100%;padding:.65rem .9rem;border-radius:var(--radius-sm);border:1.5px solid var(--color-line);background:var(--color-surface-2);font-size:1rem;color:var(--color-ink);font-family:var(--font-family-body);"
+          />
+        </div>
+        <div>
+          <label for="message" style="display:block;font-size:.85rem;font-weight:600;margin-bottom:.4rem;color:var(--color-ink);">Message</label>
+          <textarea
+            id="message" name="message" required rows="5"
+            style="width:100%;padding:.65rem .9rem;border-radius:var(--radius-sm);border:1.5px solid var(--color-line);background:var(--color-surface-2);font-size:1rem;color:var(--color-ink);font-family:var(--font-family-body);resize:vertical;"
+          ></textarea>
+        </div>
+        <!-- Spam trap (Formspree discards submissions that fill it) and the email subject -->
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true" />
+        <input type="hidden" name="_subject" value="Sage & Sprout contact" />
+        <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+          <button
+            type="submit"
+            id="contact-submit"
+            style="padding:.75rem 1.75rem;border-radius:999px;border:none;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:600;cursor:pointer;transition:background .15s;"
+          >
+            Send message
+          </button>
+          <p id="contact-status" role="status" aria-live="polite" style="margin:0;font-size:.9rem;color:var(--color-muted);"></p>
+        </div>
+      </form>
+    ) : (
+      <div class="card" style="padding:1.4rem 1.6rem;">
+        <p style="margin:0;color:var(--color-ink);">The contact form is being set up and is not accepting messages yet. Please check back soon.</p>
+      </div>
+    )}
 
     <p style="margin-top:2rem;font-size:.82rem;color:var(--color-muted);">
       We read every message. For urgent medical questions, please contact your healthcare provider directly. We are not able to provide personalized medical advice.
     </p>
   </div>
 </Base>
+
+<script>
+  // Send in place and confirm on this page. Without JavaScript the form still
+  // posts normally and Formspree shows its own confirmation.
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  if (form) {
+    const status = document.getElementById('contact-status') as HTMLElement;
+    const button = document.getElementById('contact-submit') as HTMLButtonElement;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      button.disabled = true;
+      status.textContent = 'Sending';
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        if (res.ok) {
+          form.reset();
+          status.textContent = 'Sent. Thank you, we read every message.';
+        } else {
+          const data = await res.json().catch(() => null);
+          const detail = data && Array.isArray(data.errors) ? data.errors.map((x: { message?: string }) => x.message).filter(Boolean).join(' ') : '';
+          status.textContent = detail || 'That did not go through. Please try again in a moment.';
+        }
+      } catch {
+        status.textContent = 'That did not go through. Please check your connection and try again.';
+      } finally {
+        button.disabled = false;
+      }
+    });
+  }
+</script>
