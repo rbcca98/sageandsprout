@@ -5,7 +5,8 @@
  *
  * Each card is drawn as SVG with the site's tokens, fonts, line icons and
  * fruit art, then rasterized to PNG at 1200x630 and 2400x1260 into
- * public/images/tools/<slug>-chart[@2x].png. The default share image is
+ * public/images/tools/<slug>-chart.png and <slug>-chart-2x.png
+ * (a plain -2x suffix: Cloudflare Pages redirects any "@" in a URL). The default share image is
  * rewritten to public/og-default.png. Every number on a card comes from
  * running the same calculator the tool page runs, so the cards cannot drift
  * from the tools. Re-run after changing a calculator or its copy.
@@ -521,7 +522,7 @@ for (const c of CARDS) {
   const svg = card({ ...c, footer: TRUST });
   const { big, small } = await rasterize(svg);
   writeFileSync(join(OUT, `${c.slug}-chart.png`), small);
-  writeFileSync(join(OUT, `${c.slug}-chart@2x.png`), big);
+  writeFileSync(join(OUT, `${c.slug}-chart-2x.png`), big);
   if (process.env.KEEP_SVG) writeFileSync(join(OUT, `${c.slug}-chart.svg`), svg);
   console.log(`${c.slug}-chart.png  ${(small.length / 1024).toFixed(0)} KB  (@2x ${(big.length / 1024).toFixed(0)} KB)`);
 }
