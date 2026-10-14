@@ -10,6 +10,10 @@ const copy: ToolCopy = {
   hook:
     'Healthy weight gain in pregnancy depends on where you started. See the IOM/NASEM range for your pre-pregnancy BMI, singleton or twins.',
   reviewedDate: '2025-01-15',
+  graphic: {
+    alt: 'Pregnancy weight gain chart: recommended total gain in pounds for each pre-pregnancy BMI category, from IOM and NASEM guidelines',
+    caption: 'Recommended total weight gain for one baby by pre-pregnancy BMI, from the IOM and NASEM guideline the calculator uses.',
+  },
 
   faqs: [
     {

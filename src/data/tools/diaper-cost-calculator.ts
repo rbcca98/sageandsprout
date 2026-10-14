@@ -10,6 +10,10 @@ const copy: ToolCopy = {
   hook:
     'Diapers are a bigger line item than most budgets expect. See the monthly and first-year cost at the price you actually pay, plus the size and count per day.',
   reviewedDate: '2025-01-15',
+  graphic: {
+    alt: 'Diaper cost chart: diaper changes per day by age from newborn to 36 months, and the first-year diaper cost at 25 cents each',
+    caption: 'Diaper changes a day by age, and what the first year costs at the calculator\'s default price.',
+  },
   medical: false,
 
   faqs: [

@@ -9,6 +9,7 @@ import Icon from '../components/Icon.astro';
 import EmbedCode from '../components/EmbedCode.astro';
 import { iconForHref } from '../data/tool-icons';
 import { site } from '../data/site';
+import type { ToolGraphic } from '../data/tool-graphics';
 
 export interface FAQ {
   question: string;
@@ -40,6 +41,8 @@ export interface Props {
   reviewedDate?: string;
   /** If set, show an "embed this calculator" block that points to /embed/<slug>. */
   embedSlug?: string;
+  /** The tool's chart image: shown after the article, used as the share image. */
+  graphic?: ToolGraphic | null;
 }
 
 const {
@@ -54,6 +57,7 @@ const {
   schema,
   reviewedDate = new Date().toISOString().split('T')[0],
   embedSlug,
+  graphic,
 } = Astro.props;
 
 const faqSchema = {
@@ -93,6 +97,8 @@ const allSchema = [
   description={description}
   breadcrumbs={breadcrumbs}
   schema={allSchema}
+  ogImage={graphic?.src}
+  ogImageAlt={graphic?.alt}
 >
   <div class="tool-wrapper" style="max-width: 760px; margin: 0 auto;">
 
@@ -153,6 +159,24 @@ const allSchema = [
       <!-- One page-specific figure, supplied by each tool page -->
       <slot name="visual" />
       <slot name="content" />
+
+      <!-- ── The tool's chart: a real image file, so it can be saved, shared, and found in image search ── -->
+      {graphic && (
+        <figure class="tool-graphic">
+          <p class="eyebrow">Chart to save or share</p>
+          <img
+            src={graphic.src}
+            srcset={`${graphic.src} 1200w, ${graphic.src2x} 2400w`}
+            sizes="(max-width: 760px) calc(100vw - 2rem), 680px"
+            width={graphic.width}
+            height={graphic.height}
+            alt={graphic.alt}
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption>{graphic.caption} <a href={graphic.src2x} download>Download the chart</a></figcaption>
+        </figure>
+      )}
 
       <!-- ── Related tools (only when the tool lists some) ── -->
       {relatedTools.length > 0 && (
@@ -283,6 +307,11 @@ const allSchema = [
     padding: 0.5rem 0 0;
     max-width: 100%;
   }
+
+  .tool-graphic { margin: 0 0 2.25rem; padding: 1.25rem 1.4rem 1.1rem; border: 1px solid var(--color-line); }
+  .tool-graphic .eyebrow { margin: 0 0 .9rem; font-size: .76rem; line-height: 1.4; }
+  .tool-graphic img { display: block; width: 100%; height: auto; margin: 0; }
+  .tool-graphic figcaption { margin-top: .75rem; font-size: .82rem; color: var(--color-muted); line-height: 1.5; }
 
   .related-card {
     display: flex;

@@ -10,6 +10,10 @@ const copy: ToolCopy = {
   hook:
     "Wake windows, not the clock, drive most baby sleep. Build a nap and bedtime schedule for your baby's age from AAP and AASM guidance.",
   reviewedDate: '2025-01-15',
+  graphic: {
+    alt: 'Baby sleep schedule chart by age: naps per day, wake windows, and total sleep from newborn to 24 months',
+    caption: 'Naps, wake windows, and total sleep for each age band the schedule tool uses, from AAP and AASM guidance.',
+  },
 
   faqs: [
     {

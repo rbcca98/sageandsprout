@@ -2,6 +2,7 @@
 import ToolPage from '../../layouts/ToolPage.astro';
 import copy from '../../data/tools/baby-growth-percentile';
 import { toolSchema } from '../../data/tools/_schema';
+import { graphicFor } from '../../data/tool-graphics';
 import GrowthVisual from '../../components/visuals/GrowthVisual.astro';
 ---
 
@@ -16,6 +17,7 @@ import GrowthVisual from '../../components/visuals/GrowthVisual.astro';
   sources={copy.sources}
   schema={toolSchema(copy)}
   reviewedDate={copy.reviewedDate}
+  graphic={graphicFor(copy)}
 >
   <div slot="tool">
     <!-- Unit toggle -->

@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://sage-and-sprout.com/sitemap-index.xml
+Sitemap: https://sage-and-sprout.com/image-sitemap.xml

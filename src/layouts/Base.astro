@@ -8,6 +8,8 @@ export interface Props {
   description: string;
   canonical?: string;
   ogImage?: string;
+  /** Alt text for the share image, when the page has a specific one. */
+  ogImageAlt?: string;
   noindex?: boolean;
   schema?: object | object[];
   breadcrumbs?: { label: string; href: string }[];
@@ -18,6 +20,7 @@ const {
   description,
   canonical,
   ogImage = '/og-default.png',
+  ogImageAlt,
   noindex = false,
   schema,
   breadcrumbs,
@@ -57,6 +60,10 @@ const toolStages = [
   <meta property="og:description" content={description} />
   <meta property="og:url" content={canonicalURL} />
   <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  {ogImageAlt && <meta property="og:image:alt" content={ogImageAlt} />}
+  <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
   <meta property="og:site_name" content="Sage & Sprout" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="theme-color" content="#3E5A49" />

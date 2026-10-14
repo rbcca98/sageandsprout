@@ -3,6 +3,7 @@ import ToolPage from '../../layouts/ToolPage.astro';
 import { US_STATES } from '../../islands/maternity-leave.js';
 import copy from '../../data/tools/maternity-leave-planner';
 import { toolSchema } from '../../data/tools/_schema';
+import { graphicFor } from '../../data/tool-graphics';
 import MaternityVisual from '../../components/visuals/MaternityVisual.astro';
 ---
 
@@ -17,6 +18,7 @@ import MaternityVisual from '../../components/visuals/MaternityVisual.astro';
   sources={copy.sources}
   schema={toolSchema(copy)}
   reviewedDate={copy.reviewedDate}
+  graphic={graphicFor(copy)}
 >
   <div slot="tool">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem;">

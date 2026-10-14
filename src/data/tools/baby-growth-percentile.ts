@@ -10,6 +10,10 @@ const copy: ToolCopy = {
   hook:
     'A percentile is a snapshot, not a grade. Plot weight, length, or head size on the WHO charts US pediatricians use, and see where your baby sits today.',
   reviewedDate: '2025-01-15',
+  graphic: {
+    alt: 'Baby growth percentile chart: WHO weight-for-age curves for girls from birth to 24 months at the 3rd, 50th, and 97th percentiles',
+    caption: 'WHO weight-for-age curves for girls, birth to 24 months, the standard the calculator plots your baby on.',
+  },
 
   faqs: [
     {

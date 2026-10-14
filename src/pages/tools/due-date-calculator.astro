@@ -2,6 +2,7 @@
 import ToolPage from '../../layouts/ToolPage.astro';
 import copy from '../../data/tools/due-date-calculator';
 import { toolSchema } from '../../data/tools/_schema';
+import { graphicFor } from '../../data/tool-graphics';
 import DueDateVisual from '../../components/visuals/DueDateVisual.astro';
 ---
 
@@ -16,6 +17,7 @@ import DueDateVisual from '../../components/visuals/DueDateVisual.astro';
   sources={copy.sources}
   schema={toolSchema(copy)}
   reviewedDate={copy.reviewedDate}
+  graphic={graphicFor(copy)}
   embedSlug="due-date-calculator"
 >
 

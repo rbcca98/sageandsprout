@@ -10,6 +10,10 @@ const copy: ToolCopy = {
   hook:
     "Most babies take about 2.5 oz of formula per pound of body weight each day. See the amount per feeding and per day for your baby's age and weight.",
   reviewedDate: '2025-01-15',
+  graphic: {
+    alt: 'Baby feeding chart by age: ounces per feed and feeds per day from newborn to 12 months, with the rule of about 2.5 oz per pound a day up to 32 oz',
+    caption: 'Formula amount per feed and feeds a day by age, from the AAP guidance the calculator applies.',
+  },
 
   faqs: [
     {

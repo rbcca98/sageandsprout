@@ -10,6 +10,10 @@ const copy: ToolCopy = {
   hook:
     'Only about 1 in 20 babies arrives on their due date. This gives you the date, plus the two-week window around it that matters more.',
   reviewedDate: '2026-06-27',
+  graphic: {
+    alt: 'Due date calculator chart: a calendar with the estimated due date circled and the rule behind it, last period plus 280 days',
+    caption: 'The rule behind the due date calculator: your last period plus 280 days, with a two-week window around the date.',
+  },
 
   faqs: [
     {

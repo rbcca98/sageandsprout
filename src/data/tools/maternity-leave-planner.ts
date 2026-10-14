@@ -10,6 +10,10 @@ const copy: ToolCopy = {
   hook:
     'FMLA protects your job for 12 weeks but does not pay you. Whether any of it is paid depends on your state and your employer. This works out both.',
   reviewedDate: '2026-07-01',
+  graphic: {
+    alt: 'Maternity leave planner chart: FMLA job protection, state paid family leave, and employer leave on a timeline of weeks after leave starts',
+    caption: 'How the pieces of US maternity leave line up: FMLA job protection, state paid leave where it exists, and whatever your employer adds.',
+  },
   medical: false,
 
   faqs: [

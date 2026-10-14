@@ -10,6 +10,10 @@ const copy: ToolCopy = {
   hook:
     'The fertile window is six days, and the best odds fall one to two days before ovulation. Find yours from your last period and cycle length.',
   reviewedDate: '2026-06-27',
+  graphic: {
+    alt: 'Ovulation and fertile window chart: a 28-day cycle ring showing the period, the six-day fertile window, and ovulation day',
+    caption: 'A 28-day cycle with the six-day fertile window ending on ovulation day, about 14 days before the next period.',
+  },
 
   faqs: [
     {

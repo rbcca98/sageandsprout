@@ -45,4 +45,10 @@ export interface ToolCopy {
   related: Related[];
   /** The article shown below the tool. Plain HTML — edit the words freely. */
   contentHtml: string;
+  /**
+   * The chart image for this tool (public/images/tools/<slug>-chart.png, drawn
+   * by `npm run graphics`): the alt text search engines read, and the caption
+   * shown under it on the page.
+   */
+  graphic?: { alt: string; caption: string };
 }

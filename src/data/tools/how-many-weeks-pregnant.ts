@@ -10,6 +10,10 @@ const copy: ToolCopy = {
   hook:
     "Pregnancy is counted from the first day of your last period, not from conception, which is why 'four weeks' comes before most people even know. Here is where you are today.",
   reviewedDate: '2026-06-27',
+  graphic: {
+    alt: 'How many weeks pregnant chart: a 40-week ring filled to week 24, second trimester, with trimester marks at weeks 14 and 28',
+    caption: 'Pregnancy is counted over 40 weeks from the last period. The second trimester starts at week 14 and the third at week 28.',
+  },
 
   faqs: [
     {

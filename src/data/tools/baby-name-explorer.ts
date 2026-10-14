@@ -10,6 +10,10 @@ const copy: ToolCopy = {
   hook:
     'The top 100 boy and girl names from the SSA, with meaning, origin, and rank. Filter by sex, popularity, or first letter.',
   reviewedDate: '2025-01-15',
+  graphic: {
+    alt: 'Baby name chart: the top 10 boy names and top 10 girl names from the 2023 SSA list',
+    caption: 'The ten most popular boy and girl names in the 2023 SSA data the explorer uses.',
+  },
   category: 'LifestyleApplication',
   medical: false,
 

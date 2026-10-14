@@ -2,6 +2,7 @@
 import ToolPage from '../../layouts/ToolPage.astro';
 import copy from '../../data/tools/ovulation-fertility-window';
 import { toolSchema } from '../../data/tools/_schema';
+import { graphicFor } from '../../data/tool-graphics';
 import OvulationVisual from '../../components/visuals/OvulationVisual.astro';
 ---
 
@@ -16,6 +17,7 @@ import OvulationVisual from '../../components/visuals/OvulationVisual.astro';
   sources={copy.sources}
   schema={toolSchema(copy)}
   reviewedDate={copy.reviewedDate}
+  graphic={graphicFor(copy)}
   embedSlug="ovulation-fertility-window"
 >
 
